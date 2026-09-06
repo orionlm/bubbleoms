@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="/bubble/media/BUBBLE.jpg">
+    <link rel="stylesheet" href="/bubble/fonts/fonts.css">
+
+    <title>Sale Records</title>
+</head>
+
+<style>
+.navbar {
+    background-color: #7e5832;
+    width: 100%;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+    display: flex;
+    justify-content: left;
+    
+}
+
+.navbar-right {
+    width: 50%;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: right;
+}
+
+h1 {
+    margin-bottom: 5px;
+    padding-left: 50px;
+}
+
+.menu {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+    height: 400px;
+}
+
+.main{
+    padding-top: 3vh;
+}
+
+.btn-main {
+    font-family: Poppins;
+    font-weight: bold;
+    color: #f0f0f0;
+    box-shadow: 3px 4px 11px 1px rgba(0,0,0,0.28);
+    font-size: larger;
+    height: 60px;
+    width: 400px;
+    background-color: #337609;
+    border: none;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+.buttons {
+    position: relative;
+    width: 370px;
+    left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    font-family: Poppins;
+    font-weight: bold;
+    color: #f0f0f0;
+    box-shadow: 3px 4px 11px 1px rgba(0,0,0,0.28);
+    height: 40px;
+    width: 150px;
+    background-color: #337609;
+    border: none;
+    border-radius: 25px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.btn:hover, .btn-main:hover {
+    background-color: #326810;
+    transition: 0.5s;
+}
+
+.space {
+    position: relative;
+    width: 320px;
+    left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: transparent;
+    color: #f0f0f0;
+    padding: 16px;
+    min-width: 110px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-family: Poppins;
+    font-weight: bolder;
+}
+
+.dropbtn:hover {
+    background-color: #5a4026;
+}
+
+/* Dropdown */
+.dropdown {
+    position: relative;
+    width: 490px;
+    display: flex;
+    justify-content: right;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 110px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 80px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.show {
+    display: block;
+}
+
+th, td {
+    padding: 10px;
+}
+
+table {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+tr {
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    margin: 5px;
+}
+
+th {
+    text-align: left;
+}
+
+.input-group {
+    padding: 10px;
+    display: flex;
+    margin-left: 40px;
+}
+
+.form-outline {
+    width: 80%;
+}
+
+input {
+    font-family: Poppins;
+    font-weight: bold;
+    background-color: transparent;
+    border-radius: 25px;
+    border: 2px #337609 solid;
+    margin-bottom: 10px;
+    color: #181818;
+    height: 30px;
+    text-indent: 10px;
+    outline: none;
+    box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+}
+
+.btn-edit {
+    text-decoration: none;
+    position: relative;
+    background-color: rgb(91, 149, 91);
+    padding: 3px;
+    border-radius: 5px;
+    color: #f0f0f0;
+    border-color: transparent;
+    margin: 5px;
+    font-family: Poppins;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background-color: rgb(79, 128, 79);
+}
+
+.btn-dgr {
+    text-decoration: none;
+    background-color: rgb(91, 149, 91);
+    padding: 3px;
+    border-radius: 5px;
+    color: #f0f0f0;
+    border-color: transparent;
+    font-family: Poppins;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.btn-dgr:hover {
+    background-color: rgb(79, 128, 79);
+    transition: 0.5s;
+}
+
+.a {
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    z-index: 15;
+    left: 25%;
+    top: 25%;
+}
+
+.dropdown-ver {
+    display: none;
+    position: fixed;
+    background-color: #f1f1f1;
+    width: 45.5%;
+    padding: 30px;
+    margin: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 200px;
+    border-radius: 15px;
+}
+
+.b {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.a1 {
+    background-color: rgb(91, 149, 91);
+    display: inline;
+    color: #f0f0f0;
+    width: 100px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.b1 {
+    background-color: firebrick;
+    display: inline;
+    color: #f0f0f0;
+    width: 100px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.show1 {
+    display: block;
+}
+
+.rem1 {
+    display: none;
+}
+
+.scroll {
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 400px;
+}
+
+h1, h2, h3 {
+    font-size: 80px;
+}
+</style>
+
+<script>
+// =========================
+// DROPDOWN
+// =========================
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
+// =========================
+// STATIC SALE RECORDS
+// =========================
+
+const sales = [
+    {
+        date: "2025-11-27",
+        total: "Php 111.20",
+        account: "135",
+        firstName: "Juan",
+        lastName: "Dela Cruz"
+    },
+    {
+        date: "2025-11-26",
+        total: "Php 448.00",
+        account: "135",
+        firstName: "Juan",
+        lastName: "Dela Cruz"
+    },
+    {
+        date: "2025-11-02",
+        total: "Php 0.00",
+        account: "135",
+        firstName: "Juan",
+        lastName: "Dela Cruz"
+    },
+    {
+        date: "2025-10-28",
+        total: "Php 833.00",
+        account: "103",
+        firstName: "Pedro",
+        lastName: "Reyes"
+    },
+    {
+        date: "2025-10-27",
+        total: "Php 7812.00",
+        account: "102",
+        firstName: "Maria",
+        lastName: "Santos"
+    },
+    {
+        date: "2025-10-27",
+        total: "Php 29305.80",
+        account: "102",
+        firstName: "Maria",
+        lastName: "Santos"
+    },
+    {
+        date: "2025-10-25",
+        total: "Php 5014.13",
+        account: "102",
+        firstName: "Maria",
+        lastName: "Santos"
+    },
+    {
+        date: "2025-10-24",
+        total: "Php 3022.40",
+        account: "103",
+        firstName: "Pedro",
+        lastName: "Reyes"
+    },
+    {
+        date: "2025-10-23",
+        total: "Php 6158.30",
+        account: "103",
+        firstName: "Pedro",
+        lastName: "Reyes"
+    }
+];
+
+
+// =========================
+// DISPLAY SALES
+// =========================
+
+function displaySales(data) {
+
+    const result = document.getElementById("searchresult");
+
+    if (data.length === 0) {
+        result.innerHTML = `
+            <table>
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No sale records found.
+                    </td>
+                </tr>
+            </table>
+        `;
+        return;
+    }
+
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Date of Sale</th>
+                    <th>Total Sale</th>
+                    <th>Account who Ended Sale</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+            </thead>
+
+            <tbody>
+    `;
+
+    data.forEach(sale => {
+
+        html += `
+            <tr>
+                <td>${sale.date}</td>
+                <td>${sale.total}</td>
+                <td>${sale.account}</td>
+                <td>${sale.firstName}</td>
+                <td>${sale.lastName}</td>
+            </tr>
+        `;
+
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    result.innerHTML = html;
+}
+
+
+// =========================
+// LIVE SEARCH
+// =========================
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const search = document.getElementById("live_search");
+
+    // Show all records when page loads
+    displaySales(sales);
+
+    search.addEventListener("keyup", function() {
+
+        const input = this.value.toLowerCase().trim();
+
+        if (input === "") {
+            displaySales(sales);
+            return;
+        }
+
+        const filteredSales = sales.filter(sale =>
+            sale.date.toLowerCase().includes(input) ||
+            sale.total.toLowerCase().includes(input) ||
+            sale.account.toLowerCase().includes(input) ||
+            sale.firstName.toLowerCase().includes(input) ||
+            sale.lastName.toLowerCase().includes(input)
+        );
+
+        displaySales(filteredSales);
+
+    });
+
+});
+
+// =========================
+// LIVE SEARCH
+// =========================
+document.addEventListener("DOMContentLoaded", function() {
+
+    const search = document.getElementById("live_search");
+
+    // Display all records when page loads
+    displaySales(sales);
+
+    search.addEventListener("keyup", function() {
+
+        const input = this.value.toLowerCase().trim();
+
+        if (input === "") {
+            displaySales(sales);
+            return;
+        }
+
+        const filteredSales = sales.filter(sale =>
+            sale.id.toLowerCase().includes(input) ||
+            sale.date.toLowerCase().includes(input) ||
+            sale.time.toLowerCase().includes(input) ||
+            sale.order.toLowerCase().includes(input) ||
+            sale.type.toLowerCase().includes(input) ||
+            sale.total.toLowerCase().includes(input)
+        );
+
+        displaySales(filteredSales);
+    });
+
+});
+</script>
+
+<body>
+
+    <div class="navbar">
+
+        <div style="position: relative; width: 20px; left: 30px; display: flex; align-items: center;"></div>
+
+        <div class="buttons">
+
+            <button type="button" class="btn" onclick="goBack()">
+                Back
+            </button>
+
+            <button type="button" class="btn" onclick="goForecast()">
+                Forecast
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="navbar-right">
+
+        <div class="dropdown">
+
+            <button onclick="myFunction()" class="dropbtn">
+                Admin
+            </button>
+
+            <div id="myDropdown" class="dropdown-content">
+
+                <a href="#" onclick="logout(); return false;">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+        <div style="position: relative; width: 20px; right: 30px; display: flex; align-items: center;"></div>
+
+    </div>
+
+
+    <div class="main">
+
+        <h1>Sale Records</h1>
+
+        <div class="input-group">
+
+            <div class="form-outline">
+
+                <input
+                    style="width: 30%;"
+                    type="text"
+                    class="form-control"
+                    id="live_search"
+                    autocomplete="off"
+                    placeholder="Search..."
+                >
+
+            </div>
+
+        </div>
+
+
+        <div id="searchresult" class="scroll"></div>
+
+    </div>
+
+
+<script>
+
+// =========================
+// PAGE REDIRECTION
+// =========================
+
+function goBack() {
+    window.location.href = "../interface/admin_homepage.php";
+}
+
+function goForecast() {
+    window.location.href = "sales_forecast.php";
+}
+
+function logout() {
+    window.location.href = "../interface/login.php";
+}
+
+</script>
+
+</body>
+</html>
+
