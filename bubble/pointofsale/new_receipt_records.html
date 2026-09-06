@@ -1,0 +1,1433 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Bubble Hideout POS</title>
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <style>
+        :root {
+            --primary-color: #4caf50;
+            --secondary-color: #f39c12;
+            --background-color: #f4f7f9;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.4;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow-x: auto;
+        }
+
+        .nav-header {
+            background-color: #8B4513;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 60px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+            transform: translateY(-1px);
+        }
+
+        .nav-header h2 {
+            color: white;
+            margin: 0;
+            font-size: 1.4em;
+        }
+
+        .container {
+            padding: 15px;
+            max-width: 100%;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .search-filters {
+            background: white;
+            font-family: Poppins;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .search-filters form {
+            display: grid;
+            font-family: Poppins;
+            grid-template-columns: 2fr 1fr 1fr auto auto auto;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-aa {
+            font-family: Poppins;
+        }
+
+        .search-filters input,
+        .search-filters select,
+        .search-filters button,
+        .search-filters a {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            height: 36px;
+            font-family: Poppins;
+        }
+
+        .search-filters button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-family: Poppins;
+        }
+
+        .search-filters button:hover {
+            background-color: #45a049;
+        }
+
+        .search-filters a {
+            background: #6c757d;
+            font-family: Poppins;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orders-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th:nth-child(1), td:nth-child(1) { width: 10%; }
+        th:nth-child(2), td:nth-child(2) { width: 16%; }
+        th:nth-child(3), td:nth-child(3) { width: 10%; }
+        th:nth-child(4), td:nth-child(4) { width: 12%; }
+        th:nth-child(5), td:nth-child(5) { width: 20%; }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .view-receipt-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .view-receipt-btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-1px);
+        }
+
+        .order-type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .order-type-badge.dine-in {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .order-type-badge.takeout {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            gap: 5px;
+            flex-wrap: wrap;
+            padding-bottom: 15px;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            min-width: 32px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination .current {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text-color);
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 1024px) {
+            .search-filters form {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+
+            .search-filters input:first-child {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .nav-header {
+                padding: 8px 10px;
+                flex-direction: column;
+                gap: 8px;
+                min-height: auto;
+            }
+
+            .nav-header h2 {
+                font-size: 1.2em;
+            }
+
+            h1 {
+                font-size: 1.6em;
+                margin-bottom: 15px;
+            }
+
+            .search-filters form {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-table {
+                height: calc(100vh - 180px);
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 800px;
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 6px 8px;
+            }
+
+            .view-receipt-btn {
+                padding: 4px 8px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-header {
+                padding: 6px 8px;
+            }
+
+            .container {
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .search-filters {
+                padding: 10px;
+            }
+
+            .orders-table {
+                height: calc(100vh - 160px);
+            }
+
+            table {
+                min-width: 750px;
+                font-size: 11px;
+            }
+
+            th, td {
+                padding: 4px 6px;
+            }
+        }
+
+        .a {
+            position: fixed;
+            width: 50%;
+            height: 5%;
+            z-index: 15;
+            left: 25%;
+            top: 30%;
+            background-color: transparent;
+        }
+
+        .dropdown-ver {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            width: 100%;
+            padding: 30px;
+            margin: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 15px;
+        }
+
+        .b {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .show1 {
+            display: block;
+            z-index: 30;
+        }
+
+        .rem1 {
+            display: none;
+            z-index: 0;
+        }
+
+        .main {
+            position: relative;
+            top: 30px;
+        }
+
+        h1, h2, h3 {
+            font-size: 80px;
+        }
+
+        .scroll {
+            overflow: scroll;
+            overflow-x: hidden;
+            height: 400px;
+        }
+
+        .export-from {
+            display: flex;
+        }
+
+        .export-from select {
+            width: 100%;
+            border-radius: 5px;
+            font-family: Poppins;
+            padding: 5px;
+        }
+
+        .form-a {
+            display: flex;
+            flex-direction: column;
+            margin: 10px;
+            width: 50%;
+        }
+
+        .aa {
+            padding: 5px;
+            width: 20%;
+            font-family: Poppins;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #f1f1f1;
+            transition: 0.5ms;
+            cursor: pointer;
+        }
+
+        .aa:hover {
+            background-color: #45a049;
+            color: #f1f1f1;
+            transition: 0.5ms;
+        }
+
+        /* Export button */
+        .export-btn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav-header">
+
+        <!-- Back to interface/admin_homepage.html -->
+        <a href="../interface/admin_homepage.html" class="back-button">
+            ← Back
+        </a>
+
+        <h2>Order History</h2>
+
+        <!-- Static demo link -->
+        <a href="order_archive.html" class="back-button">
+            Order Archive
+        </a>
+
+    </div>
+
+    <div class="container">
+
+        <h1>Order History</h1>
+
+        <div class="search-filters">
+
+            <form id="searchForm">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by Order ID"
+                >
+
+                <input
+                    type="date"
+                    id="dateInput"
+                >
+
+                <select id="orderTypeInput">
+                    <option value="">All Types</option>
+                    <option value="dine_in">Dine In</option>
+                    <option value="takeout">Takeout</option>
+                </select>
+
+                <button class="btn-aa" type="submit">
+                    Search
+                </button>
+
+                <a href="#" onclick="clearFilters(); return false;">
+                    Clear
+                </a>
+
+                <button
+                    type="button"
+                    class="btn-aa export-btn"
+                    onclick="openExportModal()"
+                >
+                    &nbsp; Download Receipt Record &nbsp;
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- EXPORT MODAL -->
+
+        <div class="a">
+
+            <div class="dropdown-ver" id="exportModal">
+
+                <div class="body">
+
+                    <p style="font-size:20px; font-weight:bold;">
+                        Export Receipt Records
+                    </p>
+
+                    <form id="exportForm" class="export-from">
+
+                        <div class="form-a">
+
+                            <label for="month">
+                                Select Month:
+                            </label>
+
+                            <select id="month">
+                            </select>
+
+                        </div>
+
+                        <br>
+
+                        <div class="form-a">
+
+                            <label for="day">
+                                Select Day:
+                            </label>
+
+                            <select id="day">
+                            </select>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <br><br>
+
+                <div class="b">
+
+                    <button
+                        type="button"
+                        class="aa"
+                        onclick="closeExportModal()"
+                    >
+                        &nbsp; Close &nbsp;
+                    </button>
+
+                    <button
+                        type="button"
+                        class="aa"
+                        onclick="exportPDF()"
+                    >
+                        &nbsp; Export PDF &nbsp;
+                    </button>
+
+                    <button
+                        type="button"
+                        class="aa"
+                        onclick="exportExcel()"
+                    >
+                        &nbsp; Export Excel &nbsp;
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDERS TABLE -->
+
+        <div class="orders-table">
+
+            <table id="ordersTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order ID</th>
+
+                        <th>Date & Time</th>
+
+                        <th>Type</th>
+
+                        <th>Total Amount</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="ordersBody">
+                </tbody>
+
+            </table>
+
+            <div
+                class="no-orders"
+                id="noOrders"
+                style="display:none;"
+            >
+
+                <h3>No orders found</h3>
+
+                <p>
+                    No orders match your search criteria.
+                </p>
+
+            </div>
+
+            <div
+                class="pagination"
+                id="pagination"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+/* =========================================================
+   SAMPLE ORDER DATA
+   ========================================================= */
+
+const orders = [
+
+    {
+        order_id: "BH-2026-001",
+        created_at: "2026-09-06T14:30:00",
+        order_type: "dine_in",
+        total: 185.00
+    },
+
+    {
+        order_id: "BH-2026-002",
+        created_at: "2026-09-06T13:15:00",
+        order_type: "takeout",
+        total: 240.00
+    },
+
+    {
+        order_id: "BH-2026-003",
+        created_at: "2026-09-05T18:45:00",
+        order_type: "dine_in",
+        total: 325.00
+    },
+
+    {
+        order_id: "BH-2026-004",
+        created_at: "2026-09-05T16:20:00",
+        order_type: "takeout",
+        total: 150.00
+    },
+
+    {
+        order_id: "BH-2026-005",
+        created_at: "2026-09-04T12:10:00",
+        order_type: "dine_in",
+        total: 420.00
+    },
+
+    {
+        order_id: "BH-2026-006",
+        created_at: "2026-09-03T19:30:00",
+        order_type: "takeout",
+        total: 275.00
+    },
+
+    {
+        order_id: "BH-2026-007",
+        created_at: "2026-09-03T15:45:00",
+        order_type: "dine_in",
+        total: 195.00
+    },
+
+    {
+        order_id: "BH-2026-008",
+        created_at: "2026-09-02T11:25:00",
+        order_type: "takeout",
+        total: 310.00
+    },
+
+    {
+        order_id: "BH-2026-009",
+        created_at: "2026-09-01T17:40:00",
+        order_type: "dine_in",
+        total: 280.00
+    },
+
+    {
+        order_id: "BH-2026-010",
+        created_at: "2026-08-31T14:05:00",
+        order_type: "takeout",
+        total: 165.00
+    },
+
+    {
+        order_id: "BH-2026-011",
+        created_at: "2026-08-30T16:50:00",
+        order_type: "dine_in",
+        total: 350.00
+    },
+
+    {
+        order_id: "BH-2026-012",
+        created_at: "2026-08-29T13:35:00",
+        order_type: "takeout",
+        total: 220.00
+    },
+
+    {
+        order_id: "BH-2026-013",
+        created_at: "2026-08-28T18:15:00",
+        order_type: "dine_in",
+        total: 390.00
+    },
+
+    {
+        order_id: "BH-2026-014",
+        created_at: "2026-08-27T12:40:00",
+        order_type: "takeout",
+        total: 180.00
+    },
+
+    {
+        order_id: "BH-2026-015",
+        created_at: "2026-08-26T15:10:00",
+        order_type: "dine_in",
+        total: 260.00
+    },
+
+    {
+        order_id: "BH-2026-016",
+        created_at: "2026-08-25T19:05:00",
+        order_type: "takeout",
+        total: 450.00
+    },
+
+    {
+        order_id: "BH-2026-017",
+        created_at: "2026-08-24T11:50:00",
+        order_type: "dine_in",
+        total: 175.00
+    },
+
+    {
+        order_id: "BH-2026-018",
+        created_at: "2026-08-23T14:25:00",
+        order_type: "takeout",
+        total: 290.00
+    },
+
+    {
+        order_id: "BH-2026-019",
+        created_at: "2026-08-22T17:55:00",
+        order_type: "dine_in",
+        total: 330.00
+    },
+
+    {
+        order_id: "BH-2026-020",
+        created_at: "2026-08-21T13:20:00",
+        order_type: "takeout",
+        total: 210.00
+    },
+
+    {
+        order_id: "BH-2026-021",
+        created_at: "2026-08-20T16:35:00",
+        order_type: "dine_in",
+        total: 375.00
+    },
+
+    {
+        order_id: "BH-2026-022",
+        created_at: "2026-08-19T12:15:00",
+        order_type: "takeout",
+        total: 195.00
+    },
+
+    {
+        order_id: "BH-2026-023",
+        created_at: "2026-08-18T18:30:00",
+        order_type: "dine_in",
+        total: 285.00
+    },
+
+    {
+        order_id: "BH-2026-024",
+        created_at: "2026-08-17T15:40:00",
+        order_type: "takeout",
+        total: 235.00
+    }
+
+];
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+const limit = 20;
+
+let currentPage = 1;
+
+let filteredOrders = [...orders];
+
+
+/* =========================================================
+   FORMAT DATE
+   ========================================================= */
+
+function formatDateTime(dateString) {
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+}
+
+
+/* =========================================================
+   RENDER ORDERS
+   ========================================================= */
+
+function renderOrders() {
+
+    const tbody =
+        document.getElementById("ordersBody");
+
+    const noOrders =
+        document.getElementById("noOrders");
+
+    const pagination =
+        document.getElementById("pagination");
+
+    tbody.innerHTML = "";
+
+    pagination.innerHTML = "";
+
+
+    if (filteredOrders.length === 0) {
+
+        noOrders.style.display = "block";
+
+        document.getElementById("ordersTable")
+            .style.display = "none";
+
+        return;
+
+    }
+
+
+    noOrders.style.display = "none";
+
+    document.getElementById("ordersTable")
+        .style.display = "table";
+
+
+    const totalPages =
+        Math.ceil(filteredOrders.length / limit);
+
+
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
+
+
+    const start =
+        (currentPage - 1) * limit;
+
+    const end =
+        start + limit;
+
+    const pageOrders =
+        filteredOrders.slice(start, end);
+
+
+    pageOrders.forEach(order => {
+
+        const row =
+            document.createElement("tr");
+
+
+        const orderId =
+            document.createElement("td");
+
+        orderId.innerHTML =
+            `<strong>${order.order_id}</strong>`;
+
+
+        const date =
+            document.createElement("td");
+
+        date.textContent =
+            formatDateTime(order.created_at);
+
+
+        const type =
+            document.createElement("td");
+
+        const badge =
+            document.createElement("span");
+
+        badge.classList.add(
+            "order-type-badge"
+        );
+
+
+        if (order.order_type === "takeout") {
+
+            badge.classList.add("takeout");
+
+            badge.textContent = "Takeout";
+
+        } else {
+
+            badge.classList.add("dine-in");
+
+            badge.textContent = "Dine In";
+
+        }
+
+
+        type.appendChild(badge);
+
+
+        const total =
+            document.createElement("td");
+
+        total.textContent =
+            "₱" + Number(order.total).toLocaleString(
+                "en-PH",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+
+        const action =
+            document.createElement("td");
+
+
+        const viewButton =
+            document.createElement("a");
+
+        viewButton.href =
+            "view_receipt_for_admin.html?order_id="
+            + encodeURIComponent(order.order_id);
+
+        viewButton.className =
+            "view-receipt-btn";
+
+        viewButton.textContent =
+            "View Receipt";
+
+
+        action.appendChild(viewButton);
+
+
+        row.appendChild(orderId);
+        row.appendChild(date);
+        row.appendChild(type);
+        row.appendChild(total);
+        row.appendChild(action);
+
+
+        tbody.appendChild(row);
+
+    });
+
+
+    renderPagination(totalPages);
+
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+function renderPagination(totalPages) {
+
+    const pagination =
+        document.getElementById("pagination");
+
+
+    if (totalPages <= 1) {
+        return;
+    }
+
+
+    if (currentPage > 1) {
+
+        const previous =
+            document.createElement("a");
+
+        previous.textContent =
+            "← Previous";
+
+        previous.href = "#";
+
+        previous.onclick = function(e) {
+
+            e.preventDefault();
+
+            currentPage--;
+
+            renderOrders();
+
+        };
+
+        pagination.appendChild(previous);
+
+    }
+
+
+    const startPage =
+        Math.max(1, currentPage - 2);
+
+    const endPage =
+        Math.min(totalPages, currentPage + 2);
+
+
+    for (
+        let i = startPage;
+        i <= endPage;
+        i++
+    ) {
+
+        const page =
+            document.createElement(
+                i === currentPage
+                    ? "span"
+                    : "a"
+            );
+
+
+        page.textContent = i;
+
+
+        if (i === currentPage) {
+
+            page.className = "current";
+
+        } else {
+
+            page.href = "#";
+
+            page.onclick = function(e) {
+
+                e.preventDefault();
+
+                currentPage = i;
+
+                renderOrders();
+
+            };
+
+        }
+
+
+        pagination.appendChild(page);
+
+    }
+
+
+    if (currentPage < totalPages) {
+
+        const next =
+            document.createElement("a");
+
+        next.textContent =
+            "Next →";
+
+        next.href = "#";
+
+        next.onclick = function(e) {
+
+            e.preventDefault();
+
+            currentPage++;
+
+            renderOrders();
+
+        };
+
+        pagination.appendChild(next);
+
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH / FILTER
+   ========================================================= */
+
+document
+    .getElementById("searchForm")
+    .addEventListener("submit", function(e) {
+
+        e.preventDefault();
+
+        applyFilters();
+
+    });
+
+
+function applyFilters() {
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const date =
+        document
+            .getElementById("dateInput")
+            .value;
+
+
+    const orderType =
+        document
+            .getElementById("orderTypeInput")
+            .value;
+
+
+    filteredOrders = orders.filter(order => {
+
+        const matchesSearch =
+            search === "" ||
+            order.order_id
+                .toLowerCase()
+                .includes(search);
+
+
+        const orderDate =
+            order.created_at.split("T")[0];
+
+
+        const matchesDate =
+            date === "" ||
+            orderDate === date;
+
+
+        const matchesType =
+            orderType === "" ||
+            order.order_type === orderType;
+
+
+        return (
+            matchesSearch &&
+            matchesDate &&
+            matchesType
+        );
+
+    });
+
+
+    currentPage = 1;
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   CLEAR FILTERS
+   ========================================================= */
+
+function clearFilters() {
+
+    document.getElementById("searchInput").value = "";
+
+    document.getElementById("dateInput").value = "";
+
+    document.getElementById("orderTypeInput").value = "";
+
+    filteredOrders = [...orders];
+
+    currentPage = 1;
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   EXPORT MODAL
+   ========================================================= */
+
+function openExportModal() {
+
+    document
+        .getElementById("exportModal")
+        .classList.add("show1");
+
+}
+
+
+function closeExportModal() {
+
+    document
+        .getElementById("exportModal")
+        .classList.remove("show1");
+
+}
+
+
+/* =========================================================
+   EXPORT DATE OPTIONS
+   ========================================================= */
+
+function populateExportDates() {
+
+    const monthSelect =
+        document.getElementById("month");
+
+    const daySelect =
+        document.getElementById("day");
+
+
+    monthSelect.innerHTML =
+        "<option value=''>All</option>";
+
+    daySelect.innerHTML =
+        "<option value=''>All</option>";
+
+
+    const months = new Set();
+
+    const days = new Set();
+
+
+    orders.forEach(order => {
+
+        const date =
+            new Date(order.created_at);
+
+
+        const year =
+            date.getFullYear();
+
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
+
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(2, "0");
+
+
+        months.add(
+            `${year}-${month}`
+        );
+
+
+        days.add(
+            `${year}-${month}-${day}`
+        );
+
+    });
+
+
+    [...months]
+        .sort()
+        .reverse()
+        .forEach(month => {
+
+            const date =
+                new Date(month + "-01");
+
+
+            const option =
+                document.createElement("option");
+
+
+            option.value = month;
+
+            option.textContent =
+                date.toLocaleString(
+                    "en-US",
+                    {
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+
+            monthSelect.appendChild(option);
+
+        });
+
+
+    [...days]
+        .sort()
+        .reverse()
+        .forEach(day => {
+
+            const date =
+                new Date(day);
+
+
+            const option =
+                document.createElement("option");
+
+
+            option.value = day;
+
+            option.textContent =
+                date.toLocaleString(
+                    "en-US",
+                    {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric"
+                    }
+                );
+
+
+            daySelect.appendChild(option);
+
+        });
+
+}
+
+
+/* =========================================================
+   DEMO EXPORT FUNCTIONS
+   ========================================================= */
+
+function exportPDF() {
+
+    const month =
+        document.getElementById("month").value;
+
+    const day =
+        document.getElementById("day").value;
+
+
+    alert(
+        "PDF export is a demo function.\n\n" +
+        "Month: " +
+        (month || "All") +
+        "\nDay: " +
+        (day || "All")
+    );
+
+}
+
+
+function exportExcel() {
+
+    const month =
+        document.getElementById("month").value;
+
+    const day =
+        document.getElementById("day").value;
+
+
+    alert(
+        "Excel export is a demo function.\n\n" +
+        "Month: " +
+        (month || "All") +
+        "\nDay: " +
+        (day || "All")
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+window.onload = function() {
+
+    populateExportDates();
+
+    renderOrders();
+
+};
+
+</script>
+
+</body>
+</html>
+

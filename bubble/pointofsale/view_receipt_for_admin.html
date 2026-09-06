@@ -1,0 +1,1171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Receipt - Bubble Hideout</title>
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #337609;
+            padding: 20px;
+            line-height: 1.2;
+        }
+
+        .receipt-container {
+            max-width: 320px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .receipt-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 20px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 8px,
+                #ddd 8px,
+                #ddd 12px
+            );
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .business-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .business-info {
+            font-size: 11px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .order-number-section {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-top: 1px dashed #333;
+            border-bottom: 1px dashed #333;
+        }
+
+        .order-number-label {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .order-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .order-type-section {
+            text-align: center;
+            margin: 10px 0;
+            padding: 8px 0;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .order-type-label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .order-type-value {
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #333;
+        }
+
+        .receipt-details {
+            font-size: 11px;
+            margin-bottom: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .items-section {
+            margin: 15px 0;
+            border-top: 1px dashed #333;
+            padding-top: 10px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            font-size: 11px;
+        }
+
+        .item-name {
+            flex: 1;
+        }
+
+        .item-price {
+            margin-left: 10px;
+        }
+
+        .item-details {
+            font-size: 10px;
+            color: #666;
+            margin-left: 15px;
+            margin-bottom: 2px;
+        }
+
+        .quantity {
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        .totals-section {
+            border-top: 1px dashed #333;
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            font-size: 11px;
+        }
+
+        .total-row.final-total {
+            font-weight: bold;
+            font-size: 12px;
+            border-top: 1px solid #333;
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+
+        .payment-section {
+            margin-top: 15px;
+            border-top: 1px dashed #333;
+            padding-top: 10px;
+        }
+
+        .footer-section {
+            text-align: center;
+            margin-top: 20px;
+            border-top: 2px dashed #333;
+            padding-top: 15px;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        .feedback-text {
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            margin-top: 10px;
+            font-size: 8px;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            max-width: 200px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+
+        .print-button {
+            display: block;
+            text-align: center;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            max-width: 200px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            border: none;
+        }
+
+        .print-button:hover {
+            background-color: #1976D2;
+        }
+
+        .discount-type {
+            font-size: 9px;
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 30px 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .not-found h2 {
+            margin-bottom: 10px;
+        }
+
+        .not-found p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .receipt-container {
+                border-radius: 0;
+                max-width: 220px;
+                width: 45mm;
+                margin: 0;
+                font-size: 8px;
+                padding: 5px;
+            }
+
+            .receipt-container::before {
+                display: none;
+            }
+
+            .back-button,
+            .print-button {
+                display: none;
+            }
+
+            .business-name {
+                font-size: 14px;
+            }
+
+            .order-number {
+                font-size: 20px;
+            }
+
+            .order-type-section {
+                background-color: #f0f0f0;
+            }
+        }
+
+        @media (max-width: 200px) {
+            body {
+                padding: 10px;
+            }
+
+            .receipt-container {
+                max-width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="receipt-container" id="receipt">
+        
+        <div class="receipt-header">
+            <div class="business-name">
+                Bubble Hideout
+            </div>
+
+            <div class="business-info">
+                Floor 3DBP, 2nd, Naga Rd, Las Piñas, 1774 Metro Manila
+                <br>
+                <br>
+                GST ID No: 001234567891
+                <br>
+                Business Registration: BH-2024-001
+                <br>
+                TAX INVOICE
+                <br>
+                <br>
+                THIS IS NOT AN OFFICAL RECEIPT
+            </div>
+        </div>
+
+
+        <div class="order-number-section">
+
+            <div class="order-number-label">
+                Your order number is
+            </div>
+
+            <div class="order-number" id="orderNumber">
+                --
+            </div>
+
+        </div>
+
+
+        <div class="order-type-section">
+
+            <div class="order-type-label">
+                Order Type
+            </div>
+
+            <div class="order-type-value" id="orderType">
+                --
+            </div>
+
+        </div>
+
+
+        <div class="receipt-details">
+
+            <div class="detail-row">
+                <span>Date:</span>
+                <span id="orderDate">--</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Cashier:</span>
+                <span id="cashier">Staff 01</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Terminal:</span>
+                <span>POS-001</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Service:</span>
+                <span id="serviceType">--</span>
+            </div>
+
+        </div>
+
+
+        <div class="items-section">
+
+            <div
+                class="detail-row"
+                style="font-weight: bold; margin-bottom: 8px;"
+            >
+                <span>QTY ITEM</span>
+                <span>TOTAL</span>
+            </div>
+
+            <div id="itemsContainer">
+            </div>
+
+        </div>
+
+
+        <div class="totals-section">
+
+            <div class="total-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <span id="subtotal">
+                    ₱0.00
+                </span>
+
+            </div>
+
+
+            <div
+                class="total-row"
+                id="discountRow"
+                style="display: none;"
+            >
+
+                <span>
+                    Discount
+                    <span
+                        class="discount-type"
+                        id="discountType"
+                    ></span>
+                </span>
+
+                <span id="discountAmount">
+                    -₱0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span id="totalLabel">
+                    Eat-In Total (Incl GST)
+                </span>
+
+                <span id="total">
+                    ₱0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span>
+                    Rounding Adjust
+                </span>
+
+                <span>
+                    0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span>
+                    Total Rounded
+                </span>
+
+                <span id="roundedTotal">
+                    ₱0.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="payment-section">
+
+            <div class="total-row">
+
+                <span>
+                    Cash Tendered
+                </span>
+
+                <span id="amountPaid">
+                    ₱0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span>
+                    Change
+                </span>
+
+                <span id="change">
+                    ₱0.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="totals-section">
+
+            <div class="total-row">
+
+                <span>
+                    TOTAL INCLUDES GST
+                </span>
+
+                <span id="gst">
+                    ₱0.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <div class="feedback-text">
+
+                We'd love to hear your feedback!
+
+                <br>
+
+                Visit www.facebook.com/bubblehideout
+
+                <br>
+
+                to share your experience
+
+                <br>
+
+                Thank You and Please Come Again.
+
+            </div>
+
+            <div
+                style="
+                    border-top: 1px dashed #333;
+                    padding-top: 10px;
+                    margin-top: 15px;
+                "
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="notFound" style="display: none;">
+
+        <div class="receipt-container">
+
+            <div class="not-found">
+
+                <h2>Order Not Found</h2>
+
+                <p>
+                    The requested order could not be found.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        onclick="window.print()"
+        class="print-button"
+        id="printButton"
+    >
+        Print Receipt
+    </button>
+
+
+    <a
+        href="../pointofsale/new_receipt_records.html"
+        class="back-button"
+    >
+        ← Back to Order History
+    </a>
+
+
+    <script>
+
+        /*
+         * SAMPLE ORDER DATA
+         *
+         * These records replace the database.
+         * You can add as many demo orders as needed.
+         */
+
+        const orders = [
+
+            {
+                order_id: "ORD-20260906-001",
+
+                created_at: "2026-09-06T17:42:15",
+
+                order_type: "dine_in",
+
+                total: 360.00,
+
+                discount: 90.00,
+
+                discount_type: "Senior",
+
+                amount_paid: 500.00,
+
+                items: [
+
+                    {
+                        menu_item_id: "MILKTEA",
+                        menu_item_name: "Classic Milk Tea",
+                        size_id: "REG",
+                        quantity: 2,
+                        price: 120.00,
+                        flavor: "Original"
+                    },
+
+                    {
+                        menu_item_id: "FRIES",
+                        menu_item_name: "Cheese Fries",
+                        size_id: "REG",
+                        quantity: 1,
+                        price: 120.00,
+                        flavor: ""
+                    }
+
+                ]
+            },
+
+
+            {
+                order_id: "ORD-20260906-002",
+
+                created_at: "2026-09-06T16:28:42",
+
+                order_type: "takeout",
+
+                total: 260.00,
+
+                discount: 65.00,
+
+                discount_type: "PWD",
+
+                amount_paid: 500.00,
+
+                items: [
+
+                    {
+                        menu_item_id: "MILKTEA",
+                        menu_item_name: "Wintermelon Milk Tea",
+                        size_id: "L",
+                        quantity: 2,
+                        price: 130.00,
+                        flavor: ""
+                    }
+
+                ]
+            },
+
+
+            {
+                order_id: "ORD-20260906-003",
+
+                created_at: "2026-09-06T15:15:30",
+
+                order_type: "dine_in",
+
+                total: 780.00,
+
+                discount: 0.00,
+
+                discount_type: "",
+
+                amount_paid: 1000.00,
+
+                items: [
+
+                    {
+                        menu_item_id: "MILKTEA",
+                        menu_item_name: "Brown Sugar Milk Tea",
+                        size_id: "L",
+                        quantity: 3,
+                        price: 150.00,
+                        flavor: ""
+                    },
+
+                    {
+                        menu_item_id: "BURGER",
+                        menu_item_name: "Classic Burger",
+                        size_id: "REG",
+                        quantity: 2,
+                        price: 165.00,
+                        flavor: ""
+                    }
+
+                ]
+            },
+
+
+            {
+                order_id: "ORD-20260905-004",
+
+                created_at: "2026-09-05T19:32:48",
+
+                order_type: "takeout",
+
+                total: 765.00,
+
+                discount: 135.00,
+
+                discount_type: "Custom 15%",
+
+                amount_paid: 1000.00,
+
+                items: [
+
+                    {
+                        menu_item_id: "MILKTEA",
+                        menu_item_name: "Matcha Milk Tea",
+                        size_id: "L",
+                        quantity: 3,
+                        price: 150.00,
+                        flavor: ""
+                    },
+
+                    {
+                        menu_item_id: "FRIES",
+                        menu_item_name: "Cheese Fries",
+                        size_id: "REG",
+                        quantity: 2,
+                        price: 105.00,
+                        flavor: ""
+                    }
+
+                ]
+            }
+
+        ];
+
+
+        function escapeHTML(value) {
+
+            const div = document.createElement("div");
+
+            div.textContent = value ?? "";
+
+            return div.innerHTML;
+
+        }
+
+
+        function formatCurrency(amount) {
+
+            return Number(amount).toLocaleString(
+                "en-PH",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+        }
+
+
+        function formatDate(dateString) {
+
+            const date = new Date(dateString);
+
+            const day =
+                String(date.getDate()).padStart(2, "0");
+
+            const month =
+                String(date.getMonth() + 1).padStart(2, "0");
+
+            const year =
+                date.getFullYear();
+
+            const hours =
+                String(date.getHours()).padStart(2, "0");
+
+            const minutes =
+                String(date.getMinutes()).padStart(2, "0");
+
+            const seconds =
+                String(date.getSeconds()).padStart(2, "0");
+
+            return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+        }
+
+
+        function getOrderFromURL() {
+
+            const params =
+                new URLSearchParams(window.location.search);
+
+            return params.get("order_id");
+
+        }
+
+
+        function displayReceipt(order) {
+
+            document.title =
+                `Receipt - Order ${order.order_id}`;
+
+
+            /*
+             * Basic order information
+             */
+
+            document.getElementById("orderNumber")
+                .textContent = order.order_id;
+
+
+            const isTakeout =
+                order.order_type === "takeout";
+
+
+            const orderType =
+                isTakeout
+                    ? "TAKEOUT"
+                    : "DINE IN";
+
+
+            document.getElementById("orderType")
+                .textContent = orderType;
+
+
+            document.getElementById("serviceType")
+                .textContent =
+                isTakeout
+                    ? "Takeout"
+                    : "Dine In";
+
+
+            document.getElementById("orderDate")
+                .textContent =
+                formatDate(order.created_at);
+
+
+            /*
+             * Items
+             */
+
+            const itemsContainer =
+                document.getElementById("itemsContainer");
+
+
+            itemsContainer.innerHTML = "";
+
+
+            let subtotal = 0;
+
+
+            if (
+                order.items &&
+                order.items.length > 0
+            ) {
+
+                order.items.forEach(item => {
+
+                    const itemTotal =
+                        Number(item.price) *
+                        Number(item.quantity);
+
+
+                    subtotal += itemTotal;
+
+
+                    const itemRow =
+                        document.createElement("div");
+
+                    itemRow.className =
+                        "item-row";
+
+
+                    let itemName =
+                        item.menu_item_name ||
+                        item.menu_item_id;
+
+
+                    let details = "";
+
+
+                    if (
+                        item.size_id &&
+                        item.size_id !== "REG"
+                    ) {
+
+                        details +=
+                            ` (${escapeHTML(item.size_id)})`;
+
+                    }
+
+
+                    if (item.flavor) {
+
+                        details +=
+                            ` - ${escapeHTML(item.flavor)}`;
+
+                    }
+
+
+                    itemRow.innerHTML = `
+
+                        <div class="item-name">
+
+                            ${escapeHTML(item.quantity)}
+                            ${escapeHTML(itemName)}
+
+                            <span class="quantity">
+                                ${details}
+                            </span>
+
+                        </div>
+
+                        <div class="item-price">
+                            ₱${formatCurrency(itemTotal)}
+                        </div>
+
+                    `;
+
+
+                    itemsContainer.appendChild(itemRow);
+
+                });
+
+            } else {
+
+                itemsContainer.innerHTML = `
+
+                    <div class="item-row">
+                        <span>No items found</span>
+                    </div>
+
+                `;
+
+            }
+
+
+            /*
+             * Subtotal
+             *
+             * If the sample item total doesn't match
+             * the stored total, the actual order total
+             * is still used for the final receipt.
+             */
+
+            const displaySubtotal =
+                subtotal > 0
+                    ? subtotal
+                    : Number(order.total);
+
+
+            document.getElementById("subtotal")
+                .textContent =
+                `₱${formatCurrency(displaySubtotal)}`;
+
+
+            /*
+             * Discount
+             */
+
+            const discount =
+                Number(order.discount || 0);
+
+
+            const discountRow =
+                document.getElementById("discountRow");
+
+
+            if (discount > 0) {
+
+                discountRow.style.display = "flex";
+
+
+                document.getElementById("discountAmount")
+                    .textContent =
+                    `-₱${formatCurrency(discount)}`;
+
+
+                const discountType =
+                    order.discount_type || "";
+
+
+                let discountLabel = "";
+
+
+                if (discountType === "Senior") {
+
+                    discountLabel =
+                        "SENIOR 20%";
+
+                } else if (discountType === "PWD") {
+
+                    discountLabel =
+                        "PWD 20%";
+
+                } else if (discountType) {
+
+                    discountLabel =
+                        discountType;
+
+                }
+
+
+                document.getElementById("discountType")
+                    .textContent =
+                    discountLabel;
+
+            } else {
+
+                discountRow.style.display = "none";
+
+            }
+
+
+            /*
+             * Total
+             */
+
+            const total =
+                Number(order.total);
+
+
+            document.getElementById("total")
+                .textContent =
+                `₱${formatCurrency(total)}`;
+
+
+            document.getElementById("roundedTotal")
+                .textContent =
+                `₱${formatCurrency(total)}`;
+
+
+            document.getElementById("totalLabel")
+                .textContent =
+                isTakeout
+                    ? "Takeout Total (Incl GST)"
+                    : "Eat-In Total (Incl GST)";
+
+
+            /*
+             * Payment
+             */
+
+            const amountPaid =
+                Number(order.amount_paid);
+
+
+            const change =
+                amountPaid - total;
+
+
+            document.getElementById("amountPaid")
+                .textContent =
+                `₱${formatCurrency(amountPaid)}`;
+
+
+            document.getElementById("change")
+                .textContent =
+                `₱${formatCurrency(change)}`;
+
+
+            /*
+             * GST
+             *
+             * Kept consistent with the original PHP.
+             */
+
+            const gst =
+                total * 0.12;
+
+
+            document.getElementById("gst")
+                .textContent =
+                `₱${formatCurrency(gst)}`;
+
+        }
+
+
+        function showOrderNotFound() {
+
+            document.getElementById("receipt")
+                .style.display = "none";
+
+
+            document.getElementById("notFound")
+                .style.display = "block";
+
+
+            document.getElementById("printButton")
+                .style.display = "none";
+
+
+            document.title =
+                "Order Not Found - Bubble Hideout";
+
+        }
+
+
+        /*
+         * Load order from URL
+         */
+
+        const requestedOrderId =
+            getOrderFromURL();
+
+
+        if (!requestedOrderId) {
+
+            /*
+             * If no order_id is supplied,
+             * show the first demo order.
+             */
+
+            displayReceipt(orders[0]);
+
+        } else {
+
+            const order =
+                orders.find(
+                    item =>
+                        item.order_id === requestedOrderId
+                );
+
+
+            if (order) {
+
+                displayReceipt(order);
+
+            } else {
+
+                showOrderNotFound();
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+```

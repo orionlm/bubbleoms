@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="/bubble/media/BUBBLE.jpg">
+    <link rel="stylesheet" href="/bubble/fonts/fonts.css">
+
+    <title>Invalid Login Session</title>
+
+    <style>
+
+        .box {
+            position: relative;
+            padding: 10px;
+            border-radius: 15px;
+
+            margin: auto;
+            width: 25%;
+        }
+
+
+        label {
+            color: black;
+            position: relative;
+            text-indent: 40%;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+
+        .input {
+            border-color: transparent;
+            border-radius: 25px;
+            background-color: #337609;
+            margin-bottom: 10px;
+            color: #f0f0f0;
+            height: 30px;
+            width: 100%;
+            text-indent: 10px;
+            outline: none;
+            box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+        }
+
+
+        ::placeholder {
+            color: #f0f0f0;
+        }
+
+
+        .btn {
+            margin-top: 40px;
+            background: #2c2c2c;
+            width: 160px;
+            height: 40px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+            cursor: pointer;
+        }
+
+
+        .btn:hover {
+            background: #181818;
+        }
+
+
+        .img-bbl {
+            width: 30%;
+            height: 30%;
+        }
+
+
+        .footer {
+            color: #181818;
+            text-align: center;
+            font-size: 12px;
+
+            width: 100%;
+            height: 7%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+
+        .check {
+            width: 17px;
+            height: 17px;
+            accent-color: #337609;
+        }
+
+
+        .toggle {
+            display: flex;
+            justify-content: right;
+        }
+
+
+        .aa {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .bb {
+            position: relative;
+            height: 10px;
+        }
+
+
+        /* Error message */
+
+        .error {
+            background: #181818;
+            text-indent: 10px;
+            color: #f0f0f0;
+            padding: 5px;
+            width: 100%;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+
+
+        /* Success message */
+
+        .success {
+            background: #337609;
+            text-indent: 10px;
+            color: #f0f0f0;
+            padding: 5px;
+            width: 100%;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+
+            .box {
+                width: 40%;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .box {
+                width: 70%;
+            }
+
+            .img-bbl {
+                width: 50%;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         LOGO
+    ========================== -->
+
+    <center>
+
+        <div class="img-bbl">
+
+            <img
+                src="/bubble/media/BUBBLE.jpg"
+                width="200px"
+                height="200px"
+                alt="Bubble Hideout">
+
+        </div>
+
+        <br>
+
+    </center>
+
+
+    <!-- =========================
+         LOGIN BOX
+    ========================== -->
+
+    <div class="box">
+
+        <form id="adminKeyForm">
+
+
+            <!-- Error Message -->
+
+            <p
+                id="errorMessage"
+                class="error">
+            </p>
+
+
+            <!-- Success Message -->
+
+            <p
+                id="successMessage"
+                class="success">
+            </p>
+
+
+            <center>
+
+                <p style="margin: -5px;">
+                    <strong>
+                        Too many Log In Sessions Detected
+                    </strong>
+                </p>
+
+                <p style="margin-top: 5px;">
+                    Contact your Administrator to fix the issue
+                </p>
+
+            </center>
+
+
+            <!-- =========================
+                 ADMIN KEY
+            ========================== -->
+
+            <div class="row mb-3">
+
+                <label>
+                    Admin Key
+                </label>
+
+                <div class="col-sm-3">
+
+                    <input
+                        type="password"
+                        id="pass_input"
+                        class="input"
+                        style="font-family: Poppins;"
+                        name="password"
+                        placeholder="Enter Valid Admin Key"
+                        autocomplete="off">
+
+
+                    <!-- Show Password -->
+
+                    <div class="toggle">
+
+                        <div class="aa">
+
+                            <input
+                                class="check"
+                                type="checkbox"
+                                onclick="Toggle()"
+                                accesskey="c">
+
+                        </div>
+
+                        <div class="bb">
+
+                            <label>
+                                Show
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 SUBMIT
+            ========================== -->
+
+            <center>
+
+                <button
+                    type="submit"
+                    class="btn">
+
+                    ENTER ADMIN KEY
+
+                </button>
+
+            </center>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <div class="footer">
+
+        <p>
+            Bubble Hideout© 2024
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+
+        /* =========================
+           SHOW / HIDE PASSWORD
+        ========================== */
+
+        function Toggle() {
+
+            const passwordInput =
+                document.getElementById("pass_input");
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+            } else {
+
+                passwordInput.type = "password";
+
+            }
+
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================== */
+
+        function showError(message) {
+
+            const error =
+                document.getElementById("errorMessage");
+
+            const success =
+                document.getElementById("successMessage");
+
+            success.style.display = "none";
+
+            error.textContent = message;
+            error.style.display = "block";
+
+        }
+
+
+        /* =========================
+           SUCCESS MESSAGE
+        ========================== */
+
+        function showSuccess(message) {
+
+            const error =
+                document.getElementById("errorMessage");
+
+            const success =
+                document.getElementById("successMessage");
+
+            error.style.display = "none";
+
+            success.textContent = message;
+            success.style.display = "block";
+
+        }
+
+
+        /* =========================
+           ADMIN KEY FORM
+        ========================== */
+
+        document
+            .getElementById("adminKeyForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const adminKey =
+                    document
+                        .getElementById("pass_input")
+                        .value
+                        .trim();
+
+
+                /* Empty key */
+
+                if (!adminKey) {
+
+                    showError(
+                        "Please enter the Admin Key."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                    DEMO ONLY
+
+                    Replace this value with whatever
+                    sample Admin Key you want to use.
+
+                    Since this is a standalone HTML page,
+                    there is no PHP/database verification.
+                */
+
+                const demoAdminKey = "bubblehideout";
+
+
+                if (adminKey !== demoAdminKey) {
+
+                    showError(
+                        "Invalid Admin Key. Please try again."
+                    );
+
+                    return;
+
+                }
+
+
+                /* Successful demo login */
+
+                showSuccess(
+                    "Admin Key accepted. Redirecting..."
+                );
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "/bubble/interface/login.html";
+
+                }, 1000);
+
+            });
+
+
+    </script>
+
+
+</body>
+
+</html>

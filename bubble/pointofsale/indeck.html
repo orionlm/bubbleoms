@@ -1,0 +1,3204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <title>Bubble Hideout POS</title>
+
+  <style>
+    :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #f5a623;
+        --background-color: #f8f9fa;
+        --text-color: #333;
+        --border-color: #e0e0e0;
+        --success-color: #41af50;
+        --error-color: #f44336;
+    }
+
+    body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    .container {
+        display: flex;
+        min-height: calc(100vh - 60px);
+    }
+
+    .menu-section {
+        flex: 3;
+        padding: 20px;
+        background-color: #fff;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-section {
+        flex: 2;
+        padding: 20px;
+        background-color: #fff;
+        border-left: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2,
+    h3 {
+        margin-top: 0;
+        color: #337609;
+    }
+
+    .category-buttons,
+    .section-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .category-button,
+    .section-button {
+        padding: 10px 15px;
+        background-color: #337609;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .category-button.active,
+    .section-button.active {
+        background-color: #798378;
+        color: white;
+    }
+
+    /* Fix menu category display */
+    .menu-category {
+        margin-bottom: 20px;
+    }
+
+    /* Fix menu items display */
+    .menu-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .menu-item {
+        background-color: #fff !important;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-name {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #337609;
+        display: block;
+    }
+
+    .size-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .size-button {
+        padding: 8px 12px;
+        background-color: #337609;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: 500;
+        margin-top: 5px;
+    }
+
+    .size-button:hover {
+        background-color: #2a5e07;
+    }
+
+    .cart-items {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: 300px;
+        margin-bottom: 15px;
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border-left: 4px solid #337609;
+        transition: all 0.3s ease;
+        flex-wrap: wrap;
+    }
+
+    .cart-item:hover {
+        background-color: #f5f5f5;
+        transform: translateX(2px);
+    }
+
+    .cart-item-info {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: 15px;
+    }
+
+    .cart-item-details {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .cart-item-price {
+        font-weight: 600;
+        color: #337609;
+        font-size: 16px;
+    }
+
+    .remove-button {
+        background-color: var(--error-color);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .remove-button:hover {
+        background-color: #d32f2f;
+    }
+
+    /* Enhanced Void Button Styles */
+    .void-button {
+        background: linear-gradient(135deg, #ff4757, #ff3742);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+        min-width: 70px;
+    }
+
+    .void-button:hover {
+        background: linear-gradient(135deg, #ff3742, #ff2f3a);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
+    }
+
+    .void-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+    }
+
+    .void-all-container {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #e0e0e0;
+        text-align: center;
+    }
+
+    .void-all-button {
+        background: linear-gradient(135deg, #c0392b, #a93226);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 6px rgba(192, 57, 43, 0.4);
+        min-width: 120px;
+    }
+
+    .void-all-button:hover {
+        background: linear-gradient(135deg, #a93226, #922b21);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(192, 57, 43, 0.5);
+    }
+
+    .void-all-button:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 6px rgba(192, 57, 43, 0.4);
+    }
+
+    .total {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: right;
+        color: var(--primary-color);
+    }
+
+    .checkout-form {
+        margin-top: 20px;
+    }
+
+    .checkout-form input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .checkout-form button {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--success-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .checkout-form button:hover {
+        background-color: #45a049;
+    }
+
+    .message {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #e8f5e9;
+        border-radius: 5px;
+        color: var(--success-color);
+        font-weight: 500;
+    }
+
+    .discount-button {
+        background-color: #a2c39b;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .discount-button:hover {
+        background-color: #798378;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-content h2 {
+        margin-top: 0;
+        color: #a2c39b;
+    }
+
+    .modal-content input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .modal-content button {
+        width: 100%;
+        padding: 10px;
+        background-color: #a2c39b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .modal-content button:hover {
+        background-color: #798378;
+    }
+
+    /* Enhanced Modal Button Styling */
+    .modal-content button[type="submit"] {
+        background: linear-gradient(135deg, #337609, #2a5e07);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(51, 118, 9, 0.3);
+    }
+
+    .modal-content button[type="submit"]:hover {
+        background: linear-gradient(135deg, #2a5e07, #1e4205);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(51, 118, 9, 0.4);
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+    }
+
+    .subtotal,
+    .discount {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .modal-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+    }
+
+    .modal-content table th,
+    .modal-content table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .modal-content table th {
+        background-color: #f2f2f2;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-right: 15px;
+    }
+
+    .quantity-button {
+        background: linear-gradient(135deg, #337609, #2a5e07);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(51, 118, 9, 0.3);
+    }
+
+    .quantity-button:hover {
+        background: linear-gradient(135deg, #2a5e07, #1e4205);
+        transform: scale(1.1);
+        box-shadow: 0 3px 6px rgba(51, 118, 9, 0.4);
+    }
+
+    .quantity {
+        font-weight: 600;
+        font-size: 16px;
+        min-width: 30px;
+        text-align: center;
+        color: #333;
+    }
+
+    .header {
+        background-color: #8b4513;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .back-button {
+        background-color: #337609;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .employee-text {
+        color: white;
+        font-weight: 500;
+    }
+
+    .flavor-select {
+        margin-top: 10px;
+        padding: 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    .view-orders-button {
+        background-color: #337609;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .void_logs-button:hover {
+        background-color: #337609;
+    }
+
+    /* Fix responsive layout for mobile */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .menu-section,
+        .order-section {
+            flex: none;
+            width: 100%;
+        }
+
+        .cart-items {
+            max-height: 300px;
+        }
+
+        .cart-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .quantity-controls {
+            margin: 10px 0;
+        }
+
+        .void-button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .void-all-button {
+            width: 100%;
+        }
+    }
+
+    /* Fix for menu category display */
+    .menu-category {
+        display: none;
+        /* Initially hidden */
+    }
+
+    .menu-category h2 {
+        margin-bottom: 20px;
+    }
+
+    /* Fix for form display in menu items */
+    .menu-item form {
+        display: block;
+        width: 100%;
+    }
+
+    .view-orders-button {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #f39c12;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
+    }
+
+    .view-orders-button:hover {
+        background-color: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1);
+    }
+</style>
+
+    <style>
+        .order-type-section {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .order-type-section h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .order-type-form {
+            display: flex;
+            gap: 20px;
+        }
+
+        .order-type-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .order-type-option:hover {
+            border-color: #337609;
+            background: #f0f8ff;
+        }
+
+        .order-type-option input[type="radio"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+
+        .order-type-option input[type="radio"]:checked+.order-type-label {
+            color: #337609;
+            font-weight: 600;
+        }
+
+        .order-type-option:has(input[type="radio"]:checked) {
+            border-color: #337609;
+            background: #e7f3ff;
+        }
+
+        .order-type-label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .current-order-type {
+            background: #e7f3ff;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #337609;
+            color: #337609;
+        }
+
+        .senior-pwd-button-inline {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .senior-pwd-button-inline:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .void-all-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .void-all-button {
+            width: 100%;
+        }
+
+        .drink-modal-content {
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .customization-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .customization-section h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sinkers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sinker-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sinker-option:hover {
+            border-color: #337609;
+            background: #f0f8ff;
+        }
+
+        .sinker-option input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .sinker-option input[type="checkbox"]:checked+span {
+            color: #337609;
+            font-weight: 600;
+        }
+
+        .sinker-option:has(input[type="checkbox"]:checked) {
+            border-color: #337609;
+            background: #e7f3ff;
+        }
+
+        .add-to-cart-button {
+            width: 100%;
+            padding: 15px;
+            background: #337609;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-button:hover {
+            background: #2a5f07;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 118, 9, 0.3);
+        }
+
+        .cart-item-details small {
+            color: #666;
+            font-size: 12px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .discount-type-selection {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .discount-type-radio {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .discount-type-radio:hover {
+            border-color: #ff9800;
+            background: #fff3e0;
+        }
+
+        .discount-type-radio input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .discount-type-radio input[type="radio"]:checked+span {
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .discount-type-radio:has(input[type="radio"]:checked) {
+            border-color: #ff9800;
+            background: #fff3e0;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="../interface/homepage.html" class="back-button">Back</a>
+
+        <a href="../pointofsale/void_logs.html" class="view-orders-button">
+            View Void Logs
+        </a>
+
+        <a href="../pointofsale/discount_logs.html" class="view-orders-button">
+            View Discount Logs
+        </a>
+    </div>
+
+    <div class="container">
+
+        <!-- ================= MENU ================= -->
+
+        <div class="menu-section">
+
+            <h1>Bubble Hideout POS</h1>
+
+            <div class="order-type-section">
+
+                <h3>Order Type</h3>
+
+                <div class="order-type-form">
+
+                    <label class="order-type-option">
+                        <input type="radio"
+                               name="order_type"
+                               value="dine_in"
+                               checked
+                               onchange="setOrderType('dine_in')">
+                        <span class="order-type-label">Dine In</span>
+                    </label>
+
+                    <label class="order-type-option">
+                        <input type="radio"
+                               name="order_type"
+                               value="takeout"
+                               onchange="setOrderType('takeout')">
+                        <span class="order-type-label">Takeout</span>
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="section-buttons">
+
+                <button class="section-button active"
+                        onclick="showSection('drinks', this)">
+                    Drinks
+                </button>
+
+                <button class="section-button"
+                        onclick="showSection('food', this)">
+                    Food
+                </button>
+
+                <button class="section-button"
+                        onclick="showSection('addons', this)">
+                    Add ons
+                </button>
+
+            </div>
+
+            <div id="menuContent"></div>
+
+        </div>
+
+
+        <!-- ================= CURRENT ORDER ================= -->
+
+        <div class="order-section">
+
+            <h2>Current Order</h2>
+
+            <div class="current-order-type">
+                <strong>
+                    Order Type:
+                    <span id="currentOrderType">Dine In</span>
+                </strong>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <p>Your cart is empty.</p>
+            </div>
+
+            <button id="discountBtn"
+                    class="discount-button"
+                    onclick="openDiscountModal()">
+                Apply Discount
+            </button>
+
+            <div id="discountMessage"></div>
+
+            <div class="total" id="totalSection">
+                Total: ₱0.00
+            </div>
+
+            <div class="checkout-form">
+
+                <input type="number"
+                       id="amountPaid"
+                       step="0.01"
+                       min="0"
+                       placeholder="Amount Paid">
+
+                <button onclick="processPayment()">
+                    Process Payment
+                </button>
+
+            </div>
+
+            <div id="paymentMessage"></div>
+
+            <div id="completeOrderContainer"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= DRINK CUSTOMIZATION MODAL ================= -->
+
+    <div id="drinkCustomizationModal" class="modal">
+
+        <div class="modal-content drink-modal-content">
+
+            <span class="close"
+                  onclick="closeDrinkCustomizationModal()">
+                &times;
+            </span>
+
+            <h2 id="drinkModalTitle">
+                Customize Your Drink
+            </h2>
+
+            <input type="hidden" id="drinkItem">
+            <input type="hidden" id="drinkCategory">
+            <input type="hidden" id="drinkSection">
+            <input type="hidden" id="drinkSize">
+            <input type="hidden" id="drinkPrice">
+
+            <div class="customization-section">
+
+                <h3>
+                    Select Sinkers
+                    <small>(Optional - Multiple Selection)</small>
+                </h3>
+
+                <div class="sinkers-grid">
+
+                    <label class="sinker-option">
+                        <input type="checkbox"
+                               name="sinkers"
+                               value="Pearl">
+                        <span>Pearl</span>
+                    </label>
+
+                    <label class="sinker-option">
+                        <input type="checkbox"
+                               name="sinkers"
+                               value="Crystal">
+                        <span>Crystal</span>
+                    </label>
+
+                    <label class="sinker-option">
+                        <input type="checkbox"
+                               name="sinkers"
+                               value="Coffee Jelly">
+                        <span>Coffee Jelly</span>
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="customization-section">
+
+                <h3>Base</h3>
+
+                <select id="drinkBase"
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;">
+
+                    <option value="">Select Base</option>
+                    <option value="Water">Water</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Tea">Tea</option>
+
+                </select>
+
+            </div>
+
+            <button onclick="addCustomizedDrink()">
+                Add to Cart
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= DISCOUNT MODAL ================= -->
+
+    <div id="discountModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeDiscountModal()">
+                &times;
+            </span>
+
+            <h2>Apply Discount - Enter PIN</h2>
+
+            <input type="number"
+                   id="discountPercentage"
+                   min="0"
+                   max="100"
+                   step="0.01"
+                   placeholder="Discount %">
+
+            <input type="password"
+                   id="discountPin"
+                   placeholder="Enter PIN">
+
+            <input type="text"
+                   id="discountPwdId"
+                   placeholder="Enter PWD ID (Optional)">
+
+            <button onclick="applyCustomDiscount()">
+                Apply Discount
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SENIOR / PWD MODAL ================= -->
+
+    <div id="seniorPwdModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeSeniorPwdModal()">
+                &times;
+            </span>
+
+            <h2>Apply Senior/PWD 20% Discount</h2>
+
+            <div class="discount-type-selection">
+
+                <label class="discount-type-radio">
+                    <input type="radio"
+                           name="seniorPwdType"
+                           value="Senior"
+                           onchange="togglePwdIdField()">
+
+                    <span>Senior Citizen</span>
+                </label>
+
+                <label class="discount-type-radio">
+                    <input type="radio"
+                           name="seniorPwdType"
+                           value="PWD"
+                           onchange="togglePwdIdField()">
+
+                    <span>PWD (Person with Disability)</span>
+                </label>
+
+            </div>
+
+            <div id="pwdIdField"
+                 style="display:none; margin:15px 0;">
+
+                <label style="display:block; margin-bottom:8px; font-weight:600;">
+                    PWD ID Number:
+                </label>
+
+                <input type="text"
+                       id="seniorPwdId"
+                       placeholder="Enter PWD ID">
+
+            </div>
+
+            <input type="password"
+                   id="seniorPwdPin"
+                   placeholder="Enter PIN">
+
+            <button onclick="applySeniorPwdDiscount()">
+                Apply Discount
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECEIPT MODAL ================= -->
+
+    <div id="receiptModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeReceiptModal()">
+                &times;
+            </span>
+
+            <h2>Receipt</h2>
+
+            <div id="receiptContent"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= VOID ITEM MODAL ================= -->
+
+    <div id="voidItemModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeVoidItemModal()">
+                &times;
+            </span>
+
+            <h2>Enter PIN to Void Item</h2>
+
+            <input type="password"
+                   id="voidItemPin"
+                   placeholder="Enter PIN">
+
+            <button onclick="confirmVoidItemWithPin()">
+                Confirm Void
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= VOID ALL MODAL ================= -->
+
+    <div id="voidAllModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close"
+                  onclick="closeVoidAllModal()">
+                &times;
+            </span>
+
+            <h2>Enter PIN to Void All Items</h2>
+
+            <input type="password"
+                   id="voidAllPin"
+                   placeholder="Enter PIN">
+
+            <button onclick="confirmVoidAllWithPin()">
+                Confirm Void All
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================================================
+           SAMPLE MENU DATA
+           ========================================================= */
+
+        const menu = {
+
+            drinks: {
+
+                "Milk Tea": {
+
+                    "Classic Milk Tea": {
+                        REG: {
+                            id: "D001",
+                            price: 95
+                        },
+                        GRANDE: {
+                            id: "D001",
+                            price: 110
+                        },
+                        VENTI: {
+                            id: "D001",
+                            price: 125
+                        }
+                    },
+
+                    "Brown Sugar Milk Tea": {
+                        REG: {
+                            id: "D002",
+                            price: 110
+                        },
+                        GRANDE: {
+                            id: "D002",
+                            price: 125
+                        },
+                        VENTI: {
+                            id: "D002",
+                            price: 140
+                        }
+                    }
+
+                },
+
+                "Fruit Tea": {
+
+                    "Strawberry Fruit Tea": {
+                        REG: {
+                            id: "D003",
+                            price: 100
+                        },
+                        GRANDE: {
+                            id: "D003",
+                            price: 115
+                        },
+                        VENTI: {
+                            id: "D003",
+                            price: 130
+                        }
+                    },
+
+                    "Mango Fruit Tea": {
+                        REG: {
+                            id: "D004",
+                            price: 100
+                        },
+                        GRANDE: {
+                            id: "D004",
+                            price: 115
+                        },
+                        VENTI: {
+                            id: "D004",
+                            price: 130
+                        }
+                    }
+
+                }
+
+            },
+
+            food: {
+
+                "Chicken": {
+
+                    "Chicken Wings": {
+                        REG: {
+                            id: "F001",
+                            price: 150
+                        },
+                        UNLI: {
+                            id: "F001",
+                            price: 250
+                        }
+                    },
+
+                    "Chicken Poppers": {
+                        REG: {
+                            id: "F002",
+                            price: 130
+                        }
+                    }
+
+                },
+
+                "Snacks": {
+
+                    "French Fries": {
+                        REG: {
+                            id: "F003",
+                            price: 90
+                        },
+                        LARGE: {
+                            id: "F003",
+                            price: 120
+                        }
+                    },
+
+                    "Nachos": {
+                        REG: {
+                            id: "F004",
+                            price: 110
+                        }
+                    }
+
+                }
+
+            },
+
+            addons: {
+
+                "Add Ons": {
+
+                    "Tapioca Pearls": {
+                        REG: {
+                            id: "A001",
+                            price: 25
+                        }
+                    },
+
+                    "Coffee Jelly": {
+                        REG: {
+                            id: "A002",
+                            price: 25
+                        }
+                    },
+
+                    "Extra Cheese": {
+                        REG: {
+                            id: "A003",
+                            price: 30
+                        }
+                    }
+
+                }
+
+            }
+
+        };
+
+
+        /* =========================================================
+           APPLICATION STATE
+           ========================================================= */
+
+        let currentSection = "drinks";
+
+        let orderType = "dine_in";
+
+        let cart = [];
+
+        let discount = 0;
+
+        let discountType = "";
+
+        let pwdId = "";
+
+        let amountPaid = 0;
+
+        let change = 0;
+
+        let voidItemIndex = null;
+
+
+        /* =========================================================
+           SAMPLE STOCK
+           ========================================================= */
+
+        const stock = {
+
+            D001: 50,
+            D002: 50,
+            D003: 40,
+            D004: 40,
+
+            F001: 30,
+            F002: 40,
+            F003: 50,
+            F004: 40,
+
+            A001: 50,
+            A002: 50,
+            A003: 50
+
+        };
+
+
+        /* =========================================================
+           SECTION
+           ========================================================= */
+
+        function showSection(section, button) {
+
+            currentSection = section;
+
+            document
+                .querySelectorAll(".section-button")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            renderMenu();
+
+        }
+
+
+        /* =========================================================
+           RENDER MENU
+           ========================================================= */
+
+        function renderMenu() {
+
+            const container = document.getElementById("menuContent");
+
+            container.innerHTML = "";
+
+            const sectionData = menu[currentSection];
+
+            if (!sectionData) {
+
+                container.innerHTML =
+                    "<p>No menu items available.</p>";
+
+                return;
+            }
+
+            const categories = Object.keys(sectionData);
+
+            let categoryButtons = document.createElement("div");
+
+            categoryButtons.className = "category-buttons";
+
+            categories.forEach((category, index) => {
+
+                const button =
+                    document.createElement("button");
+
+                button.className =
+                    "category-button" +
+                    (index === 0 ? " active" : "");
+
+                button.textContent = category;
+
+                button.onclick = function () {
+
+                    showCategory(category);
+
+                };
+
+                categoryButtons.appendChild(button);
+
+            });
+
+            container.appendChild(categoryButtons);
+
+
+            categories.forEach((category, index) => {
+
+                const categoryDiv =
+                    document.createElement("div");
+
+                categoryDiv.className =
+                    "menu-category";
+
+                categoryDiv.id =
+                    "category-" +
+                    category.replace(/\s+/g, "-");
+
+                categoryDiv.style.display =
+                    index === 0 ? "block" : "none";
+
+                const title =
+                    document.createElement("h2");
+
+                title.textContent = category;
+
+                categoryDiv.appendChild(title);
+
+
+                const itemsDiv =
+                    document.createElement("div");
+
+                itemsDiv.className =
+                    "menu-items";
+
+
+                const items =
+                    sectionData[category];
+
+
+                Object.keys(items).forEach(itemName => {
+
+                    const item =
+                        document.createElement("div");
+
+                    item.className = "menu-item";
+
+
+                    const itemNameDiv =
+                        document.createElement("div");
+
+                    itemNameDiv.className =
+                        "item-name";
+
+                    itemNameDiv.textContent =
+                        itemName;
+
+                    item.appendChild(itemNameDiv);
+
+
+                    const sizeButtons =
+                        document.createElement("div");
+
+                    sizeButtons.className =
+                        "size-buttons";
+
+
+                    Object.keys(items[itemName]).forEach(size => {
+
+                        const data =
+                            items[itemName][size];
+
+
+                        if (
+                            currentSection === "food" &&
+                            (
+                                category.toLowerCase().includes("chicken") ||
+                                category.toLowerCase().includes("wings")
+                            )
+                        ) {
+
+                            const wrapper =
+                                document.createElement("div");
+
+                            const select =
+                                document.createElement("select");
+
+                            select.className =
+                                "flavor-select";
+
+                            select.innerHTML =
+                                `<option value="">Select Flavor</option>
+                                <option>Buffalo</option>
+                                <option>BBQ</option>
+                                <option>Honey Garlic</option>
+                                <option>Spicy</option>
+                                <option>Original</option>
+                                <option>Teriyaki</option>
+                                <option>Salted Egg</option>`;
+
+                            wrapper.appendChild(select);
+
+
+                            const button =
+                                document.createElement("button");
+
+                            button.className =
+                                "size-button";
+
+                            button.innerHTML =
+                                `${size}<br>₱${data.price.toFixed(2)}`;
+
+                            button.onclick = function () {
+
+                                if (!select.value) {
+
+                                    alert("Please select a flavor.");
+
+                                    return;
+                                }
+
+                                addToCart(
+                                    itemName,
+                                    category,
+                                    currentSection,
+                                    size,
+                                    data.price,
+                                    select.value,
+                                    "",
+                                    ""
+                                );
+
+                            };
+
+                            wrapper.appendChild(button);
+
+                            sizeButtons.appendChild(wrapper);
+
+                        } else {
+
+                            const button =
+                                document.createElement("button");
+
+                            button.className =
+                                "size-button";
+
+                            button.innerHTML =
+                                `${size}<br>₱${data.price.toFixed(2)}`;
+
+                            button.onclick = function () {
+
+                                if (currentSection === "drinks") {
+
+                                    openDrinkCustomizationModal(
+                                        itemName,
+                                        category,
+                                        currentSection,
+                                        size,
+                                        data.price
+                                    );
+
+                                } else {
+
+                                    addToCart(
+                                        itemName,
+                                        category,
+                                        currentSection,
+                                        size,
+                                        data.price,
+                                        "",
+                                        "",
+                                        ""
+                                    );
+
+                                }
+
+                            };
+
+                            sizeButtons.appendChild(button);
+
+                        }
+
+                    });
+
+
+                    item.appendChild(sizeButtons);
+
+                    itemsDiv.appendChild(item);
+
+                });
+
+
+                categoryDiv.appendChild(itemsDiv);
+
+                container.appendChild(categoryDiv);
+
+            });
+
+        }
+
+
+        /* =========================================================
+           CATEGORY
+           ========================================================= */
+
+        function showCategory(category) {
+
+            document
+                .querySelectorAll(".menu-category")
+                .forEach(categoryDiv => {
+
+                    categoryDiv.style.display = "none";
+
+                });
+
+
+            const target =
+                document.getElementById(
+                    "category-" +
+                    category.replace(/\s+/g, "-")
+                );
+
+            if (target) {
+
+                target.style.display = "block";
+
+            }
+
+
+            document
+                .querySelectorAll(".category-button")
+                .forEach(button => {
+
+                    button.classList.remove("active");
+
+                    if (button.textContent === category) {
+
+                        button.classList.add("active");
+
+                    }
+
+                });
+
+        }
+
+
+        /* =========================================================
+           ORDER TYPE
+           ========================================================= */
+
+        function setOrderType(type) {
+
+            orderType = type;
+
+            document.getElementById(
+                "currentOrderType"
+            ).textContent =
+                type === "dine_in"
+                    ? "Dine In"
+                    : "Takeout";
+
+        }
+
+
+        /* =========================================================
+           DRINK CUSTOMIZATION
+           ========================================================= */
+
+        function openDrinkCustomizationModal(
+            item,
+            category,
+            section,
+            size,
+            price
+        ) {
+
+            document.getElementById("drinkItem").value = item;
+            document.getElementById("drinkCategory").value = category;
+            document.getElementById("drinkSection").value = section;
+            document.getElementById("drinkSize").value = size;
+            document.getElementById("drinkPrice").value = price;
+
+            document.getElementById(
+                "drinkModalTitle"
+            ).textContent =
+                `Customize Your ${item} (${size} - ₱${price.toFixed(2)})`;
+
+            document
+                .querySelectorAll(
+                    '#drinkCustomizationModal input[type="checkbox"]'
+                )
+                .forEach(checkbox => {
+
+                    checkbox.checked = false;
+
+                });
+
+            document.getElementById(
+                "drinkBase"
+            ).value = "";
+
+            document.getElementById(
+                "drinkCustomizationModal"
+            ).style.display = "block";
+
+        }
+
+
+        function closeDrinkCustomizationModal() {
+
+            document.getElementById(
+                "drinkCustomizationModal"
+            ).style.display = "none";
+
+        }
+
+
+        function addCustomizedDrink() {
+
+            const item =
+                document.getElementById("drinkItem").value;
+
+            const category =
+                document.getElementById("drinkCategory").value;
+
+            const section =
+                document.getElementById("drinkSection").value;
+
+            const size =
+                document.getElementById("drinkSize").value;
+
+            const price =
+                parseFloat(
+                    document.getElementById("drinkPrice").value
+                );
+
+            const base =
+                document.getElementById("drinkBase").value;
+
+
+            const sinkers =
+                Array.from(
+                    document.querySelectorAll(
+                        '#drinkCustomizationModal input[name="sinkers"]:checked'
+                    )
+                )
+                .map(input => input.value)
+                .join(", ");
+
+
+            addToCart(
+                item,
+                category,
+                section,
+                size,
+                price,
+                "",
+                sinkers,
+                base
+            );
+
+
+            closeDrinkCustomizationModal();
+
+        }
+
+
+        /* =========================================================
+           ADD TO CART
+           ========================================================= */
+
+        function addToCart(
+            itemName,
+            category,
+            section,
+            size,
+            price,
+            flavor = "",
+            sinkers = "",
+            base = ""
+        ) {
+
+            const itemData =
+                menu[section][category][itemName][size];
+
+            const id =
+                itemData.id;
+
+
+            const existingIndex =
+                cart.findIndex(item =>
+                    item.id === id &&
+                    item.size === size &&
+                    item.flavor === flavor &&
+                    item.sinkers === sinkers &&
+                    item.base === base
+                );
+
+
+            if (existingIndex !== -1) {
+
+                if (
+                    cart[existingIndex].quantity + 1 >
+                    (stock[id] || 0)
+                ) {
+
+                    alert(
+                        `Not enough stock available for ${itemName}.`
+                    );
+
+                    return;
+                }
+
+                cart[existingIndex].quantity++;
+
+                cart[existingIndex].total_price += price;
+
+            } else {
+
+                if ((stock[id] || 0) < 1) {
+
+                    alert(
+                        `Not enough stock available for ${itemName}.`
+                    );
+
+                    return;
+                }
+
+
+                cart.push({
+
+                    id: id,
+
+                    name: itemName,
+
+                    size: size,
+
+                    price: price,
+
+                    quantity: 1,
+
+                    total_price: price,
+
+                    flavor: flavor,
+
+                    sinkers: sinkers,
+
+                    base: base,
+
+                    refills: 0
+
+                });
+
+            }
+
+
+            renderCart();
+
+        }
+
+
+        /* =========================================================
+           RENDER CART
+           ========================================================= */
+
+        function renderCart() {
+
+            const container =
+                document.getElementById("cartItems");
+
+            container.innerHTML = "";
+
+
+            if (cart.length === 0) {
+
+                container.innerHTML =
+                    "<p>Your cart is empty.</p>";
+
+                updateTotals();
+
+                return;
+
+            }
+
+
+            cart.forEach((item, index) => {
+
+                const div =
+                    document.createElement("div");
+
+                div.className = "cart-item";
+
+
+                let details =
+                    `${item.name} (${item.size})`;
+
+
+                if (item.flavor) {
+
+                    details +=
+                        ` - ${item.flavor}`;
+
+                }
+
+
+                if (item.sinkers) {
+
+                    details +=
+                        `<br><small>Sinkers: ${item.sinkers}</small>`;
+
+                }
+
+
+                if (item.base) {
+
+                    details +=
+                        `<br><small>Base: ${item.base}</small>`;
+
+                }
+
+
+                if (
+                    item.size === "UNLI" &&
+                    item.name.toLowerCase().includes("wings")
+                ) {
+
+                    const baseWings =
+                        10 * item.quantity;
+
+                    const totalWings =
+                        baseWings +
+                        (item.refills * 5);
+
+
+                    if (item.refills > 0) {
+
+                        details +=
+                            `<br>
+                            <small class="refills-info">
+                                Refills: ${item.refills}
+                                (₱${(item.refills * 5).toFixed(2)})
+                            </small>`;
+
+                    }
+
+
+                    details +=
+                        `<br>
+                        <small class="wings-count">
+                            🍗 Total Wings: ${totalWings} pieces
+                        </small>`;
+
+                }
+
+
+                div.innerHTML = `
+
+                    <div class="cart-item-info">
+
+                        <div class="cart-item-details">
+                            ${details}
+                        </div>
+
+                        <div class="cart-item-price">
+                            ₱${item.total_price.toFixed(2)}
+                        </div>
+
+                    </div>
+
+                    <div class="quantity-controls">
+
+                        <button
+                            class="quantity-button"
+                            onclick="decreaseQuantity(${index})">
+                            −
+                        </button>
+
+                        <span class="quantity">
+                            ${item.quantity}
+                        </span>
+
+                        <button
+                            class="quantity-button"
+                            onclick="increaseQuantity(${index})">
+                            +
+                        </button>
+
+                    </div>
+
+                    <div class="cart-item-actions">
+
+                        <button
+                            class="void-button"
+                            onclick="confirmVoidItem(${index})">
+                            Void Item
+                        </button>
+
+                        ${
+                            item.size === "UNLI" &&
+                            item.name.toLowerCase().includes("wings")
+                            ?
+                            `<button
+                                class="senior-pwd-button-inline"
+                                onclick="addRefill(${index})">
+                                +5 Wings Refill
+                            </button>`
+                            :
+                            ""
+                        }
+
+                        <button
+                            class="senior-pwd-button-inline"
+                            onclick="openSeniorPwdModal()">
+                            Senior/PWD 20%
+                        </button>
+
+                    </div>
+                `;
+
+
+                container.appendChild(div);
+
+            });
+
+
+            const voidAll =
+                document.createElement("div");
+
+            voidAll.className =
+                "void-all-container";
+
+            voidAll.innerHTML =
+                `<button
+                    class="void-all-button"
+                    onclick="confirmVoidAll()">
+                    Void All
+                </button>`;
+
+            container.appendChild(voidAll);
+
+
+            updateTotals();
+
+        }
+
+
+        /* =========================================================
+           QUANTITY
+           ========================================================= */
+
+        function increaseQuantity(index) {
+
+            const item = cart[index];
+
+            if (!item) return;
+
+
+            const newQuantity =
+                item.quantity + 1;
+
+
+            if (
+                newQuantity >
+                (stock[item.id] || 0)
+            ) {
+
+                alert(
+                    `Not enough stock available for ${item.name}.`
+                );
+
+                return;
+
+            }
+
+
+            item.quantity++;
+
+            item.total_price += item.price;
+
+            renderCart();
+
+        }
+
+
+        function decreaseQuantity(index) {
+
+            const item = cart[index];
+
+            if (!item) return;
+
+
+            if (item.quantity > 1) {
+
+                item.quantity--;
+
+                item.total_price -= item.price;
+
+                renderCart();
+
+            } else {
+
+                confirmVoidItem(index);
+
+            }
+
+        }
+
+
+        /* =========================================================
+           REFILLS
+           ========================================================= */
+
+        function addRefill(index) {
+
+            const item = cart[index];
+
+            if (
+                item.size !== "UNLI" ||
+                !item.name.toLowerCase().includes("wings")
+            ) {
+
+                alert(
+                    "Refills are only available for Unli Wings!"
+                );
+
+                return;
+
+            }
+
+
+            item.refills++;
+
+            item.total_price += 5;
+
+
+            const totalWings =
+                (10 * item.quantity) +
+                (item.refills * 5);
+
+
+            alert(
+                `Refill added! +5 wings\n\n` +
+                `Total refills: ${item.refills}\n` +
+                `Total wings: ${totalWings} pieces`
+            );
+
+
+            renderCart();
+
+        }
+
+
+        /* =========================================================
+           VOID ITEM
+           ========================================================= */
+
+        function confirmVoidItem(index) {
+
+            if (
+                confirm(
+                    "Are you sure you want to void this item?"
+                )
+            ) {
+
+                voidItemIndex = index;
+
+                document.getElementById(
+                    "voidItemModal"
+                ).style.display = "block";
+
+            }
+
+        }
+
+
+        function confirmVoidItemWithPin() {
+
+            const pin =
+                document.getElementById(
+                    "voidItemPin"
+                ).value;
+
+
+            if (!verifyPin(pin)) {
+
+                alert(
+                    "Invalid PIN. Void operation cancelled."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                voidItemIndex !== null &&
+                cart[voidItemIndex]
+            ) {
+
+                cart.splice(
+                    voidItemIndex,
+                    1
+                );
+
+                alert(
+                    "Item voided successfully!"
+                );
+
+            }
+
+
+            document.getElementById(
+                "voidItemPin"
+            ).value = "";
+
+            voidItemIndex = null;
+
+            closeVoidItemModal();
+
+            renderCart();
+
+        }
+
+
+        function closeVoidItemModal() {
+
+            document.getElementById(
+                "voidItemModal"
+            ).style.display = "none";
+
+        }
+
+
+        /* =========================================================
+           VOID ALL
+           ========================================================= */
+
+        function confirmVoidAll() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "No items in cart to void."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                confirm(
+                    "Are you sure you want to void ALL items in the cart?"
+                )
+            ) {
+
+                document.getElementById(
+                    "voidAllModal"
+                ).style.display = "block";
+
+            }
+
+        }
+
+
+        function confirmVoidAllWithPin() {
+
+            const pin =
+                document.getElementById(
+                    "voidAllPin"
+                ).value;
+
+
+            if (!verifyPin(pin)) {
+
+                alert(
+                    "Invalid PIN. Void all operation cancelled."
+                );
+
+                return;
+
+            }
+
+
+            cart = [];
+
+            discount = 0;
+
+            discountType = "";
+
+            pwdId = "";
+
+
+            document.getElementById(
+                "voidAllPin"
+            ).value = "";
+
+
+            closeVoidAllModal();
+
+            renderCart();
+
+            alert(
+                "All items voided successfully!"
+            );
+
+        }
+
+
+        function closeVoidAllModal() {
+
+            document.getElementById(
+                "voidAllModal"
+            ).style.display = "none";
+
+        }
+
+
+        /* =========================================================
+           PIN
+           ========================================================= */
+
+        function verifyPin(pin) {
+
+            return [
+                "1234",
+                "5678",
+                "0000"
+            ].includes(pin);
+
+        }
+
+
+        /* =========================================================
+           DISCOUNT
+           ========================================================= */
+
+        function openDiscountModal() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Add an item to the cart first."
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "discountModal"
+            ).style.display = "block";
+
+        }
+
+
+        function closeDiscountModal() {
+
+            document.getElementById(
+                "discountModal"
+            ).style.display = "none";
+
+        }
+
+
+        function applyCustomDiscount() {
+
+            const percentage =
+                parseFloat(
+                    document.getElementById(
+                        "discountPercentage"
+                    ).value
+                );
+
+
+            const pin =
+                document.getElementById(
+                    "discountPin"
+                ).value;
+
+
+            const enteredPwdId =
+                document.getElementById(
+                    "discountPwdId"
+                ).value.trim();
+
+
+            if (!verifyPin(pin)) {
+
+                alert(
+                    "Invalid PIN. Discount operation cancelled."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                isNaN(percentage) ||
+                percentage < 0 ||
+                percentage > 100
+            ) {
+
+                alert(
+                    "Please enter a valid discount percentage."
+                );
+
+                return;
+
+            }
+
+
+            discount = percentage;
+
+            discountType =
+                `Custom ${percentage}%`;
+
+            pwdId = enteredPwdId;
+
+
+            let message =
+                `Discount of ${percentage}% applied successfully!`;
+
+
+            if (pwdId) {
+
+                message +=
+                    ` (PWD ID: ${pwdId})`;
+
+            }
+
+
+            document.getElementById(
+                "discountMessage"
+            ).innerHTML =
+                `<div class="message">${message}</div>`;
+
+
+            closeDiscountModal();
+
+            renderCart();
+
+        }
+
+
+        /* =========================================================
+           SENIOR / PWD
+           ========================================================= */
+
+        function openSeniorPwdModal() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Add an item to the cart first."
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "seniorPwdModal"
+            ).style.display = "block";
+
+        }
+
+
+        function closeSeniorPwdModal() {
+
+            document.getElementById(
+                "seniorPwdModal"
+            ).style.display = "none";
+
+        }
+
+
+        function togglePwdIdField() {
+
+            const selected =
+                document.querySelector(
+                    'input[name="seniorPwdType"]:checked'
+                );
+
+
+            const field =
+                document.getElementById(
+                    "pwdIdField"
+                );
+
+
+            if (
+                selected &&
+                selected.value === "PWD"
+            ) {
+
+                field.style.display = "block";
+
+            } else {
+
+                field.style.display = "none";
+
+            }
+
+        }
+
+
+        function applySeniorPwdDiscount() {
+
+            const selected =
+                document.querySelector(
+                    'input[name="seniorPwdType"]:checked'
+                );
+
+
+            const pin =
+                document.getElementById(
+                    "seniorPwdPin"
+                ).value;
+
+
+            if (!selected) {
+
+                alert(
+                    "Please select Senior Citizen or PWD."
+                );
+
+                return;
+
+            }
+
+
+            if (!verifyPin(pin)) {
+
+                alert(
+                    "Invalid PIN. Discount operation cancelled."
+                );
+
+                return;
+
+            }
+
+
+            discount = 20;
+
+            discountType =
+                selected.value === "Senior"
+                    ? "Senior"
+                    : "PWD";
+
+
+            if (selected.value === "PWD") {
+
+                pwdId =
+                    document.getElementById(
+                        "seniorPwdId"
+                    ).value.trim();
+
+
+                if (!pwdId) {
+
+                    alert(
+                        "Please enter the PWD ID."
+                    );
+
+                    return;
+
+                }
+
+            } else {
+
+                pwdId = "";
+
+            }
+
+
+            let message =
+                `${discountType} 20% discount applied successfully!`;
+
+
+            if (pwdId) {
+
+                message +=
+                    ` (PWD ID: ${pwdId})`;
+
+            }
+
+
+            document.getElementById(
+                "discountMessage"
+            ).innerHTML =
+                `<div class="message">${message}</div>`;
+
+
+            closeSeniorPwdModal();
+
+            renderCart();
+
+        }
+
+
+        /* =========================================================
+           TOTALS
+           ========================================================= */
+
+        function calculateSubtotal() {
+
+            return cart.reduce(
+                (sum, item) =>
+                    sum + item.total_price,
+                0
+            );
+
+        }
+
+
+        function calculateTotal() {
+
+            const subtotal =
+                calculateSubtotal();
+
+
+            return subtotal -
+                (subtotal * (discount / 100));
+
+        }
+
+
+        function updateTotals() {
+
+            const subtotal =
+                calculateSubtotal();
+
+            const total =
+                calculateTotal();
+
+
+            let html = "";
+
+
+            if (discount > 0) {
+
+                const discountAmount =
+                    subtotal - total;
+
+
+                html +=
+                    `<div class="subtotal">
+                        Subtotal: ₱${subtotal.toFixed(2)}
+                    </div>`;
+
+                html +=
+                    `<div class="discount">
+                        Discount (${discountType}):
+                        -₱${discountAmount.toFixed(2)}
+                    </div>`;
+
+            }
+
+
+            html +=
+                `Total: ₱${total.toFixed(2)}`;
+
+
+            document.getElementById(
+                "totalSection"
+            ).innerHTML = html;
+
+        }
+
+
+        /* =========================================================
+           PAYMENT
+           ========================================================= */
+
+        function processPayment() {
+
+            const total =
+                calculateTotal();
+
+
+            amountPaid =
+                parseFloat(
+                    document.getElementById(
+                        "amountPaid"
+                    ).value
+                );
+
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Your cart is empty."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                isNaN(amountPaid) ||
+                amountPaid < 0
+            ) {
+
+                alert(
+                    "Please enter a valid amount."
+                );
+
+                return;
+
+            }
+
+
+            if (amountPaid < total) {
+
+                change = 0;
+
+
+                document.getElementById(
+                    "paymentMessage"
+                ).innerHTML =
+                    `<div class="message"
+                        style="background:#f8d7da;color:#842029;">
+                        Insufficient payment.
+                        Please pay the full amount.
+                    </div>`;
+
+
+                document.getElementById(
+                    "completeOrderContainer"
+                ).innerHTML = "";
+
+
+                return;
+
+            }
+
+
+            change =
+                amountPaid - total;
+
+
+            document.getElementById(
+                "paymentMessage"
+            ).innerHTML =
+                `<div class="message">
+                    Payment successful!
+                    Change: ₱${change.toFixed(2)}
+                </div>`;
+
+
+            document.getElementById(
+                "completeOrderContainer"
+            ).innerHTML =
+                `<div class="checkout-form">
+                    <button onclick="completeOrder()">
+                        Complete Order
+                    </button>
+                </div>`;
+
+        }
+
+
+        /* =========================================================
+           COMPLETE ORDER
+           ========================================================= */
+
+        function completeOrder() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Your cart is empty."
+                );
+
+                return;
+
+            }
+
+
+            const subtotal =
+                calculateSubtotal();
+
+            const total =
+                calculateTotal();
+
+
+            const orderId =
+                "ORD" +
+                String(
+                    Math.floor(
+                        Math.random() * 9999
+                    ) + 1
+                ).padStart(4, "0");
+
+
+            const receipt =
+                generateReceipt(
+                    orderId,
+                    subtotal,
+                    total,
+                    amountPaid,
+                    change
+                );
+
+
+            /*
+             * Demo inventory deduction.
+             */
+
+            cart.forEach(item => {
+
+                if (stock[item.id] !== undefined) {
+
+                    stock[item.id] -=
+                        item.quantity;
+
+                    if (stock[item.id] < 0) {
+
+                        stock[item.id] = 0;
+
+                    }
+
+                }
+
+            });
+
+
+            document.getElementById(
+                "receiptContent"
+            ).innerHTML =
+                receipt;
+
+
+            document.getElementById(
+                "receiptModal"
+            ).style.display =
+                "block";
+
+
+            /*
+             * Reset current order.
+             */
+
+            cart = [];
+
+            discount = 0;
+
+            discountType = "";
+
+            pwdId = "";
+
+            amountPaid = 0;
+
+            change = 0;
+
+
+            document.getElementById(
+                "amountPaid"
+            ).value = "";
+
+
+            document.getElementById(
+                "paymentMessage"
+            ).innerHTML = "";
+
+
+            document.getElementById(
+                "completeOrderContainer"
+            ).innerHTML = "";
+
+
+            document.getElementById(
+                "discountMessage"
+            ).innerHTML = "";
+
+
+            renderCart();
+
+            setOrderType("dine_in");
+
+
+            document.querySelector(
+                'input[name="order_type"][value="dine_in"]'
+            ).checked = true;
+
+        }
+
+
+        /* =========================================================
+           RECEIPT
+           ========================================================= */
+
+        function generateReceipt(
+            orderId,
+            subtotal,
+            total,
+            amountPaid,
+            change
+        ) {
+
+            let html = "";
+
+            html +=
+                `<h3>Order ID: ${orderId}</h3>`;
+
+            html +=
+                `<h4>
+                    Order Type:
+                    ${
+                        orderType === "dine_in"
+                            ? "Dine In"
+                            : "Takeout"
+                    }
+                </h4>`;
+
+
+            html +=
+                `<h4>Order Details:</h4>`;
+
+
+            html +=
+                `<table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>`;
+
+
+            let totalWingsConsumed = 0;
+
+
+            cart.forEach(item => {
+
+                let itemDetails =
+                    item.name;
+
+
+                if (item.flavor) {
+
+                    itemDetails +=
+                        ` (${item.flavor})`;
+
+                }
+
+
+                if (item.sinkers) {
+
+                    itemDetails +=
+                        ` [Sinkers: ${item.sinkers}]`;
+
+                }
+
+
+                if (item.base) {
+
+                    itemDetails +=
+                        ` [Base: ${item.base}]`;
+
+                }
+
+
+                let quantityText =
+                    item.quantity;
+
+
+                if (
+                    item.size === "UNLI" &&
+                    item.name.toLowerCase().includes("wings")
+                ) {
+
+                    const baseWings =
+                        10 * item.quantity;
+
+
+                    const refillWings =
+                        item.refills * 5;
+
+
+                    const itemTotalWings =
+                        baseWings +
+                        refillWings;
+
+
+                    totalWingsConsumed +=
+                        itemTotalWings;
+
+
+                    quantityText =
+                        `${item.quantity}`;
+
+                    if (item.refills > 0) {
+
+                        quantityText +=
+                            ` (Refills: ${item.refills})`;
+
+                    }
+
+
+                    quantityText +=
+                        `<br>
+                        <strong>
+                            Total Wings:
+                            ${itemTotalWings} pcs
+                        </strong>`;
+
+                }
+
+
+                html +=
+                    `<tr>
+                        <td>${itemDetails}</td>
+                        <td>${item.size}</td>
+                        <td>${quantityText}</td>
+                        <td>₱${item.total_price.toFixed(2)}</td>
+                    </tr>`;
+
+            });
+
+
+            html += "</table>";
+
+
+            if (totalWingsConsumed > 0) {
+
+                html +=
+                    `<div style="
+                        background:#fff3cd;
+                        padding:15px;
+                        margin:15px 0;
+                        border-radius:8px;
+                        border-left:4px solid #ffc107;
+                    ">
+                        <p style="
+                            margin:0;
+                            font-size:18px;
+                            font-weight:bold;
+                            color:#856404;
+                        ">
+                            🍗 TOTAL WINGS CONSUMED:
+                            ${totalWingsConsumed} pieces
+                        </p>
+                    </div>`;
+
+            }
+
+
+            html +=
+                `<p>
+                    <strong>Subtotal:</strong>
+                    ₱${subtotal.toFixed(2)}
+                </p>`;
+
+
+            if (discount > 0) {
+
+                html +=
+                    `<p>
+                        <strong>
+                            Discount (${discountType}):
+                        </strong>
+                        -₱${(subtotal - total).toFixed(2)}
+                    </p>`;
+
+            }
+
+
+            html +=
+                `<p>
+                    <strong>Total:</strong>
+                    ₱${total.toFixed(2)}
+                </p>`;
+
+
+            html +=
+                `<p>
+                    <strong>Amount Paid:</strong>
+                    ₱${amountPaid.toFixed(2)}
+                </p>`;
+
+
+            html +=
+                `<p>
+                    <strong>Change:</strong>
+                    ₱${change.toFixed(2)}
+                </p>`;
+
+
+            return html;
+
+        }
+
+
+        function closeReceiptModal() {
+
+            document.getElementById(
+                "receiptModal"
+            ).style.display = "none";
+
+        }
+
+
+        /* =========================================================
+           MODAL CLICK OUTSIDE
+           ========================================================= */
+
+        window.onclick = function(event) {
+
+            const modals =
+                document.querySelectorAll(".modal");
+
+
+            modals.forEach(modal => {
+
+                if (event.target === modal) {
+
+                    modal.style.display = "none";
+
+                }
+
+            });
+
+        };
+
+
+        /* =========================================================
+           INITIALIZE
+           ========================================================= */
+
+        renderMenu();
+
+        renderCart();
+
+    </script>
+
+</body>
+
+</html>
+

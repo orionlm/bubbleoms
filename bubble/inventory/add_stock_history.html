@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../interface/admin_homepage.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <title>Stock History</title>
+</head>
+
+<script>
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+<style>
+    .navbar {
+        background-color: #7e5832;
+        width: 100%;
+        height: 80px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10px;
+        box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.28);
+        display: flex;
+        justify-content: left;
+    }
+
+    .navbar-right {
+        width: 50%;
+        height: 80px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 10px;
+        display: flex;
+        justify-content: right;
+    }
+
+    h1 {
+        margin-bottom: 5px;
+        padding-left: 50px;
+    }
+
+    .menu {
+        position: relative;
+        top: 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: auto;
+        width: 100%;
+        height: 400px;
+    }
+
+    .btn-main {
+        font-family: Poppins;
+        font-weight: bold;
+        color: #f0f0f0;
+        box-shadow: 3px 4px 11px 1px rgba(0, 0, 0, 0.28);
+        font-size: larger;
+
+        height: 60px;
+        width: 400px;
+        background-color: #337609;
+        border: none;
+        border-radius: 25px;
+        transition: 0.5s;
+    }
+
+    .buttons {
+        position: relative;
+        width: 370px;
+        left: 30px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn {
+        font-family: Poppins;
+        font-weight: bold;
+        color: #f0f0f0;
+        box-shadow: 3px 4px 11px 1px rgba(0, 0, 0, 0.28);
+
+        height: 40px;
+        width: 150px;
+        background-color: #337609;
+        border: none;
+        border-radius: 25px;
+        transition: 0.5s;
+    }
+
+    .btn:hover,
+    .btn-main:hover {
+        background-color: #326810;
+        transition: 0.5s;
+    }
+
+    .space {
+        position: relative;
+
+        width: 320px;
+        left: 30px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Dropdown Button */
+    .dropbtn {
+        background-color: transparent;
+        color: #f0f0f0;
+        padding: 16px;
+        min-width: 110px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+
+        font-family: Poppins;
+        font-weight: bolder;
+    }
+
+    .dropbtn:hover {
+        background-color: #5a4026;
+    }
+
+    /* Dropdown container */
+    .dropdown {
+        position: relative;
+        width: 490px;
+        display: flex;
+        justify-content: right;
+    }
+
+    /* Dropdown Content */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 110px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 80px;
+
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    /* Links inside dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    /* Dropdown hover */
+    .dropdown-content a:hover {
+        background-color: #ddd;
+
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .show {
+        display: block;
+    }
+
+    th,
+    td {
+        padding: 10px;
+    }
+
+    table {
+        position: relative;
+        width: 90%;
+
+        margin: auto;
+        border-collapse: collapse;
+    }
+
+    tr {
+        position: relative;
+        border-bottom: 1px solid #ccc;
+        padding: 20px;
+        margin: 5px;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    .input-group {
+        padding: 10px;
+        display: flex;
+        margin-left: 40px;
+    }
+
+    .form-outline {
+        width: 80%;
+    }
+
+    input {
+        font-family: Poppins;
+        font-weight: bold;
+        background-color: transparent;
+        border-radius: 25px;
+        border: 2px #337609 solid;
+        margin-bottom: 10px;
+        color: #181818;
+        width: 300px;
+        height: 30px;
+        text-indent: 10px;
+        outline: none;
+        box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.28);
+    }
+
+    .btn-edit {
+        text-decoration: none;
+
+        position: relative;
+        background-color: rgb(91, 149, 91);
+        padding: 3px;
+        border-radius: 5px;
+        color: #f0f0f0;
+        border-color: transparent;
+        margin: 5px;
+        font-family: Poppins;
+        cursor: pointer;
+    }
+
+    .btn-edit:hover {
+        background-color: rgb(79, 128, 79);
+    }
+
+    .btn-dgr {
+        text-decoration: none;
+        background-color: rgb(91, 149, 91);
+        padding: 3px;
+        border-radius: 5px;
+        color: #f0f0f0;
+        border-color: transparent;
+        font-family: Poppins;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+    .btn-dgr:hover {
+        background-color: rgb(79, 128, 79);
+        transition: 0.5s;
+    }
+
+    .a {
+        position: fixed;
+        width: 50%;
+        height: 50%;
+        z-index: 15;
+        left: 25%;
+        top: 25%;
+    }
+
+    .dropdown-ver {
+        display: none;
+        position: fixed;
+        background-color: #f1f1f1;
+        width: 45.5%;
+        padding: 30px;
+        margin: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 200px;
+
+        border-radius: 15px;
+    }
+
+    .b {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .a1 {
+        background-color: rgb(91, 149, 91);
+        display: inline;
+        color: #f0f0f0;
+        width: 100px;
+        border-radius: 15px;
+        text-align: center;
+        text-decoration: none;
+
+        justify-content: center;
+    }
+
+    .b1 {
+        background-color: firebrick;
+        display: inline;
+        color: #f0f0f0;
+        width: 100px;
+        border-radius: 15px;
+        text-align: center;
+        text-decoration: none;
+
+        justify-content: center;
+    }
+
+    .show1 {
+        display: block;
+    }
+
+    .rem1 {
+        display: none;
+    }
+
+    .main {
+        position: relative;
+        top: 30px;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-size: 80px;
+    }
+
+    .scroll {
+        overflow: scroll;
+        overflow-x: hidden;
+        height: 400px;
+    }
+
+    .btn-aa {
+        position: relative;
+        font-family: Poppins;
+        font-weight: bold;
+        color: #f0f0f0;
+        box-shadow: 3px 4px 11px 1px rgba(0, 0, 0, 0.28);
+        right: 60px;
+
+        height: 40px;
+        width: auto;
+        background-color: rgb(91, 149, 91);
+        border: none;
+        border-radius: 25px;
+        transition: 0.5s;
+    }
+
+    .btn-bb {
+        position: relative;
+        font-family: Poppins;
+        font-weight: bold;
+        color: #f0f0f0;
+        box-shadow: 3px 4px 11px 1px rgba(0, 0, 0, 0.28);
+        right: 60px;
+        margin-right: 15px;
+        z-index: 40;
+
+        height: 40px;
+        width: auto;
+        background-color: firebrick;
+        border: none;
+        border-radius: 25px;
+        transition: 0.5s;
+    }
+
+    .btn-aa:hover {
+        background-color: rgb(91, 129, 91);
+        transition: 0.5s;
+    }
+
+    .btn-bb:hover {
+        background-color: rgb(90, 0, 20);
+        transition: 0.5s;
+    }
+</style>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+
+        <div style="position: relative; width: 20px; left: 30px; display: flex; align-items: center;"></div>
+
+        <div class="buttons">
+            <button type="button" class="btn" onclick="goBack()">
+                Back
+            </button>
+        </div>
+
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="dropdown">
+
+            <button onclick="myFunction()" class="dropbtn">
+                Admin
+            </button>
+
+            <div id="myDropdown" class="dropdown-content">
+                <a href="../interface/logout.html">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+
+        <div style="position: relative; width: 20px; right: 30px; display: flex; align-items: center;"></div>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <h1>Stock History</h1>
+
+        <div class="input-group">
+
+            <div class="form-outline">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control mb-3"
+                    placeholder="Search by Product Name or ID"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!--
+        <div class="remove-history" style="display: flex; justify-content: right;">
+
+            <button type="button" class="btn-bb">
+                &nbsp; Remove Receipt Record &nbsp;
+            </button>
+
+            <button type="button" class="btn-aa">
+                &nbsp; Download Receipt Record &nbsp;
+            </button>
+
+        </div>
+        -->
+
+
+        <div class="scroll">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity Added</th>
+                        <th>Total Price</th>
+                        <th>Date Added</th>
+                        <th>Time Added</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="stockHistoryBody">
+
+                    <!-- JavaScript will insert history records here -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- OLD MODAL -->
+        <div class="a">
+
+            <div class="dropdown-ver" id="del-drop">
+
+                <div class="body">
+
+                    <p>Update Item</p>
+
+                    <form id="form-delete-user">
+
+                        <div>
+
+                            <label>Item Id</label>
+
+                            <input
+                                type="text"
+                                style="width: 20%; border-radius: 5px;"
+                                name="id"
+                            >
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <div class="b">
+
+                    <button
+                        type="button"
+                        style="display:inline-block; width: 100px; align-items:center"
+                        class="btn-edit"
+                        onclick="closeModal()"
+                    >
+                        Close
+                    </button>
+
+                    <button
+                        type="submit"
+                        style="display:inline-block; width: 100px; align-items:center"
+                        form="form-delete-user"
+                        class="btn-edit"
+                    >
+                        Edit
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+/* =========================================================
+   SAMPLE STOCK HISTORY DATA
+   ========================================================= */
+
+const stockHistory = [
+
+    {
+        id: 1,
+        productName: "Whole Milk",
+        quantity: 20,
+        totalPrice: "₱1,200.00",
+        date: "2026-09-06",
+        time: "10:15 AM"
+    },
+
+    {
+        id: 2,
+        productName: "Tapioca Pearls",
+        quantity: 15,
+        totalPrice: "₱2,250.00",
+        date: "2026-09-06",
+        time: "09:42 AM"
+    },
+
+    {
+        id: 3,
+        productName: "Strawberry Syrup",
+        quantity: 10,
+        totalPrice: "₱1,500.00",
+        date: "2026-09-05",
+        time: "04:25 PM"
+    },
+
+    {
+        id: 4,
+        productName: "Coffee Beans",
+        quantity: 8,
+        totalPrice: "₱3,600.00",
+        date: "2026-09-05",
+        time: "02:10 PM"
+    },
+
+    {
+        id: 5,
+        productName: "Brown Sugar",
+        quantity: 25,
+        totalPrice: "₱1,375.00",
+        date: "2026-09-04",
+        time: "11:30 AM"
+    },
+
+    {
+        id: 6,
+        productName: "Lychee Syrup",
+        quantity: 12,
+        totalPrice: "₱1,800.00",
+        date: "2026-09-03",
+        time: "03:50 PM"
+    },
+
+    {
+        id: 7,
+        productName: "Cocoa Powder",
+        quantity: 5,
+        totalPrice: "₱1,600.00",
+        date: "2026-09-03",
+        time: "01:20 PM"
+    },
+
+    {
+        id: 8,
+        productName: "Whipped Cream",
+        quantity: 10,
+        totalPrice: "₱950.00",
+        date: "2026-09-02",
+        time: "10:05 AM"
+    },
+
+    {
+        id: 9,
+        productName: "Sugar",
+        quantity: 30,
+        totalPrice: "₱1,650.00",
+        date: "2026-09-01",
+        time: "03:15 PM"
+    },
+
+    {
+        id: 10,
+        productName: "Chocolate Sauce",
+        quantity: 8,
+        totalPrice: "₱1,280.00",
+        date: "2026-08-31",
+        time: "01:45 PM"
+    }
+
+];
+
+
+/* =========================================================
+   RENDER STOCK HISTORY
+   ========================================================= */
+
+function renderStockHistory(data) {
+
+    const tbody = document.getElementById("stockHistoryBody");
+
+    tbody.innerHTML = "";
+
+    data.forEach(function (record) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${record.id}</td>
+            <td>${escapeHTML(record.productName)}</td>
+            <td>${record.quantity}</td>
+            <td>${record.totalPrice}</td>
+            <td>${record.date}</td>
+            <td>${record.time}</td>
+        `;
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   SEARCH FUNCTION
+   ========================================================= */
+
+document.getElementById("searchInput").addEventListener("keyup", function () {
+
+    const searchValue = this.value.trim().toUpperCase();
+
+    const rows = document
+        .getElementById("stockHistoryBody")
+        .getElementsByTagName("tr");
+
+
+    for (let i = 0; i < rows.length; i++) {
+
+        const cells = rows[i].getElementsByTagName("td");
+
+        let found = false;
+
+
+        for (let j = 0; j < cells.length; j++) {
+
+            const originalText =
+                cells[j].textContent || cells[j].innerText;
+
+            const upperText =
+                originalText.toUpperCase();
+
+
+            /*
+             * Empty search:
+             * restore the original text
+             */
+            if (searchValue === "") {
+
+                cells[j].textContent = originalText;
+
+                continue;
+
+            }
+
+
+            const index =
+                upperText.indexOf(searchValue);
+
+
+            if (index > -1) {
+
+                found = true;
+
+
+                /*
+                 * Highlight matching text
+                 */
+                const before =
+                    originalText.substring(0, index);
+
+                const match =
+                    originalText.substring(
+                        index,
+                        index + searchValue.length
+                    );
+
+                const after =
+                    originalText.substring(
+                        index + searchValue.length
+                    );
+
+
+                cells[j].innerHTML =
+                    escapeHTML(before) +
+                    "<span class='highlight'>" +
+                    escapeHTML(match) +
+                    "</span>" +
+                    escapeHTML(after);
+
+            } else {
+
+                /*
+                 * Remove old highlighting
+                 */
+                cells[j].textContent = originalText;
+
+            }
+
+        }
+
+
+        rows[i].style.display =
+            found ? "" : "none";
+
+    }
+
+});
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+function goBack() {
+
+    /*
+     * Change this path if your current inventory page
+     * is stored somewhere else.
+     */
+
+    window.location.href =
+        "../inventory/current_inventory.html";
+
+}
+
+
+/* =========================================================
+   OLD MODAL FUNCTIONS
+   ========================================================= */
+
+function closeModal() {
+
+    document
+        .getElementById("del-drop")
+        .classList.remove("show1");
+
+}
+
+
+function confirmDel(self) {
+
+    const id =
+        self.getAttribute("data-id");
+
+    document
+        .getElementById("form-delete-user")
+        .id.value = id;
+
+    document
+        .getElementById("del-drop")
+        .classList.add("show1");
+
+}
+
+
+/* =========================================================
+   FORM HANDLER
+   ========================================================= */
+
+document
+    .getElementById("form-delete-user")
+    .addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        const id =
+            this.elements["id"].value;
+
+        if (id) {
+
+            alert(
+                "Demo mode: editing stock history record #" +
+                id +
+                " is not connected to a database."
+            );
+
+        }
+
+        closeModal();
+
+    });
+
+
+/* =========================================================
+   INITIALIZE PAGE
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    renderStockHistory(stockHistory);
+
+});
+
+</script>
+
+</body>
+</html>

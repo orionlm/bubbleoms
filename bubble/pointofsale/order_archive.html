@@ -1,0 +1,1377 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Archive - Bubble Hideout POS</title>
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <style>
+        :root {
+            --primary-color: #4caf50;
+            --secondary-color: #f39c12;
+            --background-color: #f4f7f9;
+            --text-color: #333;
+            --light-text-color: #7f8c8d;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.4;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow-x: auto;
+        }
+
+        .nav-header {
+            background-color: #8B4513;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 60px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+            transform: translateY(-1px);
+        }
+
+        .nav-header h2 {
+            color: white;
+            margin: 0;
+            font-size: 1.4em;
+        }
+
+        .container {
+            padding: 15px;
+            max-width: 100%;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .search-filters {
+            background: white;
+            font-family: Poppins;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .search-filters form {
+            display: grid;
+            font-family: Poppins;
+            grid-template-columns: 2fr 1fr 1fr auto auto;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-aa {
+            font-family: Poppins;
+        }
+
+        .search-filters input,
+        .search-filters select,
+        .search-filters button,
+        .search-filters a {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            height: 36px;
+            font-family: Poppins;
+        }
+
+        .search-filters button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .search-filters button:hover {
+            background-color: #45a049;
+        }
+
+        .search-filters a {
+            background: #6c757d;
+            font-family: Poppins;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orders-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th,
+        td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 10%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 16%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 10%;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 12%;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 20%;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .view-receipt-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .view-receipt-btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-1px);
+        }
+
+        .order-type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .order-type-badge.dine-in {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .order-type-badge.takeout {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            gap: 5px;
+            flex-wrap: wrap;
+            padding-bottom: 15px;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            min-width: 32px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination .current {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text-color);
+            font-size: 1.1em;
+        }
+
+        /* Export Modal CSS retained */
+
+        .a {
+            position: fixed;
+            width: 50%;
+            height: 5%;
+            z-index: 15;
+            left: 25%;
+            top: 30%;
+            background-color: transparent;
+        }
+
+        .dropdown-ver {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            width: 100%;
+            padding: 30px;
+            margin: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 15px;
+        }
+
+        .b {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .a1 {
+            background-color: rgb(91, 149, 91);
+            display: inline;
+            color: #f0f0f0;
+            width: 100px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .b1 {
+            background-color: firebrick;
+            display: inline;
+            color: #f0f0f0;
+            width: 100px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .show1 {
+            display: block;
+            z-index: 30;
+        }
+
+        .rem1 {
+            display: none;
+            z-index: 0;
+        }
+
+        .main {
+            position: relative;
+            top: 30px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-size: 80px;
+        }
+
+        .scroll {
+            overflow: scroll;
+            overflow-x: hidden;
+            height: 400px;
+        }
+
+        .export-from {
+            display: flex;
+        }
+
+        .export-from select {
+            width: 100%;
+            border-radius: 5px;
+            font-family: Poppins;
+            padding: 5px;
+        }
+
+        .form-a {
+            display: flex;
+            flex-direction: column;
+            margin: 10px;
+            width: 50%;
+        }
+
+        .aa {
+            padding: 5px;
+            width: 20%;
+            font-family: Poppins;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #f1f1f1;
+            transition: 0.5ms;
+            cursor: pointer;
+        }
+
+        .aa:hover {
+            background-color: #45a049;
+            color: #f1f1f1;
+            transition: 0.5ms;
+        }
+
+        @media (max-width: 1024px) {
+
+            .search-filters form {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+
+            .search-filters input:first-child {
+                grid-column: 1 / -1;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .container {
+                padding: 10px;
+            }
+
+            .nav-header {
+                padding: 8px 10px;
+                flex-direction: column;
+                gap: 8px;
+                min-height: auto;
+            }
+
+            .nav-header h2 {
+                font-size: 1.2em;
+            }
+
+            h1 {
+                font-size: 1.6em;
+                margin-bottom: 15px;
+            }
+
+            .search-filters form {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-table {
+                height: calc(100vh - 180px);
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 800px;
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 6px 8px;
+            }
+
+            .view-receipt-btn {
+                padding: 4px 8px;
+                font-size: 11px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .nav-header {
+                padding: 6px 8px;
+            }
+
+            .container {
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .search-filters {
+                padding: 10px;
+            }
+
+            .orders-table {
+                height: calc(100vh - 160px);
+            }
+
+            table {
+                min-width: 750px;
+                font-size: 11px;
+            }
+
+            th,
+            td {
+                padding: 4px 6px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <div class="nav-header">
+
+        <a href="new_receipt_records.html" class="back-button">
+            ← Back
+        </a>
+
+        <h2>Order Archive</h2>
+
+    </div>
+
+
+    <div class="container">
+
+        <h1>Order Archive</h1>
+
+
+        <!-- =================================================
+             SEARCH FILTERS
+        ================================================== -->
+
+        <div class="search-filters">
+
+            <form id="searchForm">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by Order ID"
+                >
+
+                <input
+                    type="date"
+                    id="dateInput"
+                >
+
+                <select id="orderTypeInput">
+
+                    <option value="">
+                        All Types
+                    </option>
+
+                    <option value="dine_in">
+                        Dine In
+                    </option>
+
+                    <option value="takeout">
+                        Takeout
+                    </option>
+
+                </select>
+
+
+                <button
+                    class="btn-aa"
+                    type="submit"
+                >
+                    Search
+                </button>
+
+
+                <a
+                    href="#"
+                    onclick="clearFilters(); return false;"
+                >
+                    Clear
+                </a>
+
+            </form>
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER TABLE
+        ================================================== -->
+
+        <div class="orders-table">
+
+            <table id="ordersTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Order ID
+                        </th>
+
+                        <th>
+                            Date & Time
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Total Amount
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="ordersBody">
+                </tbody>
+
+            </table>
+
+
+            <!-- NO ORDERS MESSAGE -->
+
+            <div
+                class="no-orders"
+                id="noOrders"
+                style="display: none;"
+            >
+
+                <h3>
+                    No orders found
+                </h3>
+
+                <p>
+                    No orders match your search criteria.
+                </p>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            <div
+                class="pagination"
+                id="pagination"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+/* =========================================================
+   SAMPLE ARCHIVED ORDERS
+========================================================= */
+
+const orders = [
+
+    {
+        order_id: "BH-ARCH-001",
+        created_at: "2026-09-05T18:30:00",
+        order_type: "dine_in",
+        total: 385.00
+    },
+
+    {
+        order_id: "BH-ARCH-002",
+        created_at: "2026-09-04T14:15:00",
+        order_type: "takeout",
+        total: 250.00
+    },
+
+    {
+        order_id: "BH-ARCH-003",
+        created_at: "2026-09-03T12:45:00",
+        order_type: "dine_in",
+        total: 475.00
+    },
+
+    {
+        order_id: "BH-ARCH-004",
+        created_at: "2026-09-02T17:20:00",
+        order_type: "takeout",
+        total: 195.00
+    },
+
+    {
+        order_id: "BH-ARCH-005",
+        created_at: "2026-09-01T15:40:00",
+        order_type: "dine_in",
+        total: 320.00
+    },
+
+    {
+        order_id: "BH-ARCH-006",
+        created_at: "2026-08-31T19:10:00",
+        order_type: "takeout",
+        total: 280.00
+    },
+
+    {
+        order_id: "BH-ARCH-007",
+        created_at: "2026-08-30T13:25:00",
+        order_type: "dine_in",
+        total: 410.00
+    },
+
+    {
+        order_id: "BH-ARCH-008",
+        created_at: "2026-08-29T16:50:00",
+        order_type: "takeout",
+        total: 225.00
+    },
+
+    {
+        order_id: "BH-ARCH-009",
+        created_at: "2026-08-28T11:35:00",
+        order_type: "dine_in",
+        total: 350.00
+    },
+
+    {
+        order_id: "BH-ARCH-010",
+        created_at: "2026-08-27T18:05:00",
+        order_type: "takeout",
+        total: 175.00
+    },
+
+    {
+        order_id: "BH-ARCH-011",
+        created_at: "2026-08-26T14:40:00",
+        order_type: "dine_in",
+        total: 290.00
+    },
+
+    {
+        order_id: "BH-ARCH-012",
+        created_at: "2026-08-25T12:20:00",
+        order_type: "takeout",
+        total: 230.00
+    },
+
+    {
+        order_id: "BH-ARCH-013",
+        created_at: "2026-08-24T17:45:00",
+        order_type: "dine_in",
+        total: 390.00
+    },
+
+    {
+        order_id: "BH-ARCH-014",
+        created_at: "2026-08-23T15:10:00",
+        order_type: "takeout",
+        total: 210.00
+    },
+
+    {
+        order_id: "BH-ARCH-015",
+        created_at: "2026-08-22T13:55:00",
+        order_type: "dine_in",
+        total: 330.00
+    },
+
+    {
+        order_id: "BH-ARCH-016",
+        created_at: "2026-08-21T19:25:00",
+        order_type: "takeout",
+        total: 275.00
+    },
+
+    {
+        order_id: "BH-ARCH-017",
+        created_at: "2026-08-20T11:45:00",
+        order_type: "dine_in",
+        total: 450.00
+    },
+
+    {
+        order_id: "BH-ARCH-018",
+        created_at: "2026-08-19T16:30:00",
+        order_type: "takeout",
+        total: 185.00
+    },
+
+    {
+        order_id: "BH-ARCH-019",
+        created_at: "2026-08-18T14:05:00",
+        order_type: "dine_in",
+        total: 360.00
+    },
+
+    {
+        order_id: "BH-ARCH-020",
+        created_at: "2026-08-17T18:40:00",
+        order_type: "takeout",
+        total: 245.00
+    },
+
+    {
+        order_id: "BH-ARCH-021",
+        created_at: "2026-08-16T12:35:00",
+        order_type: "dine_in",
+        total: 315.00
+    },
+
+    {
+        order_id: "BH-ARCH-022",
+        created_at: "2026-08-15T15:50:00",
+        order_type: "takeout",
+        total: 195.00
+    },
+
+    {
+        order_id: "BH-ARCH-023",
+        created_at: "2026-08-14T17:15:00",
+        order_type: "dine_in",
+        total: 420.00
+    },
+
+    {
+        order_id: "BH-ARCH-024",
+        created_at: "2026-08-13T13:20:00",
+        order_type: "takeout",
+        total: 260.00
+    }
+
+];
+
+
+/* =========================================================
+   PAGINATION SETTINGS
+========================================================= */
+
+const limit = 20;
+
+let currentPage = 1;
+
+let filteredOrders = [...orders];
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDateTime(dateString) {
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString(
+        "en-US",
+        {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   RENDER ORDERS
+========================================================= */
+
+function renderOrders() {
+
+    const tbody =
+        document.getElementById("ordersBody");
+
+    const noOrders =
+        document.getElementById("noOrders");
+
+    const table =
+        document.getElementById("ordersTable");
+
+    tbody.innerHTML = "";
+
+    document.getElementById("pagination")
+        .innerHTML = "";
+
+
+    /* NO RESULTS */
+
+    if (filteredOrders.length === 0) {
+
+        table.style.display = "none";
+
+        noOrders.style.display = "block";
+
+        return;
+
+    }
+
+
+    table.style.display = "table";
+
+    noOrders.style.display = "none";
+
+
+    /* TOTAL PAGES */
+
+    const totalPages =
+        Math.ceil(
+            filteredOrders.length / limit
+        );
+
+
+    if (currentPage > totalPages) {
+
+        currentPage = totalPages;
+
+    }
+
+
+    /* CURRENT PAGE */
+
+    const start =
+        (currentPage - 1) * limit;
+
+    const end =
+        start + limit;
+
+    const pageOrders =
+        filteredOrders.slice(
+            start,
+            end
+        );
+
+
+    /* CREATE ROWS */
+
+    pageOrders.forEach(order => {
+
+        const row =
+            document.createElement("tr");
+
+
+        /* ORDER ID */
+
+        const orderId =
+            document.createElement("td");
+
+        orderId.innerHTML =
+            `<strong>${order.order_id}</strong>`;
+
+
+        /* DATE */
+
+        const date =
+            document.createElement("td");
+
+        date.textContent =
+            formatDateTime(
+                order.created_at
+            );
+
+
+        /* TYPE */
+
+        const type =
+            document.createElement("td");
+
+        const badge =
+            document.createElement("span");
+
+
+        badge.classList.add(
+            "order-type-badge"
+        );
+
+
+        if (
+            order.order_type ===
+            "takeout"
+        ) {
+
+            badge.classList.add(
+                "takeout"
+            );
+
+            badge.textContent =
+                "Takeout";
+
+        } else {
+
+            badge.classList.add(
+                "dine-in"
+            );
+
+            badge.textContent =
+                "Dine In";
+
+        }
+
+
+        type.appendChild(badge);
+
+
+        /* TOTAL */
+
+        const total =
+            document.createElement("td");
+
+        total.textContent =
+            "₱" +
+            Number(order.total)
+                .toLocaleString(
+                    "en-PH",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                );
+
+
+        /* ACTION */
+
+        const action =
+            document.createElement("td");
+
+
+        const viewButton =
+            document.createElement("a");
+
+
+        viewButton.href =
+            "view_receipt_for_archive.html?order_id=" +
+            encodeURIComponent(
+                order.order_id
+            );
+
+
+        viewButton.className =
+            "view-receipt-btn";
+
+
+        viewButton.textContent =
+            "View Receipt";
+
+
+        action.appendChild(
+            viewButton
+        );
+
+
+        /* APPEND */
+
+        row.appendChild(orderId);
+
+        row.appendChild(date);
+
+        row.appendChild(type);
+
+        row.appendChild(total);
+
+        row.appendChild(action);
+
+
+        tbody.appendChild(row);
+
+    });
+
+
+    renderPagination(totalPages);
+
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+function renderPagination(totalPages) {
+
+    const pagination =
+        document.getElementById(
+            "pagination"
+        );
+
+
+    if (totalPages <= 1) {
+
+        return;
+
+    }
+
+
+    /* PREVIOUS */
+
+    if (currentPage > 1) {
+
+        const previous =
+            document.createElement("a");
+
+        previous.textContent =
+            "← Previous";
+
+        previous.href = "#";
+
+
+        previous.onclick =
+            function(event) {
+
+                event.preventDefault();
+
+                currentPage--;
+
+                renderOrders();
+
+            };
+
+
+        pagination.appendChild(
+            previous
+        );
+
+    }
+
+
+    /* PAGE NUMBERS */
+
+    const startPage =
+        Math.max(
+            1,
+            currentPage - 2
+        );
+
+
+    const endPage =
+        Math.min(
+            totalPages,
+            currentPage + 2
+        );
+
+
+    for (
+        let i = startPage;
+        i <= endPage;
+        i++
+    ) {
+
+        const page =
+            document.createElement(
+                i === currentPage
+                    ? "span"
+                    : "a"
+            );
+
+
+        page.textContent = i;
+
+
+        if (
+            i === currentPage
+        ) {
+
+            page.className =
+                "current";
+
+        } else {
+
+            page.href = "#";
+
+
+            page.onclick =
+                function(event) {
+
+                    event.preventDefault();
+
+                    currentPage = i;
+
+                    renderOrders();
+
+                };
+
+        }
+
+
+        pagination.appendChild(
+            page
+        );
+
+    }
+
+
+    /* NEXT */
+
+    if (
+        currentPage < totalPages
+    ) {
+
+        const next =
+            document.createElement("a");
+
+
+        next.textContent =
+            "Next →";
+
+
+        next.href = "#";
+
+
+        next.onclick =
+            function(event) {
+
+                event.preventDefault();
+
+                currentPage++;
+
+                renderOrders();
+
+            };
+
+
+        pagination.appendChild(
+            next
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH AND FILTER
+========================================================= */
+
+document
+    .getElementById("searchForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            applyFilters();
+
+        }
+    );
+
+
+function applyFilters() {
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const date =
+        document
+            .getElementById(
+                "dateInput"
+            )
+            .value;
+
+
+    const orderType =
+        document
+            .getElementById(
+                "orderTypeInput"
+            )
+            .value;
+
+
+    filteredOrders =
+        orders.filter(order => {
+
+            /* SEARCH */
+
+            const matchesSearch =
+                search === "" ||
+                order.order_id
+                    .toLowerCase()
+                    .includes(search);
+
+
+            /* DATE */
+
+            const orderDate =
+                order.created_at
+                    .split("T")[0];
+
+
+            const matchesDate =
+                date === "" ||
+                orderDate === date;
+
+
+            /* TYPE */
+
+            const matchesType =
+                orderType === "" ||
+                order.order_type ===
+                    orderType;
+
+
+            return (
+                matchesSearch &&
+                matchesDate &&
+                matchesType
+            );
+
+        });
+
+
+    currentPage = 1;
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   CLEAR FILTERS
+========================================================= */
+
+function clearFilters() {
+
+    document
+        .getElementById(
+            "searchInput"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "dateInput"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "orderTypeInput"
+        )
+        .value = "";
+
+
+    filteredOrders =
+        [...orders];
+
+
+    currentPage = 1;
+
+    renderOrders();
+
+}
+
+
+/* =========================================================
+   INITIALIZE PAGE
+========================================================= */
+
+window.onload = function() {
+
+    renderOrders();
+
+};
+
+</script>
+
+</body>
+</html>
+

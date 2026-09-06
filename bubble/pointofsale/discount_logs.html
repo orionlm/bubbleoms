@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discount Logs - Bubble Hideout POS</title>
+
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #4CAF50;
+            width: 250px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .discount-title {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 20px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #f1f3f4;
+            color: #333;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .amount {
+            font-weight: 600;
+            color: #2e7d32;
+        }
+
+        .percentage {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .pin-masked {
+            font-family: monospace;
+            color: #666;
+        }
+
+        .date-time {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .discount-type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .discount-type-senior {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .discount-type-pwd {
+            background-color: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .discount-type-custom {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .discount-title {
+                font-size: 32px;
+            }
+
+            .main-content {
+                padding: 20px;
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 12px;
+                min-width: 800px;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="sidebar">
+            <h1 class="discount-title">Discount<br>Logs</h1>
+
+            <a href="../pointofsale/indeck.html" class="back-button">
+                Back to POS
+            </a>
+        </div>
+
+        <div class="main-content">
+
+            <div class="table-container">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Discount %</th>
+                            <th>Subtotal</th>
+                            <th>Discount Amount</th>
+                            <th>Applied By</th>
+                            <th>PIN Used</th>
+                            <th>Applied Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="discountLogsTable">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        /*
+         * SAMPLE DISCOUNT LOG DATA
+         * Replace or add records here for your demo.
+         */
+        const discountLogs = [
+            {
+                id: 1,
+                discount_type: "Senior",
+                discount_percentage: 20.00,
+                subtotal: 450.00,
+                discount_amount: 90.00,
+                applied_by: "Admin",
+                pin_used: "1234",
+                applied_time: "2026-09-06 17:42:15"
+            },
+            {
+                id: 2,
+                discount_type: "PWD",
+                discount_percentage: 20.00,
+                subtotal: 325.00,
+                discount_amount: 65.00,
+                applied_by: "Cashier",
+                pin_used: "5678",
+                applied_time: "2026-09-06 16:25:42"
+            },
+            {
+                id: 3,
+                discount_type: "Custom 10%",
+                discount_percentage: 10.00,
+                subtotal: 780.00,
+                discount_amount: 78.00,
+                applied_by: "Cashier",
+                pin_used: "2468",
+                applied_time: "2026-09-06 15:18:30"
+            },
+            {
+                id: 4,
+                discount_type: "Senior",
+                discount_percentage: 20.00,
+                subtotal: 520.00,
+                discount_amount: 104.00,
+                applied_by: "Admin",
+                pin_used: "1357",
+                applied_time: "2026-09-06 14:05:11"
+            },
+            {
+                id: 5,
+                discount_type: "Custom 15%",
+                discount_percentage: 15.00,
+                subtotal: 900.00,
+                discount_amount: 135.00,
+                applied_by: "Cashier",
+                pin_used: "9876",
+                applied_time: "2026-09-05 19:32:48"
+            },
+            {
+                id: 6,
+                discount_type: "PWD",
+                discount_percentage: 20.00,
+                subtotal: 275.00,
+                discount_amount: 55.00,
+                applied_by: "Admin",
+                pin_used: "4321",
+                applied_time: "2026-09-05 18:14:26"
+            }
+        ];
+
+
+        function escapeHTML(value) {
+            const div = document.createElement("div");
+            div.textContent = value ?? "";
+            return div.innerHTML;
+        }
+
+
+        function getDiscountBadge(discountType) {
+
+            const type = String(discountType || "");
+
+            if (type === "Senior") {
+                return `
+                    <span class="discount-type-badge discount-type-senior">
+                        Senior
+                    </span>
+                `;
+            }
+
+            if (type === "PWD") {
+                return `
+                    <span class="discount-type-badge discount-type-pwd">
+                        PWD
+                    </span>
+                `;
+            }
+
+            return `
+                <span class="discount-type-badge discount-type-custom">
+                    ${escapeHTML(type)}
+                </span>
+            `;
+        }
+
+
+        function formatPrice(amount) {
+            return Number(amount).toLocaleString("en-PH", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+
+        function displayDiscountLogs() {
+
+            const tableBody = document.getElementById("discountLogsTable");
+
+            if (discountLogs.length === 0) {
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="no-data">
+                            No discount logs found
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+
+            // Sort newest records first
+            const sortedLogs = [...discountLogs].sort(
+                (a, b) =>
+                    new Date(b.applied_time) - new Date(a.applied_time)
+            );
+
+
+            tableBody.innerHTML = sortedLogs.map(log => {
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${escapeHTML(log.id)}
+                        </td>
+
+                        <td>
+                            ${getDiscountBadge(log.discount_type)}
+                        </td>
+
+                        <td>
+                            <span class="percentage">
+                                ${Number(log.discount_percentage).toFixed(2)}%
+                            </span>
+                        </td>
+
+                        <td class="amount">
+                            ₱${formatPrice(log.subtotal)}
+                        </td>
+
+                        <td class="amount">
+                            ₱${formatPrice(log.discount_amount)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(log.applied_by)}
+                        </td>
+
+                        <td class="pin-masked">
+                            ****
+                        </td>
+
+                        <td class="date-time">
+                            ${escapeHTML(log.applied_time)}
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+        }
+
+
+        // Display the sample logs when the page loads
+        displayDiscountLogs();
+    </script>
+
+</body>
+
+</html>
+

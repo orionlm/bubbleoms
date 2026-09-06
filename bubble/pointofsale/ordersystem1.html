@@ -1,0 +1,2252 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="/bubble/media/BUBBLE.jpg">
+    <link rel="stylesheet" href="/bubble/fonts/fonts.css">
+
+    <title>Bubble Hideout - Order</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            width: 100%;
+            height: 80px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .logo h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .cart-btn {
+            border: none;
+            background: white;
+            color: #111;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-btn:hover {
+            background: #ddd;
+        }
+
+        /* =========================
+           SECTION NAVIGATION
+        ========================= */
+
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section-btn {
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            background: #eee;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .section-btn.active {
+            background: #111;
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 100%;
+            max-width: 1400px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            border: 1px solid #ccc;
+            background: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .category-btn.active {
+            background: #111;
+            color: white;
+            border-color: #111;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .menu-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .menu-description {
+            font-size: 14px;
+            color: #777;
+            min-height: 40px;
+        }
+
+        .flavor-select {
+            width: 100%;
+            margin: 12px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        .size-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .size-btn {
+            width: 100%;
+            border: none;
+            padding: 11px;
+            border-radius: 7px;
+            background: #111;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .size-btn:hover {
+            background: #333;
+        }
+
+        .size-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           CART
+        ========================= */
+
+        .cart-panel {
+            position: fixed;
+            right: -450px;
+            top: 0;
+            width: 420px;
+            max-width: 95%;
+            height: 100vh;
+            background: white;
+            z-index: 300;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, .2);
+            padding: 25px;
+            transition: right .3s ease;
+            overflow-y: auto;
+        }
+
+        .cart-panel.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+
+        .close-cart {
+            border: none;
+            background: none;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+        }
+
+        .cart-item-details {
+            font-size: 13px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .cart-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #111;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn {
+            margin-left: auto;
+            border: none;
+            background: #e74c3c;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            background: #111;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .checkout-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           MODALS
+        ========================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .65);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 500px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .order-type {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .order-type label {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .order-type input {
+            display: none;
+        }
+
+        .order-type label:has(input:checked) {
+            background: #111;
+            color: white;
+            border-color: #111;
+        }
+
+        .order-summary {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 7px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #ddd;
+        }
+
+        .confirm-btn {
+            background: #111;
+            color: white;
+        }
+
+        .order-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 7px;
+            display: none;
+        }
+
+        .order-message.error {
+            display: block;
+            background: #ffe5e5;
+            color: #b00000;
+        }
+
+        /* =========================
+           RECEIPT
+        ========================= */
+
+        .receipt {
+            text-align: center;
+        }
+
+        .receipt-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+        }
+
+        .receipt table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .receipt th,
+        .receipt td {
+            padding: 10px 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .receipt-total {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .receipt-note {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* =========================
+           EXPIRED / FEEDBACK
+        ========================= */
+
+        .expired-page {
+            min-height: 100vh;
+            background: #111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .expired-box {
+            background: white;
+            color: #111;
+            width: 600px;
+            max-width: 100%;
+            padding: 40px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .expired-box img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .rating button {
+            border: none;
+            background: #eee;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .rating button.selected {
+            background: #111;
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .submit-feedback {
+            margin-top: 12px;
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           SMALL MODAL
+        ========================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.6);
+            z-index: 700;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 0 15px;
+            }
+
+            .logo h2 {
+                font-size: 16px;
+            }
+
+            main {
+                padding: 20px 15px;
+            }
+
+            .cart-panel {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .section-btn {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="/bubble/media/BUBBLE.jpg" alt="Bubble Hideout">
+        <h2>Bubble Hideout</h2>
+    </div>
+
+    <button class="cart-btn" onclick="toggleCart()">
+        🛒 Cart (<span id="cartCount">0</span>) -
+        ₱<span id="cartTotal">0.00</span>
+    </button>
+</header>
+
+<nav class="section-nav">
+    <button class="section-btn active" data-section="drinks"
+            onclick="switchSection('drinks')">
+        Drinks
+    </button>
+
+    <button class="section-btn" data-section="food"
+            onclick="switchSection('food')">
+        Food
+    </button>
+
+    <button class="section-btn" data-section="addons"
+            onclick="switchSection('addons')">
+        Add-ons
+    </button>
+</nav>
+
+<main>
+    <div id="categoryNav" class="category-nav"></div>
+
+    <div id="menuGrid" class="menu-grid"></div>
+</main>
+
+
+<!-- =========================
+     CART
+========================= -->
+
+<div id="cartPanel" class="cart-panel">
+
+    <div class="cart-header">
+        <h2>Your Cart</h2>
+
+        <button class="close-cart" onclick="toggleCart()">
+            ×
+        </button>
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div class="cart-total">
+        <span>Total</span>
+        <span>₱<span id="sideCartTotal">0.00</span></span>
+    </div>
+
+    <button id="checkoutButton"
+            class="checkout-btn"
+            onclick="showCheckoutForm()">
+        Proceed to Checkout
+    </button>
+
+</div>
+
+
+<!-- =========================
+     CHECKOUT MODAL
+========================= -->
+
+<div id="checkoutModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Checkout</h2>
+
+        <p>Select your order type:</p>
+
+        <div class="order-type">
+
+            <label>
+                <input type="radio"
+                       name="orderType"
+                       value="Dine In">
+                Dine In
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="orderType"
+                       value="Takeout">
+                Takeout
+            </label>
+
+        </div>
+
+        <div id="checkoutSummary" class="order-summary"></div>
+
+        <div id="orderMessage" class="order-message"></div>
+
+        <div class="modal-actions">
+
+            <button class="cancel-btn"
+                    onclick="closeCheckoutModal()">
+                Cancel
+            </button>
+
+            <button class="confirm-btn"
+                    onclick="placeOrder()">
+                Place Order
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     RECEIPT MODAL
+========================= -->
+
+<div id="receiptModal" class="modal">
+
+    <div class="modal-content">
+
+        <div id="receiptContent" class="receipt"></div>
+
+        <div class="modal-actions">
+
+            <button class="confirm-btn"
+                    onclick="closeOrderSummaryAndExpire()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FEEDBACK MESSAGE
+========================= -->
+
+<div id="messageModal" class="modal-overlay">
+
+    <div class="modal-box">
+
+        <h2>Thank You!</h2>
+
+        <p id="messageModalText">
+            Your feedback has been submitted.
+        </p>
+
+        <button class="submit-feedback"
+                onclick="closeMessageModal()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       DEMO MENU DATA
+       No database is used.
+    ===================================================== */
+
+    const menuData = {
+
+        drinks: {
+
+            "Milk Tea": [
+                {
+                    id: "MT001",
+                    name: "Classic Milk Tea",
+                    description: "Our classic creamy milk tea.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 85 },
+                        { id: "L", name: "Large", price: 100 },
+                        { id: "GRANDE", name: "Grande", price: 115 }
+                    ]
+                },
+                {
+                    id: "MT002",
+                    name: "Wintermelon Milk Tea",
+                    description: "Sweet and refreshing wintermelon milk tea.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 90 },
+                        { id: "L", name: "Large", price: 105 },
+                        { id: "GRANDE", name: "Grande", price: 120 }
+                    ]
+                },
+                {
+                    id: "MT003",
+                    name: "Chocolate Milk Tea",
+                    description: "Creamy chocolate flavored milk tea.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 95 },
+                        { id: "L", name: "Large", price: 110 },
+                        { id: "GRANDE", name: "Grande", price: 125 }
+                    ]
+                }
+            ],
+
+            "Fruit Tea": [
+                {
+                    id: "FT001",
+                    name: "Passion Fruit Tea",
+                    description: "Refreshing passion fruit tea.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 85 },
+                        { id: "L", name: "Large", price: 100 },
+                        { id: "GRANDE", name: "Grande", price: 115 }
+                    ]
+                },
+                {
+                    id: "FT002",
+                    name: "Lychee Fruit Tea",
+                    description: "Sweet and refreshing lychee tea.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 85 },
+                        { id: "L", name: "Large", price: 100 },
+                        { id: "GRANDE", name: "Grande", price: 115 }
+                    ]
+                }
+            ],
+
+            "Coffee": [
+                {
+                    id: "CF001",
+                    name: "Iced Coffee",
+                    description: "Smooth and refreshing iced coffee.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 90 },
+                        { id: "L", name: "Large", price: 105 }
+                    ]
+                },
+                {
+                    id: "CF002",
+                    name: "Caramel Macchiato",
+                    description: "Creamy coffee with caramel flavor.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 110 },
+                        { id: "L", name: "Large", price: 125 }
+                    ]
+                }
+            ]
+
+        },
+
+        food: {
+
+            "Chicken Wings": [
+                {
+                    id: "CW001",
+                    name: "6-Piece Chicken Wings",
+                    description: "Six pieces of crispy chicken wings.",
+                    sizes: [
+                        { id: "REG", name: "6 Pieces", price: 180 }
+                    ]
+                },
+                {
+                    id: "CW002",
+                    name: "12-Piece Chicken Wings",
+                    description: "Twelve pieces of crispy chicken wings.",
+                    sizes: [
+                        { id: "REG", name: "12 Pieces", price: 330 }
+                    ]
+                }
+            ],
+
+            "Burgers": [
+                {
+                    id: "BG001",
+                    name: "Classic Burger",
+                    description: "Juicy burger with fresh toppings.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 120 }
+                    ]
+                },
+                {
+                    id: "BG002",
+                    name: "Cheese Burger",
+                    description: "Classic burger with melted cheese.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 140 }
+                    ]
+                }
+            ],
+
+            "Fries": [
+                {
+                    id: "FR001",
+                    name: "Regular Fries",
+                    description: "Crispy golden french fries.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 70 },
+                        { id: "L", name: "Large", price: 90 }
+                    ]
+                },
+                {
+                    id: "FR002",
+                    name: "Cheese Fries",
+                    description: "Crispy fries topped with cheese.",
+                    sizes: [
+                        { id: "REG", name: "Regular", price: 90 },
+                        { id: "L", name: "Large", price: 110 }
+                    ]
+                }
+            ]
+
+        },
+
+        addons: {
+
+            "Add-ons": [
+                {
+                    id: "AD001",
+                    name: "Pearl",
+                    description: "Classic chewy tapioca pearls.",
+                    sizes: [
+                        { id: "ADD", name: "Add-on", price: 15 }
+                    ]
+                },
+                {
+                    id: "AD002",
+                    name: "Cream Cheese",
+                    description: "Rich and creamy cheese topping.",
+                    sizes: [
+                        { id: "ADD", name: "Add-on", price: 20 }
+                    ]
+                },
+                {
+                    id: "AD003",
+                    name: "Pudding",
+                    description: "Soft and sweet pudding topping.",
+                    sizes: [
+                        { id: "ADD", name: "Add-on", price: 20 }
+                    ]
+                }
+            ]
+
+        }
+
+    };
+
+
+    /* =====================================================
+       DEMO STOCK
+    ===================================================== */
+
+    const stock = {};
+
+    Object.values(menuData).forEach(section => {
+
+        Object.values(section).forEach(category => {
+
+            category.forEach(item => {
+
+                item.sizes.forEach(size => {
+
+                    stock[item.id + "_" + size.id] = 10;
+
+                });
+
+            });
+
+        });
+
+    });
+
+
+    /* =====================================================
+       VARIABLES
+    ===================================================== */
+
+    let currentSection = "drinks";
+    let currentCategory = "";
+    let cart = [];
+
+
+    const flavors = [
+        "Original",
+        "Buffalo",
+        "BBQ",
+        "Honey Garlic",
+        "Spicy",
+        "Teriyaki"
+    ];
+
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+
+    function formatCurrency(amount) {
+
+        return Number(amount).toLocaleString("en-PH", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function isFlavorRequired(category) {
+
+        const text = category.toLowerCase();
+
+        return text.includes("chicken") ||
+               text.includes("wing");
+
+    }
+
+
+    function getCartTotal() {
+
+        return cart.reduce((total, item) => {
+
+            return total + (item.price * item.quantity);
+
+        }, 0);
+
+    }
+
+
+    function getCartCount() {
+
+        return cart.reduce((total, item) => {
+
+            return total + item.quantity;
+
+        }, 0);
+
+    }
+
+
+    /* =====================================================
+       SECTION SWITCHING
+    ===================================================== */
+
+    function switchSection(section) {
+
+        if (!menuData[section]) return;
+
+        currentSection = section;
+
+        document.querySelectorAll(".section-btn")
+            .forEach(button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.section === section
+                );
+
+            });
+
+        const categories = Object.keys(menuData[section]);
+
+        currentCategory = categories[0];
+
+        renderCategories();
+        renderMenu();
+
+        const url = new URL(window.location.href);
+
+        url.searchParams.set("section", section);
+
+        history.replaceState({}, "", url);
+
+    }
+
+
+    /* =====================================================
+       CATEGORIES
+    ===================================================== */
+
+    function renderCategories() {
+
+        const container =
+            document.getElementById("categoryNav");
+
+        container.innerHTML = "";
+
+        Object.keys(menuData[currentSection])
+            .forEach(category => {
+
+                const button =
+                    document.createElement("button");
+
+                button.className = "category-btn";
+
+                if (category === currentCategory) {
+                    button.classList.add("active");
+                }
+
+                button.textContent = category;
+
+                button.onclick = () => {
+
+                    currentCategory = category;
+
+                    renderCategories();
+                    renderMenu();
+
+                };
+
+                container.appendChild(button);
+
+            });
+
+    }
+
+
+    /* =====================================================
+       MENU
+    ===================================================== */
+
+    function renderMenu() {
+
+        const grid =
+            document.getElementById("menuGrid");
+
+        grid.innerHTML = "";
+
+        const items =
+            menuData[currentSection][currentCategory];
+
+        if (!items) return;
+
+        items.forEach(item => {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "menu-card";
+
+            let flavorHTML = "";
+
+            if (isFlavorRequired(currentCategory)) {
+
+                flavorHTML = `
+                    <select
+                        class="flavor-select"
+                        id="flavor-${item.id}">
+
+                        <option value="">
+                            Select Flavor
+                        </option>
+
+                        ${flavors.map(flavor => `
+                            <option value="${escapeHTML(flavor)}">
+                                ${escapeHTML(flavor)}
+                            </option>
+                        `).join("")}
+
+                    </select>
+                `;
+
+            }
+
+            let sizesHTML = "";
+
+            item.sizes.forEach(size => {
+
+                const stockKey =
+                    item.id + "_" + size.id;
+
+                const available =
+                    stock[stockKey] || 0;
+
+                sizesHTML += `
+
+                    <button
+                        type="button"
+                        class="size-btn"
+                        ${available <= 0 ? "disabled" : ""}
+                        onclick="addToCart(
+                            '${item.id}',
+                            '${size.id}'
+                        )">
+
+                        <span>
+                            ${escapeHTML(size.name)}
+                        </span>
+
+                        <span>
+                            ₱${formatCurrency(size.price)}
+                        </span>
+
+                    </button>
+
+                `;
+
+            });
+
+            card.innerHTML = `
+
+                <h3>${escapeHTML(item.name)}</h3>
+
+                <div class="menu-description">
+                    ${escapeHTML(item.description)}
+                </div>
+
+                ${flavorHTML}
+
+                <div class="size-container">
+                    ${sizesHTML}
+                </div>
+
+            `;
+
+            grid.appendChild(card);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       ADD TO CART
+    ===================================================== */
+
+    function addToCart(itemId, sizeId) {
+
+        const item =
+            Object.values(menuData)
+                .flatMap(section =>
+                    Object.values(section)
+                )
+                .flatMap(category => category)
+                .find(item => item.id === itemId);
+
+        if (!item) return;
+
+        const size =
+            item.sizes.find(size => size.id === sizeId);
+
+        if (!size) return;
+
+        const stockKey =
+            item.id + "_" + size.id;
+
+        const available =
+            stock[stockKey] || 0;
+
+        const flavorRequired =
+            isFlavorRequired(currentCategory);
+
+        let flavor = "";
+
+        if (flavorRequired) {
+
+            const select =
+                document.getElementById(
+                    "flavor-" + item.id
+                );
+
+            flavor = select ? select.value : "";
+
+            if (!flavor) {
+
+                showSimpleMessage(
+                    "Please select a flavor first."
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        const existing =
+            cart.find(cartItem =>
+                cartItem.itemId === itemId &&
+                cartItem.sizeId === sizeId &&
+                cartItem.flavor === flavor
+            );
+
+
+        const currentQuantity =
+            existing ? existing.quantity : 0;
+
+
+        if (currentQuantity >= available) {
+
+            showSimpleMessage(
+                "Sorry, there is not enough stock available for this item."
+            );
+
+            return;
+
+        }
+
+
+        if (existing) {
+
+            existing.quantity++;
+
+        } else {
+
+            cart.push({
+
+                itemId: item.id,
+                name: item.name,
+                sizeId: size.id,
+                sizeName: size.name,
+                price: size.price,
+                flavor: flavor,
+                quantity: 1
+
+            });
+
+        }
+
+
+        renderCart();
+        updateCartHeader();
+
+    }
+
+
+    /* =====================================================
+       CART
+    ===================================================== */
+
+    function renderCart() {
+
+        const container =
+            document.getElementById("cartItems");
+
+        if (cart.length === 0) {
+
+            container.innerHTML = `
+                <p style="text-align:center;color:#777;">
+                    Your cart is empty.
+                </p>
+            `;
+
+            document.getElementById(
+                "checkoutButton"
+            ).disabled = true;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+        cart.forEach((item, index) => {
+
+            const div =
+                document.createElement("div");
+
+            div.className = "cart-item";
+
+            div.innerHTML = `
+
+                <div class="cart-item-name">
+                    ${escapeHTML(item.name)}
+                </div>
+
+                <div class="cart-item-details">
+
+                    ${escapeHTML(item.sizeName)}
+
+                    ${item.flavor
+                        ? " • " + escapeHTML(item.flavor)
+                        : ""
+                    }
+
+                    <br>
+
+                    ₱${formatCurrency(item.price)}
+                    each
+
+                </div>
+
+                <div class="cart-controls">
+
+                    <button
+                        class="quantity-btn"
+                        onclick="updateQuantity(
+                            ${index},
+                            -1
+                        )">
+                        −
+                    </button>
+
+                    <strong>
+                        ${item.quantity}
+                    </strong>
+
+                    <button
+                        class="quantity-btn"
+                        onclick="updateQuantity(
+                            ${index},
+                            1
+                        )">
+                        +
+                    </button>
+
+                    <button
+                        class="remove-btn"
+                        onclick="removeItem(${index})">
+                        Remove
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(div);
+
+        });
+
+
+        document.getElementById(
+            "checkoutButton"
+        ).disabled = false;
+
+        document.getElementById(
+            "sideCartTotal"
+        ).textContent =
+            formatCurrency(getCartTotal());
+
+    }
+
+
+    function updateQuantity(index, change) {
+
+        const item = cart[index];
+
+        if (!item) return;
+
+        const stockKey =
+            item.itemId + "_" + item.sizeId;
+
+        const available =
+            stock[stockKey] || 0;
+
+        const newQuantity =
+            item.quantity + change;
+
+        if (newQuantity <= 0) {
+
+            cart.splice(index, 1);
+
+        } else if (newQuantity > available) {
+
+            showSimpleMessage(
+                "Maximum available stock reached."
+            );
+
+            return;
+
+        } else {
+
+            item.quantity = newQuantity;
+
+        }
+
+
+        renderCart();
+        updateCartHeader();
+
+    }
+
+
+    function removeItem(index) {
+
+        cart.splice(index, 1);
+
+        renderCart();
+        updateCartHeader();
+
+    }
+
+
+    function updateCartHeader() {
+
+        document.getElementById(
+            "cartCount"
+        ).textContent = getCartCount();
+
+        document.getElementById(
+            "cartTotal"
+        ).textContent =
+            formatCurrency(getCartTotal());
+
+        document.getElementById(
+            "sideCartTotal"
+        ).textContent =
+            formatCurrency(getCartTotal());
+
+    }
+
+
+    function toggleCart() {
+
+        document.getElementById(
+            "cartPanel"
+        ).classList.toggle("open");
+
+    }
+
+
+    /* =====================================================
+       CHECKOUT
+    ===================================================== */
+
+    function showCheckoutForm() {
+
+        if (cart.length === 0) return;
+
+        const modal =
+            document.getElementById(
+                "checkoutModal"
+            );
+
+        const summary =
+            document.getElementById(
+                "checkoutSummary"
+            );
+
+        let html = "";
+
+        cart.forEach(item => {
+
+            html += `
+
+                <div class="summary-row">
+
+                    <span>
+                        ${escapeHTML(item.name)}
+                        × ${item.quantity}
+
+                        ${item.flavor
+                            ? " (" +
+                              escapeHTML(item.flavor) +
+                              ")"
+                            : ""
+                        }
+                    </span>
+
+                    <span>
+                        ₱${formatCurrency(
+                            item.price * item.quantity
+                        )}
+                    </span>
+
+                </div>
+
+            `;
+
+        });
+
+
+        html += `
+
+            <div class="summary-row"
+                 style="font-weight:bold;margin-top:15px;">
+
+                <span>Total</span>
+
+                <span>
+                    ₱${formatCurrency(getCartTotal())}
+                </span>
+
+            </div>
+
+        `;
+
+        summary.innerHTML = html;
+
+        document.getElementById(
+            "orderMessage"
+        ).className = "order-message";
+
+        modal.classList.add("show");
+
+    }
+
+
+    function closeCheckoutModal() {
+
+        document.getElementById(
+            "checkoutModal"
+        ).classList.remove("show");
+
+    }
+
+
+    /* =====================================================
+       ORDER ID
+    ===================================================== */
+
+    function generateOrderId() {
+
+        const random =
+            Math.floor(
+                1000 + Math.random() * 9000
+            );
+
+        return "TBL1-" + random;
+
+    }
+
+
+    /* =====================================================
+       PLACE ORDER
+    ===================================================== */
+
+    function placeOrder() {
+
+        const selected =
+            document.querySelector(
+                'input[name="orderType"]:checked'
+            );
+
+        const message =
+            document.getElementById(
+                "orderMessage"
+            );
+
+
+        if (!selected) {
+
+            message.textContent =
+                "Please select an order type.";
+
+            message.className =
+                "order-message error";
+
+            return;
+
+        }
+
+
+        const orderId =
+            generateOrderId();
+
+        const orderType =
+            selected.value;
+
+        const total =
+            getCartTotal();
+
+        const orderItems =
+            cart.map(item => ({
+
+                name: item.name,
+                size: item.sizeName,
+                flavor: item.flavor,
+                quantity: item.quantity,
+                price: item.price
+
+            }));
+
+
+        /* Demo stock deduction */
+
+        cart.forEach(item => {
+
+            const stockKey =
+                item.itemId + "_" + item.sizeId;
+
+            stock[stockKey] =
+                Math.max(
+                    0,
+                    (stock[stockKey] || 0)
+                    - item.quantity
+                );
+
+        });
+
+
+        const order = {
+
+            order_id: orderId,
+
+            order_type: orderType,
+
+            total: total,
+
+            created_at:
+                new Date().toISOString(),
+
+            items: orderItems
+
+        };
+
+
+        /*
+         * Save the latest order locally.
+         * This replaces the PHP session/database.
+         */
+
+        sessionStorage.setItem(
+            "bubbleLastOrder",
+            JSON.stringify(order)
+        );
+
+
+        cart = [];
+
+        renderCart();
+        updateCartHeader();
+
+        closeCheckoutModal();
+
+        document.getElementById(
+            "cartPanel"
+        ).classList.remove("open");
+
+
+        showReceipt(order);
+
+        renderMenu();
+
+    }
+
+
+    /* =====================================================
+       RECEIPT
+    ===================================================== */
+
+    function showReceipt(order) {
+
+        const modal =
+            document.getElementById(
+                "receiptModal"
+            );
+
+        const content =
+            document.getElementById(
+                "receiptContent"
+            );
+
+
+        const orderDate =
+            new Date(order.created_at);
+
+
+        let itemsHTML = "";
+
+
+        order.items.forEach(item => {
+
+            itemsHTML += `
+
+                <tr>
+
+                    <td>
+                        ${escapeHTML(item.name)}
+
+                        ${item.flavor
+                            ? "<br><small>" +
+                              escapeHTML(item.flavor) +
+                              "</small>"
+                            : ""
+                        }
+
+                    </td>
+
+                    <td>
+                        ${escapeHTML(item.size)}
+                    </td>
+
+                    <td>
+                        ${item.quantity}
+                    </td>
+
+                    <td>
+                        ₱${formatCurrency(
+                            item.price * item.quantity
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        content.innerHTML = `
+
+            <img
+                src="/bubble/media/BUBBLE.jpg"
+                class="receipt-logo"
+                alt="Bubble Hideout">
+
+            <h2>
+                Thank you for your order!
+            </h2>
+
+            <p>
+                Order ID:
+                <strong>
+                    ${escapeHTML(order.order_id)}
+                </strong>
+            </p>
+
+            <p>
+                Order Type:
+                <strong>
+                    ${escapeHTML(order.order_type)}
+                </strong>
+            </p>
+
+            <p>
+                Order Time:
+                <strong>
+                    ${orderDate.toLocaleString("en-PH")}
+                </strong>
+            </p>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Item</th>
+                        <th>Size</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    ${itemsHTML}
+                </tbody>
+
+            </table>
+
+
+            <div class="receipt-total">
+
+                Total:
+                ₱${formatCurrency(order.total)}
+
+            </div>
+
+
+            <div class="receipt-note">
+
+                <p>
+                    Your order is being processed.
+                    You will be notified when it's ready!
+                </p>
+
+                <p>
+                    Estimated preparation time:
+                    <strong>15–20 minutes</strong>
+                </p>
+
+            </div>
+
+        `;
+
+
+        modal.classList.add("show");
+
+    }
+
+
+    /* =====================================================
+       CLOSE RECEIPT / EXPIRE ORDER
+    ===================================================== */
+
+    function closeOrderSummaryAndExpire() {
+
+        document.getElementById(
+            "receiptModal"
+        ).classList.remove("show");
+
+
+        sessionStorage.setItem(
+            "orderExpired",
+            "true"
+        );
+
+
+        /*
+         * Prevent going back to the ordering page.
+         */
+
+        history.pushState(
+            null,
+            "",
+            window.location.href
+        );
+
+        window.onpopstate = function () {
+
+            history.pushState(
+                null,
+                "",
+                window.location.href
+            );
+
+        };
+
+
+        document.body.innerHTML = `
+
+            <div class="expired-page">
+
+                <div class="expired-box">
+
+                    <img
+                        src="/bubble/media/BUBBLE.jpg"
+                        alt="Bubble Hideout">
+
+                    <h1>
+                        Thank You!
+                    </h1>
+
+                    <p>
+                        Thank you for ordering
+                        from Bubble Hideout.
+                    </p>
+
+                    <p>
+                        We hope you enjoy your order!
+                    </p>
+
+
+                    <hr style="margin:30px 0;">
+
+
+                    <h2>
+                        Rate Your Experience
+                    </h2>
+
+                    <p>
+                        How would you rate your ordering
+                        experience?
+                    </p>
+
+
+                    <div class="rating">
+
+                        <button
+                            type="button"
+                            onclick="selectRating(1)">
+                            1
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="selectRating(2)">
+                            2
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="selectRating(3)">
+                            3
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="selectRating(4)">
+                            4
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="selectRating(5)">
+                            5
+                        </button>
+
+                    </div>
+
+
+                    <h3>
+                        Send us your feedback
+                    </h3>
+
+                    <form id="feedbackForm">
+
+                        <textarea
+                            id="feedbackText"
+                            placeholder="Tell us about your experience...">
+                        </textarea>
+
+                        <button
+                            type="submit"
+                            class="submit-feedback">
+                            Submit Feedback
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="messageModal"
+                class="modal-overlay">
+
+                <div class="modal-box">
+
+                    <h2>
+                        Thank You!
+                    </h2>
+
+                    <p id="messageModalText">
+                        Your feedback has been submitted.
+                    </p>
+
+                    <button
+                        class="submit-feedback"
+                        onclick="closeMessageModal()">
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        setupFeedback();
+
+    }
+
+
+    /* =====================================================
+       FEEDBACK
+    ===================================================== */
+
+    let selectedRating = 0;
+
+
+    function selectRating(rating) {
+
+        selectedRating = rating;
+
+        document
+            .querySelectorAll(".rating button")
+            .forEach((button, index) => {
+
+                button.classList.toggle(
+                    "selected",
+                    index + 1 === rating
+                );
+
+            });
+
+    }
+
+
+    function setupFeedback() {
+
+        const form =
+            document.getElementById(
+                "feedbackForm"
+            );
+
+        if (!form) return;
+
+        form.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+                const feedback =
+                    document.getElementById(
+                        "feedbackText"
+                    ).value.trim();
+
+
+                if (!selectedRating && !feedback) {
+
+                    showSimpleMessage(
+                        "Please provide a rating or feedback first."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Static demo:
+                 * No database submission occurs.
+                 */
+
+                let message =
+                    "Thank you for your feedback!";
+
+                if (selectedRating) {
+
+                    message +=
+                        " Your " +
+                        selectedRating +
+                        "-star rating has been recorded.";
+
+                }
+
+
+                if (feedback) {
+
+                    message +=
+                        " We appreciate your comments.";
+
+                }
+
+
+                showSimpleMessage(message);
+
+                form.reset();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SIMPLE MESSAGE MODAL
+    ===================================================== */
+
+    function showSimpleMessage(text) {
+
+        const modal =
+            document.getElementById(
+                "messageModal"
+            );
+
+        const message =
+            document.getElementById(
+                "messageModalText"
+            );
+
+
+        if (!modal || !message) {
+
+            alert(text);
+
+            return;
+
+        }
+
+
+        message.textContent = text;
+
+        modal.classList.add("show");
+
+    }
+
+
+    function closeMessageModal() {
+
+        const modal =
+            document.getElementById(
+                "messageModal"
+            );
+
+        if (modal) {
+
+            modal.classList.remove("show");
+
+        }
+
+    }
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    window.addEventListener(
+        "load",
+        function() {
+
+            /*
+             * If an order was already completed,
+             * show the expired/thank-you page.
+             */
+
+            if (
+                sessionStorage.getItem(
+                    "orderExpired"
+                ) === "true"
+            ) {
+
+                closeOrderSummaryAndExpire();
+
+                return;
+
+            }
+
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const section =
+                params.get("section");
+
+
+            if (
+                section &&
+                menuData[section]
+            ) {
+
+                currentSection = section;
+
+            }
+
+
+            const categories =
+                Object.keys(
+                    menuData[currentSection]
+                );
+
+
+            currentCategory =
+                categories[0];
+
+
+            document
+                .querySelectorAll(".section-btn")
+                .forEach(button => {
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.section ===
+                        currentSection
+                    );
+
+                });
+
+
+            renderCategories();
+            renderMenu();
+            renderCart();
+            updateCartHeader();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
+```

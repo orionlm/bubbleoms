@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <title>Bubble Hideout Login</title>
+
+
+    <style>
+
+        .box {
+            position: relative;
+            padding: 15px;
+            border-radius: 15px;
+            margin: auto;
+            width: 30%;
+        }
+
+
+        label {
+            color: black;
+            position: relative;
+            text-indent: 40%;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+
+        .input {
+            border-color: transparent;
+            border-radius: 25px;
+            background-color: #337609;
+            margin-bottom: 10px;
+            color: #f0f0f0;
+            height: 30px;
+            width: 100%;
+            text-indent: 10px;
+            outline: none;
+            box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+            box-sizing: border-box;
+        }
+
+
+        .input:focus {
+            box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.45);
+        }
+
+
+        ::placeholder {
+            color: #f0f0f0;
+        }
+
+
+        .btn {
+            margin-top: 40px;
+            background: #2c2c2c;
+            font-family: Poppins;
+            width: 100px;
+            height: 40px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+            cursor: pointer;
+        }
+
+
+        .btn:hover {
+            background: #181818;
+        }
+
+
+        .img-bbl {
+            padding-top: 30px;
+            width: 30%;
+            height: 30%;
+        }
+
+
+        .footer {
+            color: #181818;
+            text-align: center;
+            font-size: 12px;
+
+            width: 100%;
+            height: 7%;
+
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+
+        .check {
+            width: 17px;
+            height: 17px;
+            accent-color: #337609;
+        }
+
+
+        .toggle {
+            display: flex;
+            justify-content: right;
+        }
+
+
+        .aa {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .bb {
+            position: relative;
+            height: 10px;
+        }
+
+
+        .error {
+            background: #181818;
+            color: #f0f0f0;
+            padding: 5px;
+            width: 100%;
+            border-radius: 15px;
+            text-indent: 10px;
+            box-sizing: border-box;
+            font-family: Poppins;
+            font-size: 14px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         BUBBLE HIDEOUT LOGO
+    ========================================================== -->
+
+    <center>
+
+        <div class="img-bbl">
+
+            <img
+                src="../media/BUBBLE.jpg"
+                width="200px"
+                height="200px"
+                alt="Bubble Hideout Logo"
+            >
+
+        </div>
+
+        <br>
+
+    </center>
+
+
+
+    <!-- =========================================================
+         LOGIN BOX
+    ========================================================== -->
+
+    <div class="box">
+
+
+        <!-- Error message -->
+
+        <p
+            id="errorMessage"
+            class="error"
+            style="display: none;"
+        ></p>
+
+
+
+        <form id="loginForm">
+
+
+            <!-- =================================================
+                 EMAIL
+            ================================================== -->
+
+            <div class="row mb-3">
+
+                <label for="email">
+                    Username
+                </label>
+
+
+                <div class="col-sm-3">
+
+                    <input
+                        type="text"
+                        id="email"
+                        class="input"
+                        style="font-family: Poppins;"
+                        autocomplete="off"
+                        name="name"
+                        placeholder="Enter Username"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PASSWORD
+            ================================================== -->
+
+            <div class="row mb-3">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="col-sm-3">
+
+                    <input
+                        type="password"
+                        id="password"
+                        class="input"
+                        style="font-family: Poppins;"
+                        name="pass"
+                        placeholder="Enter Password"
+                    >
+
+
+                    <!-- SHOW PASSWORD -->
+
+                    <div class="toggle">
+
+                        <div class="aa">
+
+                            <input
+                                class="check"
+                                type="checkbox"
+                                id="showPassword"
+                            >
+
+                        </div>
+
+
+                        <div class="bb">
+
+                            <label for="showPassword">
+                                Show Password
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+
+            <!-- =================================================
+                 LOGIN BUTTON
+            ================================================== -->
+
+            <center>
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    LOGIN
+                </button>
+
+            </center>
+
+
+        </form>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+
+        /*
+        ============================================================
+        DEMO ACCOUNT DATABASE
+        ============================================================
+        */
+
+
+        const accounts = [
+
+            {
+                email: "admin@bubble.com",
+                password: "admin123",
+                acc_id: "001",
+                name: "Admin",
+                role: "Admin"
+            },
+
+
+            {
+                email: "staff@bubble.com",
+                password: "staff123",
+                acc_id: "002",
+                name: "Staff",
+                role: "Staff"
+            }
+
+        ];
+
+
+
+        /*
+        ============================================================
+        GET HTML ELEMENTS
+        ============================================================
+        */
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+
+        const emailInput =
+            document.getElementById("email");
+
+
+        const passwordInput =
+            document.getElementById("password");
+
+
+        const showPassword =
+            document.getElementById("showPassword");
+
+
+        const errorMessage =
+            document.getElementById("errorMessage");
+
+
+
+        /*
+        ============================================================
+        LOGIN ATTEMPTS
+        ============================================================
+        */
+
+
+        let loginAttempts =
+            parseInt(
+                sessionStorage.getItem("login_attempts")
+            ) || 0;
+
+
+
+        /*
+        ============================================================
+        SHOW PASSWORD
+        ============================================================
+        */
+
+        showPassword.addEventListener("change", function() {
+
+            if (showPassword.checked) {
+
+                passwordInput.type = "text";
+
+            }
+
+            else {
+
+                passwordInput.type = "password";
+
+            }
+
+        });
+
+
+
+        /*
+        ============================================================
+        DISPLAY ERROR
+        ============================================================
+        */
+
+        function showError(message) {
+
+            errorMessage.textContent = message;
+
+            errorMessage.style.display = "block";
+
+        }
+
+
+
+        /*
+        ============================================================
+        HIDE ERROR
+        ============================================================
+        */
+
+        function hideError() {
+
+            errorMessage.textContent = "";
+
+            errorMessage.style.display = "none";
+
+        }
+
+
+
+        /*
+        ============================================================
+        FAILED LOGIN ATTEMPT
+        ============================================================
+        */
+
+        function failedLogin(message) {
+
+            loginAttempts++;
+
+            sessionStorage.setItem(
+                "login_attempts",
+                loginAttempts
+            );
+
+
+            /*
+            --------------------------------------------------------
+            THREE FAILED ATTEMPTS
+            --------------------------------------------------------
+            */
+
+            if (loginAttempts >= 3) {
+
+                sessionStorage.removeItem(
+                    "login_attempts"
+                );
+
+
+                /*
+                Redirect to locked login page
+                */
+
+                window.location.href =
+                    "locked_login.html";
+
+                return;
+
+            }
+
+
+            showError(message);
+
+        }
+
+
+
+        /*
+        ============================================================
+        LOGIN FORM
+        ============================================================
+        */
+
+        loginForm.addEventListener(
+            "submit",
+            function(event) {
+
+                /*
+                Prevent normal form submission
+                */
+
+                event.preventDefault();
+
+
+                hideError();
+
+
+
+                /*
+                ----------------------------------------------------
+                GET INPUT VALUES
+                ----------------------------------------------------
+                */
+
+                const email =
+                    emailInput.value.trim();
+
+
+                const password =
+                    passwordInput.value.trim();
+
+
+
+                /*
+                ----------------------------------------------------
+                EMPTY EMAIL
+                ----------------------------------------------------
+                */
+
+                if (email === "") {
+
+                    failedLogin(
+                        "Email is Required"
+                    );
+
+                    emailInput.focus();
+
+                    return;
+
+                }
+
+
+
+                /*
+                ----------------------------------------------------
+                EMPTY PASSWORD
+                ----------------------------------------------------
+                */
+
+                if (password === "") {
+
+                    failedLogin(
+                        "Password is Required"
+                    );
+
+                    passwordInput.focus();
+
+                    return;
+
+                }
+
+
+
+                /*
+                ----------------------------------------------------
+                FIND ACCOUNT
+                ----------------------------------------------------
+                */
+
+                const account =
+                    accounts.find(function(user) {
+
+                        return (
+                            user.email.toLowerCase() ===
+                            email.toLowerCase()
+                        );
+
+                    });
+
+
+
+                /*
+                ----------------------------------------------------
+                ACCOUNT NOT FOUND
+                ----------------------------------------------------
+                */
+
+                if (!account) {
+
+                    failedLogin(
+                        "Incorrect Email or Password"
+                    );
+
+                    passwordInput.value = "";
+
+                    return;
+
+                }
+
+
+
+                /*
+                ----------------------------------------------------
+                PASSWORD CHECK
+                ----------------------------------------------------
+                */
+
+                if (account.password !== password) {
+
+                    failedLogin(
+                        "Incorrect Email or Password"
+                    );
+
+                    passwordInput.value = "";
+
+                    return;
+
+                }
+
+
+
+                /*
+                ====================================================
+                LOGIN SUCCESSFUL
+                ====================================================
+                */
+
+
+                /*
+                ----------------------------------------------------
+                SAVE USER SESSION
+                ----------------------------------------------------
+                */
+
+                sessionStorage.setItem(
+                    "EMAIL",
+                    account.email
+                );
+
+
+                sessionStorage.setItem(
+                    "ACC_ID",
+                    account.acc_id
+                );
+
+
+                sessionStorage.setItem(
+                    "NAME",
+                    account.name
+                );
+
+
+                sessionStorage.setItem(
+                    "ROLE",
+                    account.role
+                );
+
+
+                sessionStorage.setItem(
+                    "adminAuthenticated",
+                    "true"
+                );
+
+
+
+                /*
+                ----------------------------------------------------
+                RESET LOGIN ATTEMPTS
+                ----------------------------------------------------
+                */
+
+                sessionStorage.removeItem(
+                    "login_attempts"
+                );
+
+
+
+                /*
+                ----------------------------------------------------
+                SAVE LOGIN HISTORY
+                ----------------------------------------------------
+
+                This replaces your MySQL:
+
+                INSERT INTO login_history
+
+                For a static demo, the history is stored
+                inside the browser.
+                ----------------------------------------------------
+                */
+
+                const now =
+                    new Date();
+
+
+                const loginHistory =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "login_history"
+                        )
+                    ) || [];
+
+
+
+                loginHistory.push({
+
+                    acc_id: account.acc_id,
+
+                    email: account.email,
+
+                    date: now.toLocaleDateString(
+                        "en-CA",
+                        {
+                            timeZone: "Asia/Manila"
+                        }
+                    ),
+
+                    time: now.toLocaleTimeString(
+                        "en-US",
+                        {
+                            timeZone: "Asia/Manila",
+
+                            hour: "2-digit",
+
+                            minute: "2-digit",
+
+                            hour12: true
+                        }
+                    )
+
+                });
+
+
+
+                localStorage.setItem(
+                    "login_history",
+                    JSON.stringify(loginHistory)
+                );
+
+
+
+                /*
+                ----------------------------------------------------
+                SAVE ONLINE STATUS
+                ----------------------------------------------------
+
+                This replaces:
+
+                UPDATE accounts
+                SET status = 'Online'
+                ----------------------------------------------------
+                */
+
+                localStorage.setItem(
+                    "userStatus",
+                    "Online"
+                );
+
+
+
+                /*
+                ----------------------------------------------------
+                REDIRECT BASED ON ROLE
+                ----------------------------------------------------
+                */
+
+                if (account.role === "Admin") {
+
+                    window.location.href =
+                        "admin_homepage.html";
+
+                }
+
+                else {
+
+                    window.location.href =
+                        "homepage.html";
+
+                }
+
+            }
+        );
+
+
+
+        /*
+        ============================================================
+        ENTER KEY SUPPORT
+        ============================================================
+        */
+
+        passwordInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    loginForm.requestSubmit();
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>

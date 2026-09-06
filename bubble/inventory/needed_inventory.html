@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../interface/admin_homepage.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <title>Current Inventory Stocks</title>
+</head>
+
+<script>
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
+
+<style>
+.navbar {
+    background-color: #7e5832;
+    width: 100%;
+    height: 80px;
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    z-index: 10;
+    box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+    display: flex;
+    justify-content: left;
+}
+
+.navbar-right {
+    width: 50%;
+    height: 80px;
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    z-index: 10;
+    display: flex;
+    justify-content: right;
+}
+
+h1 {
+    margin-bottom: 5px;
+    padding-left: 50px;
+}
+
+.menu {
+    position: relative;
+    top: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+    height: 400px;
+}
+
+.btn-main {
+    font-family: Poppins;
+    font-weight: bold;
+    color: #f0f0f0;
+    box-shadow: 3px 4px 11px 1px rgba(0,0,0,0.28);
+    font-size: larger;
+    height: 60px;
+    width: 400px;
+    background-color: #337609;
+    border: none;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+.buttons {
+    position: relative; 
+    width: 370px;
+    left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    font-family: Poppins;
+    font-weight: bold;
+    color: #f0f0f0;
+    box-shadow: 3px 4px 11px 1px rgba(0,0,0,0.28);
+    height: 40px;
+    width: 150px;
+    background-color: #337609;
+    border: none;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+.btn:hover,
+.btn-main:hover {
+    background-color: #326810;
+    transition: 0.5s;
+}
+
+.space {
+    position: relative; 
+    width: 320px;
+    left: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: transparent;
+    color: #f0f0f0;
+    padding: 16px;
+    min-width: 110px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-family: Poppins;
+    font-weight: bolder;
+}
+
+.dropbtn:hover {
+    background-color: #5a4026;
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative; 
+    width: 490px;
+    display: flex;
+    justify-content: right;
+}
+
+/* Dropdown Content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 110px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 80px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/* Links inside dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.show {
+    display: block;
+}
+
+th,
+td {
+    padding: 10px;
+}
+
+table {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+tr {
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    margin: 5px;
+}
+
+th {
+    text-align: left;    
+}
+
+.input-group {
+    padding: 10px;
+    display: flex;
+    margin-left: 40px;
+}
+
+.form-outline {
+    width: 80%;
+}
+
+input {
+    font-family: Poppins;
+    font-weight: bold;
+    background-color: transparent;
+    border-radius: 25px;
+    border: 2px #337609 solid;
+    margin-bottom: 10px;
+    color: #181818;
+    width: 300px;
+    height: 30px;
+    text-indent: 10px;
+    outline: none;
+    box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+}
+
+.btn-edit {
+    text-decoration: none;
+    position: relative;
+    background-color: rgb(91, 149, 91);
+    padding: 3px;
+    border-radius: 5px;
+    color: #f0f0f0;
+    border-color: transparent;
+    margin: 5px;
+    font-family: Poppins;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background-color: rgb(79, 128, 79);
+}
+
+.btn-dgr {
+    text-decoration: none;
+    background-color: rgb(91, 149, 91); 
+    padding: 3px;
+    border-radius: 5px;
+    color: #f0f0f0;
+    border-color: transparent;
+    font-family: Poppins;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.btn-dgr:hover {
+    background-color: rgb(79, 128, 79);
+    transition: 0.5s;
+}
+
+.a {
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    z-index: 15;
+    left: 25%;
+    top: 25%;
+}
+
+.dropdown-ver {
+    display: none;
+    position: fixed;
+    background-color: #f1f1f1;
+    width: 45.5%;
+    padding: 30px;
+    margin: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 200px;
+    border-radius: 15px;
+}
+
+.b {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.a1 {
+    background-color: rgb(91, 149, 91);
+    display: inline;
+    color: #f0f0f0;
+    width: 100px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.b1 {
+    background-color: firebrick;
+    display: inline;
+    color: #f0f0f0;
+    width: 100px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.show1 {
+    display: block;
+}
+
+.rem1 {
+    display: none;
+}
+
+.main {
+    position: relative; 
+    top: 30px;
+}
+
+h1,
+h2,
+h3 {
+    font-size: 80px;
+}
+
+.scroll {
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 400px;
+}
+</style>
+
+<body>
+
+    <div class="navbar">
+
+        <div style="position: relative; width: 20px; left: 30px; display: flex; align-items: center;"></div>
+
+        <div class="buttons">
+            <form action="../interface/admin_homepage.html">
+                <button type="submit" class="btn">Back</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="navbar-right">
+
+        <div class="dropdown">
+
+            <button onclick="myFunction()" class="dropbtn">
+                Admin
+            </button>
+
+            <div id="myDropdown" class="dropdown-content">
+                <a href="../interface/logout.html">Logout</a>
+            </div>
+
+        </div>
+
+        <div style="position: relative; width: 20px; right: 30px; display: flex; align-items: center;"></div>
+
+    </div>
+
+
+    <div class="main">
+
+        <h1>Needed Stocks</h1>
+
+        <div class="input-group">
+
+            <div class="form-outline">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control mb-3"
+                    placeholder="Search by Product Name or ID"
+                >
+            </div>
+
+        </div>
+
+
+        <div class="scroll">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Stock Quantity</th>
+                        <th>Total Price</th>
+                        <th>Liquid</th>
+                    </tr>
+                </thead>
+
+                <tbody id="inventoryTableBody">
+                    <!-- Inventory data will be inserted here by JavaScript -->
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="a">
+
+            <div class="dropdown-ver" id="del-drop">
+
+                <div class="body">
+
+                    <p>Update Item</p>
+
+                    <form action="add_inventory.html" id="form-delete-user">
+
+                        <div>
+                            <label>Item Id </label>
+
+                            <input
+                                type="text"
+                                style="width: 20%; border-radius: 5px;"
+                                name="id"
+                            >
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <div class="b">
+
+                    <button
+                        type="button"
+                        style="display:inline-block; width:100px; align-items:center"
+                        class="btn-edit"
+                        onclick="confirmDel(this)"
+                    >
+                        Close
+                    </button>
+
+                    <button
+                        type="submit"
+                        style="display:inline-block; width:100px; align-items:center"
+                        form="form-delete-user"
+                        class="btn-edit"
+                    >
+                        Edit
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+/* =========================================================
+   SAMPLE INVENTORY DATA
+   =========================================================
+   is_liquid:
+   1 = Liquid
+   0 = Non-liquid
+
+   Only items with:
+   - Non-liquid quantity <= 50
+   - Liquid quantity <= 800
+
+   will appear in the Needed Stocks table.
+========================================================= */
+
+const inventoryData = [
+
+    {
+        item_id: "INV001",
+        item_name: "Coffee Beans",
+        cost_per_unit: 450,
+        current_quantity: 8,
+        is_liquid: 0
+    },
+
+    {
+        item_id: "INV002",
+        item_name: "Sugar",
+        cost_per_unit: 65,
+        current_quantity: 35,
+        is_liquid: 0
+    },
+
+    {
+        item_id: "INV003",
+        item_name: "Milk",
+        cost_per_unit: 90,
+        current_quantity: 250,
+        is_liquid: 1
+    },
+
+    {
+        item_id: "INV004",
+        item_name: "Chocolate Syrup",
+        cost_per_unit: 180,
+        current_quantity: 150,
+        is_liquid: 1
+    },
+
+    {
+        item_id: "INV005",
+        item_name: "Strawberry Syrup",
+        cost_per_unit: 200,
+        current_quantity: 320,
+        is_liquid: 1
+    },
+
+    {
+        item_id: "INV006",
+        item_name: "Tapioca Pearls",
+        cost_per_unit: 120,
+        current_quantity: 12,
+        is_liquid: 0
+    },
+
+    {
+        item_id: "INV007",
+        item_name: "Tea Leaves",
+        cost_per_unit: 250,
+        current_quantity: 6,
+        is_liquid: 0
+    },
+
+    {
+        item_id: "INV008",
+        item_name: "Vanilla Syrup",
+        cost_per_unit: 175,
+        current_quantity: 500,
+        is_liquid: 1
+    },
+
+    {
+        item_id: "INV009",
+        item_name: "Whipped Cream",
+        cost_per_unit: 150,
+        current_quantity: 45,
+        is_liquid: 0
+    },
+
+    {
+        item_id: "INV010",
+        item_name: "Matcha Powder",
+        cost_per_unit: 380,
+        current_quantity: 4,
+        is_liquid: 0
+    },
+
+    {
+        item_id: "INV011",
+        item_name: "Caramel Syrup",
+        cost_per_unit: 190,
+        current_quantity: 280,
+        is_liquid: 1
+    },
+
+    {
+        item_id: "INV012",
+        item_name: "Ice",
+        cost_per_unit: 15,
+        current_quantity: 700,
+        is_liquid: 1
+    }
+
+];
+
+
+/* =========================================================
+   DISPLAY INVENTORY
+========================================================= */
+
+function displayInventory() {
+
+    const tableBody = document.getElementById("inventoryTableBody");
+
+    tableBody.innerHTML = "";
+
+    inventoryData.forEach(function(item) {
+
+        /*
+            Original PHP condition:
+
+            Non-liquid:
+            CURRENT_QUANTITY > 50 → don't display
+
+            Liquid:
+            CURRENT_QUANTITY > 800 → don't display
+        */
+
+        if (
+            (item.is_liquid !== 1 && item.current_quantity > 50) ||
+            (item.is_liquid === 1 && item.current_quantity > 800)
+        ) {
+            return;
+        }
+
+
+        const totalPrice =
+            item.cost_per_unit * item.current_quantity;
+
+        const liquidStatus =
+            item.is_liquid === 1 ? "Yes" : "No";
+
+
+        const row = document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${item.item_id}</td>
+
+            <td>${item.item_name}</td>
+
+            <td class="status">
+                ${item.cost_per_unit.toFixed(2)}
+            </td>
+
+            <td
+                class="stock-quantity"
+                data-liquid="${item.is_liquid}"
+            >
+                ${item.current_quantity}
+            </td>
+
+            <td>
+                P ${totalPrice.toLocaleString(
+                    "en-PH",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}
+            </td>
+
+            <td>
+                ${liquidStatus}
+            </td>
+
+        `;
+
+
+        tableBody.appendChild(row);
+
+    });
+
+
+    applyStockColors();
+
+}
+
+
+/* =========================================================
+   STOCK COLOR CODING
+========================================================= */
+
+function applyStockColors() {
+
+    document.querySelectorAll("table tr").forEach(function(row) {
+
+        const cells = row.querySelectorAll("td");
+
+        const stockCell = cells[3];
+
+        if (!stockCell) {
+            return;
+        }
+
+
+        const value = parseFloat(stockCell.innerText);
+
+        const isLiquid =
+            stockCell.getAttribute("data-liquid") === "1";
+
+
+        if (!isNaN(value)) {
+
+            /*
+                Liquid:
+                Red <= 300
+                Yellow <= 800
+
+                Non-liquid:
+                Red <= 10
+                Yellow <= 50
+            */
+
+            if (isLiquid) {
+
+                if (value <= 300) {
+
+                    stockCell.style.backgroundColor = "red";
+                    stockCell.style.color = "white";
+
+                }
+
+                else if (value <= 800) {
+
+                    stockCell.style.backgroundColor = "yellow";
+                    stockCell.style.color = "black";
+
+                }
+
+                else {
+
+                    stockCell.style.backgroundColor = "transparent";
+                    stockCell.style.color = "black";
+
+                }
+
+            }
+
+            else {
+
+                if (value <= 10) {
+
+                    stockCell.style.backgroundColor = "red";
+                    stockCell.style.color = "white";
+
+                }
+
+                else if (value <= 50) {
+
+                    stockCell.style.backgroundColor = "yellow";
+                    stockCell.style.color = "black";
+
+                }
+
+                else {
+
+                    stockCell.style.backgroundColor = "transparent";
+                    stockCell.style.color = "black";
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   SEARCH FUNCTION
+========================================================= */
+
+document
+    .getElementById("searchInput")
+    .addEventListener("keyup", function() {
+
+        const input =
+            document.getElementById("searchInput");
+
+        const filter =
+            input.value.toUpperCase();
+
+        const table =
+            document.querySelector("table");
+
+        const rows =
+            table.getElementsByTagName("tr");
+
+
+        for (let i = 1; i < rows.length; i++) {
+
+            let found = false;
+
+            const cells =
+                rows[i].getElementsByTagName("td");
+
+
+            for (let j = 0; j < cells.length; j++) {
+
+                const cell = cells[j];
+
+                if (!cell) {
+                    continue;
+                }
+
+
+                /*
+                    Get the original text without
+                    previously generated highlighting.
+                */
+
+                const originalText =
+                    cell.textContent || cell.innerText;
+
+                const txtValue =
+                    originalText.toUpperCase();
+
+
+                const index =
+                    txtValue.indexOf(filter);
+
+
+                if (filter !== "" && index > -1) {
+
+                    found = true;
+
+
+                    /*
+                        Highlight matching text.
+                    */
+
+                    cell.innerHTML =
+                        originalText.substring(0, index) +
+
+                        "<span class='highlight'>" +
+
+                        originalText.substring(
+                            index,
+                            index + filter.length
+                        ) +
+
+                        "</span>" +
+
+                        originalText.substring(
+                            index + filter.length
+                        );
+
+                }
+
+                else {
+
+                    /*
+                        Restore original text.
+                    */
+
+                    cell.textContent = originalText;
+
+                }
+
+            }
+
+
+            /*
+                Empty search = show everything.
+            */
+
+            if (filter === "") {
+
+                rows[i].style.display = "";
+
+            }
+
+            else {
+
+                rows[i].style.display =
+                    found ? "" : "none";
+
+            }
+
+        }
+
+    });
+
+
+/* =========================================================
+   MODAL FUNCTIONS
+========================================================= */
+
+function close() {
+
+    document
+        .getElementById("del-drop")
+        .classList.toggle("rem1");
+
+}
+
+
+function confirmDel(self) {
+
+    var id =
+        self.getAttribute("data-id");
+
+
+    document
+        .getElementById("form-delete-user")
+        .id.value = id;
+
+
+    document
+        .getElementById("del-drop")
+        .classList.toggle("show1");
+
+}
+
+
+/* =========================================================
+   INITIALIZE PAGE
+========================================================= */
+
+displayInventory();
+
+</script>
+
+</body>
+</html>

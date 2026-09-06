@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Void Logs - Bubble Hideout POS</title>
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #4CAF50;
+            width: 250px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .void-title {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 20px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #f1f3f4;
+            color: #333;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #2e7d32;
+        }
+
+        .void-type {
+            background-color: #fff3e0;
+            color: #f57c00;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .pin-masked {
+            font-family: monospace;
+            color: #666;
+        }
+
+        .date-time {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .void-title {
+                font-size: 32px;
+            }
+
+            .main-content {
+                padding: 20px;
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 12px;
+                min-width: 900px;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <h1 class="void-title">
+                Void<br>Logs
+            </h1>
+
+            <a href="../pointofsale/indeck.html" class="back-button">
+                Back to POS
+            </a>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Item</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Flavor</th>
+                            <th>Void Type</th>
+                            <th>Voided By</th>
+                            <th>PIN Used</th>
+                            <th>Void Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="voidLogsTable">
+                        <!-- JavaScript will insert the logs here -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /*
+         * SAMPLE VOID LOG DATA
+         * 
+         * This replaces the database query from PHP.
+         * You can add/remove records here for your demo.
+         */
+
+        const voidLogs = [
+            {
+                id: 1,
+                item_name: "Buffalo Chicken Wings",
+                size: "REG",
+                quantity: 1,
+                price: 180.00,
+                flavor: "Buffalo",
+                void_type: "Single Item",
+                voided_by: "Manager",
+                void_time: "2026-09-06 21:42:15"
+            },
+
+            {
+                id: 2,
+                item_name: "Classic Milk Tea",
+                size: "GRANDE",
+                quantity: 1,
+                price: 135.00,
+                flavor: null,
+                void_type: "Single Item",
+                voided_by: "Manager",
+                void_time: "2026-09-06 20:31:48"
+            },
+
+            {
+                id: 3,
+                item_name: "French Fries",
+                size: "REG",
+                quantity: 2,
+                price: 190.00,
+                flavor: null,
+                void_type: "Void All",
+                voided_by: "Manager",
+                void_time: "2026-09-06 19:18:22"
+            },
+
+            {
+                id: 4,
+                item_name: "Wintermelon Milk Tea",
+                size: "VENTI",
+                quantity: 1,
+                price: 155.00,
+                flavor: null,
+                void_type: "Single Item",
+                voided_by: "Manager",
+                void_time: "2026-09-06 18:54:03"
+            },
+
+            {
+                id: 5,
+                item_name: "Chicken Wings",
+                size: "UNLI",
+                quantity: 1,
+                price: 299.00,
+                flavor: "BBQ",
+                void_type: "Single Item",
+                voided_by: "Manager",
+                void_time: "2026-09-05 22:16:41"
+            },
+
+            {
+                id: 6,
+                item_name: "Pearl Milk Tea",
+                size: "REG",
+                quantity: 2,
+                price: 220.00,
+                flavor: null,
+                void_type: "Void All",
+                voided_by: "Manager",
+                void_time: "2026-09-05 20:45:12"
+            },
+
+            {
+                id: 7,
+                item_name: "Honey Garlic Chicken Wings",
+                size: "REG",
+                quantity: 1,
+                price: 180.00,
+                flavor: "Honey Garlic",
+                void_type: "Single Item",
+                voided_by: "Manager",
+                void_time: "2026-09-05 19:27:36"
+            }
+        ];
+
+
+        /*
+         * DISPLAY VOID LOGS
+         */
+
+        function displayVoidLogs() {
+
+            const tableBody = document.getElementById("voidLogsTable");
+
+            tableBody.innerHTML = "";
+
+
+            // Show empty message if there are no records
+            if (voidLogs.length === 0) {
+
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="no-data">
+                            No void logs found
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+
+            // Display newest logs first
+            const sortedLogs = [...voidLogs].sort((a, b) => {
+                return new Date(b.void_time) - new Date(a.void_time);
+            });
+
+
+            sortedLogs.forEach(log => {
+
+                const row = document.createElement("tr");
+
+                const flavor = log.flavor
+                    ? escapeHTML(log.flavor)
+                    : "N/A";
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${log.id}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(log.item_name)}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(log.size)}
+                    </td>
+
+                    <td>
+                        ${log.quantity}
+                    </td>
+
+                    <td class="price">
+                        ₱${formatPrice(log.price)}
+                    </td>
+
+                    <td>
+                        ${flavor}
+                    </td>
+
+                    <td>
+                        <span class="void-type">
+                            ${escapeHTML(log.void_type)}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(log.voided_by)}
+                    </td>
+
+                    <td class="pin-masked">
+                        ****
+                    </td>
+
+                    <td class="date-time">
+                        ${escapeHTML(log.void_time)}
+                    </td>
+
+                `;
+
+                tableBody.appendChild(row);
+
+            });
+
+        }
+
+
+        /*
+         * FORMAT PRICE
+         */
+
+        function formatPrice(price) {
+
+            return Number(price).toLocaleString("en-PH", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+        }
+
+
+        /*
+         * BASIC HTML ESCAPING
+         */
+
+        function escapeHTML(value) {
+
+            if (value === null || value === undefined) {
+                return "";
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /*
+         * INITIALIZE PAGE
+         */
+
+        displayVoidLogs();
+
+    </script>
+
+</body>
+
+</html>
+

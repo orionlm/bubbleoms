@@ -1,0 +1,2996 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Menu Management System</title>
+
+    <link rel="icon" href="../media/BUBBLE.jpg">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8b4513 0%, #6d5537 100%);
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pos-link {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            border: 0;
+            font-family: Poppins;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            cursor: pointer;
+        }
+
+        .pos-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 30px;
+            color: white;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #2c3e50;
+            margin: 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+
+        .section-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .section-tab {
+            background: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-tab.active {
+            background: linear-gradient(135deg, #8b4513 0%, #6d5537 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #8b4513 0%, #6d5537 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .add-btn:hover,
+        .add-category-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .table-container {
+            background: white;
+            min-height: 200px;
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-row {
+            padding: 15px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s ease;
+        }
+
+        .table-row:hover {
+            background: #fafafa;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: #28a745;
+            font-size: 16px;
+        }
+
+        .size-badge {
+            background: #e9ecef;
+            color: #495057;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .item-description {
+            color: #6c757d;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-unavailable {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: white;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Modal */
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #8B6F47 0%, #6d5537 100%);
+            padding: 25px 30px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #8B6F47;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #8B6F47;
+        }
+
+        .size-inputs {
+            display: none;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            margin-top: 15px;
+        }
+
+        .size-inputs.show {
+            display: block;
+        }
+
+        .size-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .size-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .size-row input[type="text"],
+        .size-row input[type="number"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B6F47 0%, #6d5537 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 111, 71, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .add-category-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+        }
+
+        .category-info {
+            background: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #8B6F47;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .search-results-info {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .no-results i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .highlight {
+            background-color: #fad764ff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+
+            .table-header div:nth-child(5),
+            .table-row > div:nth-child(5) {
+                display: none;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-stats {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .section-tabs {
+                flex-wrap: wrap;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 1.5fr 1fr 1fr;
+            }
+
+            .table-header div:nth-child(4),
+            .table-row > div:nth-child(4),
+            .table-header div:nth-child(5),
+            .table-row > div:nth-child(5) {
+                display: none;
+            }
+
+            .size-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+
+            <button class="pos-link" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                Back
+            </button>
+
+            <div class="header-stats">
+
+                <div class="stat-item">
+                    <span class="stat-number" id="totalItems">8</span>
+                    <span class="stat-label">Total Items</span>
+                </div>
+
+                <div class="stat-item">
+                    <span class="stat-number" id="availableItems">7</span>
+                    <span class="stat-label">Available</span>
+                </div>
+
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCategories">6</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <h1 class="main-title">
+            Menu Management System
+        </h1>
+
+
+        <!-- ALERTS -->
+
+        <div class="alert alert-success" id="successAlert">
+            <i class="fas fa-check-circle"></i>
+            <span id="successMessage"></span>
+        </div>
+
+        <div class="alert alert-error" id="errorAlert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorMessage"></span>
+        </div>
+
+
+        <!-- SECTION TABS -->
+
+        <div class="section-tabs">
+
+            <button class="section-tab active" onclick="showSection('drinks', this)">
+                <i class="fas fa-coffee"></i>
+                Drinks
+            </button>
+
+            <button class="section-tab" onclick="showSection('food', this)">
+                <i class="fas fa-utensils"></i>
+                Food
+            </button>
+
+            <button class="section-tab" onclick="showSection('addons', this)">
+                <i class="fas fa-plus-circle"></i>
+                Add-ons
+            </button>
+
+        </div>
+
+
+        <!-- ================= DRINKS ================= -->
+
+        <div id="drinks-section" class="section-content active">
+
+            <div class="section-header">
+
+                <h2 class="section-title">
+                    <i class="fas fa-coffee"></i>
+                    Drinks Management
+                </h2>
+
+                <button class="add-category-btn"
+                        onclick="openAddCategoryModal('drinks')">
+
+                    <i class="fas fa-folder-plus"></i>
+                    Add New Category
+
+                </button>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-container">
+
+                <input
+                    type="text"
+                    class="search-input"
+                    id="search-drinks"
+                    placeholder=" Search drinks by name or category "
+                    onkeyup="searchItems('drinks')"
+                >
+
+                <div
+                    class="search-results-info"
+                    id="results-info-drinks">
+                </div>
+
+            </div>
+
+
+            <div class="categories-grid" id="categories-grid-drinks">
+
+
+                <!-- COFFEE -->
+
+                <div class="category-section">
+
+                    <div class="category-header">
+
+                        <h2 class="category-title">
+                            <i class="fas fa-coffee"></i>
+                            Coffee
+                        </h2>
+
+                        <button
+                            class="add-btn"
+                            onclick="openAddModal('Coffee', 'drinks')">
+
+                            <i class="fas fa-plus"></i>
+                            Add Item
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <div class="table-header">
+                            <div>Name</div>
+                            <div>Size</div>
+                            <div>Price</div>
+                            <div>Status</div>
+                            <div>Created</div>
+                            <div>Actions</div>
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+                                <div class="item-name">
+                                    Iced Coffee
+                                </div>
+
+                                <div class="item-description">
+                                    Classic iced coffee
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱95.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Sep 1, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'ICEDCOFFEE',
+                                        'REG',
+                                        'Iced Coffee',
+                                        95,
+                                        'Classic iced coffee',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'ICEDCOFFEE',
+                                        'Iced Coffee'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+                                <div class="item-name">
+                                    Iced Coffee
+                                </div>
+
+                                <div class="item-description">
+                                    Classic iced coffee
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    GRANDE
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱115.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Sep 1, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'ICEDCOFFEE',
+                                        'GRANDE',
+                                        'Iced Coffee',
+                                        115,
+                                        'Classic iced coffee',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'ICEDCOFFEE',
+                                        'Iced Coffee'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+                                <div class="item-name">
+                                    Caramel Latte
+                                </div>
+
+                                <div class="item-description">
+                                    Espresso with caramel flavor
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱120.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 28, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'CARAMELLATTE',
+                                        'REG',
+                                        'Caramel Latte',
+                                        120,
+                                        'Espresso with caramel flavor',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'CARAMELLATTE',
+                                        'Caramel Latte'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MILK TEA -->
+
+                <div class="category-section">
+
+                    <div class="category-header">
+
+                        <h2 class="category-title">
+                            <i class="fas fa-coffee"></i>
+                            Milk Tea
+                        </h2>
+
+                        <button
+                            class="add-btn"
+                            onclick="openAddModal('Milk Tea', 'drinks')">
+
+                            <i class="fas fa-plus"></i>
+                            Add Item
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <div class="table-header">
+                            <div>Name</div>
+                            <div>Size</div>
+                            <div>Price</div>
+                            <div>Status</div>
+                            <div>Created</div>
+                            <div>Actions</div>
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    Classic Milk Tea
+                                </div>
+
+                                <div class="item-description">
+                                    Creamy milk tea with pearls
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱110.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 25, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'CLASSICMILKTEA',
+                                        'REG',
+                                        'Classic Milk Tea',
+                                        110,
+                                        'Creamy milk tea with pearls',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'CLASSICMILKTEA',
+                                        'Classic Milk Tea'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    Classic Milk Tea
+                                </div>
+
+                                <div class="item-description">
+                                    Creamy milk tea with pearls
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    GRANDE
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱130.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 25, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'CLASSICMILKTEA',
+                                        'GRANDE',
+                                        'Classic Milk Tea',
+                                        130,
+                                        'Creamy milk tea with pearls',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'CLASSICMILKTEA',
+                                        'Classic Milk Tea'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= FOOD ================= -->
+
+        <div id="food-section" class="section-content">
+
+            <div class="section-header">
+
+                <h2 class="section-title">
+                    <i class="fas fa-utensils"></i>
+                    Food Management
+                </h2>
+
+                <button
+                    class="add-category-btn"
+                    onclick="openAddCategoryModal('food')">
+
+                    <i class="fas fa-folder-plus"></i>
+                    Add New Category
+
+                </button>
+
+            </div>
+
+
+            <div class="search-container">
+
+                <input
+                    type="text"
+                    class="search-input"
+                    id="search-food"
+                    placeholder=" Search food by name or category "
+                    onkeyup="searchItems('food')"
+                >
+
+                <div
+                    class="search-results-info"
+                    id="results-info-food">
+                </div>
+
+            </div>
+
+
+            <div
+                class="categories-grid"
+                id="categories-grid-food">
+
+
+                <!-- MEALS -->
+
+                <div class="category-section">
+
+                    <div class="category-header">
+
+                        <h2 class="category-title">
+                            <i class="fas fa-utensils"></i>
+                            Meals
+                        </h2>
+
+                        <button
+                            class="add-btn"
+                            onclick="openAddModal('Meals', 'food')">
+
+                            <i class="fas fa-plus"></i>
+                            Add Item
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <div class="table-header">
+                            <div>Name</div>
+                            <div>Size</div>
+                            <div>Price</div>
+                            <div>Status</div>
+                            <div>Created</div>
+                            <div>Actions</div>
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    Chicken Rice Bowl
+                                </div>
+
+                                <div class="item-description">
+                                    Grilled chicken served with rice
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱150.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 20, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'CHICKENRICEBOWL',
+                                        'REG',
+                                        'Chicken Rice Bowl',
+                                        150,
+                                        'Grilled chicken served with rice',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'CHICKENRICEBOWL',
+                                        'Chicken Rice Bowl'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    Spaghetti
+                                </div>
+
+                                <div class="item-description">
+                                    Classic sweet-style spaghetti
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱130.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-unavailable">
+                                    Unavailable
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 18, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'SPAGHETTI',
+                                        'REG',
+                                        'Spaghetti',
+                                        130,
+                                        'Classic sweet-style spaghetti',
+                                        0
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'SPAGHETTI',
+                                        'Spaghetti'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= ADDONS ================= -->
+
+        <div id="addons-section" class="section-content">
+
+            <div class="section-header">
+
+                <h2 class="section-title">
+                    <i class="fas fa-plus-circle"></i>
+                    Add-ons Management
+                </h2>
+
+                <button
+                    class="add-category-btn"
+                    onclick="openAddCategoryModal('addons')">
+
+                    <i class="fas fa-folder-plus"></i>
+                    Add New Category
+
+                </button>
+
+            </div>
+
+
+            <div class="search-container">
+
+                <input
+                    type="text"
+                    class="search-input"
+                    id="search-addons"
+                    placeholder=" Search add-ons by name or category "
+                    onkeyup="searchItems('addons')"
+                >
+
+                <div
+                    class="search-results-info"
+                    id="results-info-addons">
+                </div>
+
+            </div>
+
+
+            <div
+                class="categories-grid"
+                id="categories-grid-addons">
+
+
+                <!-- EXTRAS -->
+
+                <div class="category-section">
+
+                    <div class="category-header">
+
+                        <h2 class="category-title">
+                            <i class="fas fa-plus-circle"></i>
+                            Extras
+                        </h2>
+
+                        <button
+                            class="add-btn"
+                            onclick="openAddModal('Extras', 'addons')">
+
+                            <i class="fas fa-plus"></i>
+                            Add Item
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <div class="table-header">
+                            <div>Name</div>
+                            <div>Size</div>
+                            <div>Price</div>
+                            <div>Status</div>
+                            <div>Created</div>
+                            <div>Actions</div>
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    Extra Pearls
+                                </div>
+
+                                <div class="item-description">
+                                    Additional tapioca pearls
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱25.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 15, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'EXTRAPEARLS',
+                                        'REG',
+                                        'Extra Pearls',
+                                        25,
+                                        'Additional tapioca pearls',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'EXTRAPEARLS',
+                                        'Extra Pearls'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    Extra Cheese
+                                </div>
+
+                                <div class="item-description">
+                                    Additional cheese topping
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span class="size-badge">
+                                    REG
+                                </span>
+                            </div>
+
+                            <div class="item-price">
+                                ₱30.00
+                            </div>
+
+                            <div>
+                                <span class="status-badge status-available">
+                                    Available
+                                </span>
+                            </div>
+
+                            <div>
+                                Aug 14, 2026
+                            </div>
+
+                            <div class="action-buttons">
+
+                                <button
+                                    class="btn btn-edit"
+                                    onclick="openEditModal(
+                                        'EXTRACHEESE',
+                                        'REG',
+                                        'Extra Cheese',
+                                        30,
+                                        'Additional cheese topping',
+                                        1
+                                    )">
+
+                                    <i class="fas fa-edit"></i>
+
+                                </button>
+
+                                <button
+                                    class="btn btn-delete"
+                                    onclick="deleteItem(
+                                        'EXTRACHEESE',
+                                        'Extra Cheese'
+                                    )">
+
+                                    <i class="fas fa-trash"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ADD CATEGORY MODAL ================= -->
+
+    <div id="addCategoryModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3 class="modal-title">
+                    Add New Category
+                </h3>
+
+                <span
+                    class="close"
+                    onclick="closeModal('addCategoryModal')">
+                    &times;
+                </span>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <form onsubmit="createCategory(event)">
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Category Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="categoryName"
+                            class="form-input"
+                            required
+                            placeholder="Enter category name">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Section
+                        </label>
+
+                        <input
+                            type="text"
+                            id="categorySectionDisplay"
+                            class="form-input"
+                            readonly
+                            style="background:#f8f9fa;color:#6c757d;">
+
+                    </div>
+
+
+                    <div class="category-info">
+
+                        <p style="color:#6c757d;font-size:14px;margin:15px 0;">
+
+                            <i class="fas fa-info-circle"></i>
+
+                            This is a demo version. The category will be
+                            added to the page temporarily.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-buttons">
+
+                        <button
+                            type="button"
+                            class="btn-secondary"
+                            onclick="closeModal('addCategoryModal')">
+
+                            Cancel
+
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn-primary">
+
+                            Create Category
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ADD ITEM MODAL ================= -->
+
+    <div id="addModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3 class="modal-title">
+                    Add New Item
+                </h3>
+
+                <span
+                    class="close"
+                    onclick="closeModal('addModal')">
+                    &times;
+                </span>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <form onsubmit="addItem(event)">
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Item Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="addItemName"
+                            class="form-input"
+                            required
+                            placeholder="Enter item name">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Category
+                        </label>
+
+                        <input
+                            type="text"
+                            id="addItemCategory"
+                            class="form-input"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Section
+                        </label>
+
+                        <select
+                            id="sectionSelect"
+                            class="form-select"
+                            onchange="toggleSizeInputs()"
+                            disabled>
+
+                            <option value="drinks">
+                                Drinks
+                            </option>
+
+                            <option value="food">
+                                Food
+                            </option>
+
+                            <option value="addons">
+                                Add-ons
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SINGLE PRICE -->
+
+                    <div
+                        class="form-group"
+                        id="singlePriceGroup">
+
+                        <label class="form-label">
+                            Price (₱)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="addPrice"
+                            class="form-input"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00">
+
+                    </div>
+
+
+                    <!-- DRINK SIZES -->
+
+                    <div
+                        class="size-inputs"
+                        id="sizeInputs">
+
+                        <label class="form-label">
+                            Sizes and Prices
+                        </label>
+
+
+                        <div class="size-row">
+
+                            <input
+                                type="text"
+                                id="sizeReg"
+                                placeholder="Size"
+                                value="REG">
+
+                            <input
+                                type="number"
+                                id="priceReg"
+                                placeholder="Price"
+                                step="0.01"
+                                min="0">
+
+                        </div>
+
+
+                        <div class="size-row">
+
+                            <input
+                                type="text"
+                                id="sizeGrande"
+                                placeholder="Size"
+                                value="GRANDE">
+
+                            <input
+                                type="number"
+                                id="priceGrande"
+                                placeholder="Price"
+                                step="0.01"
+                                min="0">
+
+                        </div>
+
+
+                        <div class="size-row">
+
+                            <input
+                                type="text"
+                                id="sizeVenti"
+                                placeholder="Size">
+
+                            <input
+                                type="number"
+                                id="priceVenti"
+                                placeholder="Price"
+                                step="0.01"
+                                min="0">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Description (Optional)
+                        </label>
+
+                        <textarea
+                            id="addDescription"
+                            class="form-textarea"
+                            placeholder="Enter item description">
+                        </textarea>
+
+                    </div>
+
+
+                    <div class="form-buttons">
+
+                        <button
+                            type="button"
+                            class="btn-secondary"
+                            onclick="closeModal('addModal')">
+
+                            Cancel
+
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn-primary">
+
+                            Add Item
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= EDIT MODAL ================= -->
+
+    <div id="editModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3 class="modal-title">
+                    Edit Item
+                </h3>
+
+                <span
+                    class="close"
+                    onclick="closeModal('editModal')">
+                    &times;
+                </span>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <form onsubmit="updateItem(event)">
+
+                    <input
+                        type="hidden"
+                        id="editMenuItemId">
+
+                    <input
+                        type="hidden"
+                        id="editSizeId">
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Item Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editName"
+                            class="form-input"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Price (₱)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="editPrice"
+                            class="form-input"
+                            step="0.01"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="editDescription"
+                            class="form-textarea">
+                        </textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="form-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="editAvailable">
+
+                            <label for="editAvailable">
+                                Available on Menu
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-buttons">
+
+                        <button
+                            type="button"
+                            class="btn-secondary"
+                            onclick="closeModal('editModal')">
+
+                            Cancel
+
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn-primary">
+
+                            Update Item
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        let selectedCategorySection = '';
+
+
+        /* BACK BUTTON */
+
+        function goBack() {
+            window.location.href = "../interface/admin_homepage.html";
+        }
+
+
+        /* SECTION TABS */
+
+        function showSection(section, clickedButton) {
+
+            document
+                .querySelectorAll('.section-content')
+                .forEach(content => {
+                    content.classList.remove('active');
+                });
+
+
+            document
+                .querySelectorAll('.section-tab')
+                .forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+
+            document
+                .getElementById(section + '-section')
+                .classList.add('active');
+
+
+            clickedButton.classList.add('active');
+
+
+            const searchInput =
+                document.getElementById(`search-${section}`);
+
+
+            if (searchInput) {
+
+                searchInput.value = '';
+
+                searchItems(section);
+
+            }
+
+        }
+
+
+        /* ADD CATEGORY */
+
+        function openAddCategoryModal(section) {
+
+            selectedCategorySection = section;
+
+
+            document.getElementById(
+                'categorySectionDisplay'
+            ).value =
+                section.charAt(0).toUpperCase()
+                + section.slice(1);
+
+
+            document.getElementById(
+                'categoryName'
+            ).value = '';
+
+
+            document.getElementById(
+                'addCategoryModal'
+            ).style.display = 'block';
+
+        }
+
+
+        function createCategory(event) {
+
+            event.preventDefault();
+
+
+            const category =
+                document.getElementById(
+                    'categoryName'
+                ).value.trim();
+
+
+            if (!category) {
+
+                showError(
+                    'Category name cannot be empty!'
+                );
+
+                return;
+
+            }
+
+
+            closeModal('addCategoryModal');
+
+
+            showSuccess(
+                `Category "${category}" created successfully in ${selectedCategorySection}!`
+            );
+
+        }
+
+
+        /* ADD ITEM MODAL */
+
+        function openAddModal(category, section) {
+
+            document.getElementById(
+                'addItemCategory'
+            ).value = category;
+
+
+            document.getElementById(
+                'sectionSelect'
+            ).value = section;
+
+
+            document.getElementById(
+                'addItemName'
+            ).value = '';
+
+
+            document.getElementById(
+                'addPrice'
+            ).value = '';
+
+
+            document.getElementById(
+                'addDescription'
+            ).value = '';
+
+
+            toggleSizeInputs();
+
+
+            document.getElementById(
+                'addModal'
+            ).style.display = 'block';
+
+        }
+
+
+        /* SIZE INPUTS */
+
+        function toggleSizeInputs() {
+
+            const section =
+                document.getElementById(
+                    'sectionSelect'
+                ).value;
+
+
+            const sizeInputs =
+                document.getElementById(
+                    'sizeInputs'
+                );
+
+
+            const singlePriceGroup =
+                document.getElementById(
+                    'singlePriceGroup'
+                );
+
+
+            if (section === 'drinks') {
+
+                sizeInputs.classList.add('show');
+
+                singlePriceGroup.style.display =
+                    'none';
+
+            } else {
+
+                sizeInputs.classList.remove('show');
+
+                singlePriceGroup.style.display =
+                    'block';
+
+            }
+
+        }
+
+
+        /* ADD ITEM */
+
+        function addItem(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById(
+                    'addItemName'
+                ).value.trim();
+
+
+            const category =
+                document.getElementById(
+                    'addItemCategory'
+                ).value;
+
+
+            const section =
+                document.getElementById(
+                    'sectionSelect'
+                ).value;
+
+
+            if (!name) {
+
+                showError(
+                    'Please enter an item name.'
+                );
+
+                return;
+
+            }
+
+
+            closeModal('addModal');
+
+
+            showSuccess(
+                `${name} was added successfully!`
+            );
+
+        }
+
+
+        /* EDIT ITEM */
+
+        function openEditModal(
+            menuItemId,
+            sizeId,
+            name,
+            price,
+            description,
+            isAvailable
+        ) {
+
+            document.getElementById(
+                'editMenuItemId'
+            ).value = menuItemId;
+
+
+            document.getElementById(
+                'editSizeId'
+            ).value = sizeId;
+
+
+            document.getElementById(
+                'editName'
+            ).value = name;
+
+
+            document.getElementById(
+                'editPrice'
+            ).value = price;
+
+
+            document.getElementById(
+                'editDescription'
+            ).value = description || '';
+
+
+            document.getElementById(
+                'editAvailable'
+            ).checked =
+                isAvailable == 1;
+
+
+            document.getElementById(
+                'editModal'
+            ).style.display = 'block';
+
+        }
+
+
+        function updateItem(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById(
+                    'editName'
+                ).value;
+
+
+            const available =
+                document.getElementById(
+                    'editAvailable'
+                ).checked;
+
+
+            closeModal('editModal');
+
+
+            showSuccess(
+                `Item "${name}" updated successfully! It is now ${
+                    available ? 'available' : 'unavailable'
+                }.`
+            );
+
+        }
+
+
+        /* DELETE */
+
+        function deleteItem(menuItemId, name) {
+
+            const confirmation = confirm(
+                `Are you sure you want to delete "${name}"? This will remove ALL sizes of this item from the system.`
+            );
+
+
+            if (confirmation) {
+
+                showSuccess(
+                    `Item "${name}" deleted successfully!`
+                );
+
+            }
+
+        }
+
+
+        /* CLOSE MODALS */
+
+        function closeModal(modalId) {
+
+            document.getElementById(
+                modalId
+            ).style.display = 'none';
+
+        }
+
+
+        /* CLICK OUTSIDE MODAL */
+
+        window.onclick = function(event) {
+
+            document
+                .querySelectorAll('.modal')
+                .forEach(modal => {
+
+                    if (event.target === modal) {
+
+                        modal.style.display =
+                            'none';
+
+                    }
+
+                });
+
+        };
+
+
+        /* SEARCH */
+
+        function searchItems(section) {
+
+            const searchInput =
+                document.getElementById(
+                    `search-${section}`
+                );
+
+
+            const searchTerm =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const categoriesGrid =
+                document.getElementById(
+                    `categories-grid-${section}`
+                );
+
+
+            const resultsInfo =
+                document.getElementById(
+                    `results-info-${section}`
+                );
+
+
+            const categoryCards =
+                categoriesGrid.querySelectorAll(
+                    '.category-section'
+                );
+
+
+            let totalVisibleItems = 0;
+
+            let totalVisibleCategories = 0;
+
+
+            if (searchTerm === '') {
+
+                categoryCards.forEach(card => {
+
+                    card.style.display =
+                        'block';
+
+
+                    const rows =
+                        card.querySelectorAll(
+                            '.table-row'
+                        );
+
+
+                    rows.forEach(row => {
+
+                        row.style.display =
+                            'grid';
+
+                        removeHighlights(row);
+
+                    });
+
+
+                    if (rows.length > 0) {
+
+                        totalVisibleItems +=
+                            rows.length;
+
+                        totalVisibleCategories++;
+
+                    }
+
+                });
+
+
+                resultsInfo.innerHTML = '';
+
+                return;
+
+            }
+
+
+            categoryCards.forEach(card => {
+
+                const categoryTitle =
+                    card.querySelector(
+                        '.category-title'
+                    );
+
+
+                const categoryText =
+                    categoryTitle.textContent
+                        .toLowerCase();
+
+
+                const rows =
+                    card.querySelectorAll(
+                        '.table-row'
+                    );
+
+
+                let hasVisibleItems = false;
+
+
+                rows.forEach(row => {
+
+                    const itemName =
+                        row.querySelector(
+                            '.item-name'
+                        ).textContent
+                        .toLowerCase();
+
+
+                    const descriptionElement =
+                        row.querySelector(
+                            '.item-description'
+                        );
+
+
+                    const description =
+                        descriptionElement
+                            ? descriptionElement
+                                .textContent
+                                .toLowerCase()
+                            : '';
+
+
+                    const sizeElement =
+                        row.querySelector(
+                            '.size-badge'
+                        );
+
+
+                    const size =
+                        sizeElement
+                            ? sizeElement
+                                .textContent
+                                .toLowerCase()
+                            : '';
+
+
+                    const matches =
+                        itemName.includes(searchTerm) ||
+                        categoryText.includes(searchTerm) ||
+                        description.includes(searchTerm) ||
+                        size.includes(searchTerm);
+
+
+                    if (matches) {
+
+                        row.style.display =
+                            'grid';
+
+                        hasVisibleItems = true;
+
+                        totalVisibleItems++;
+
+                        removeHighlights(row);
+
+
+                        if (
+                            itemName.includes(searchTerm)
+                        ) {
+
+                            highlightText(
+                                row.querySelector(
+                                    '.item-name'
+                                ),
+                                searchTerm
+                            );
+
+                        }
+
+
+                        if (
+                            description.includes(searchTerm)
+                            && descriptionElement
+                        ) {
+
+                            highlightText(
+                                descriptionElement,
+                                searchTerm
+                            );
+
+                        }
+
+
+                        if (
+                            size.includes(searchTerm)
+                        ) {
+
+                            highlightText(
+                                sizeElement,
+                                searchTerm
+                            );
+
+                        }
+
+                    } else {
+
+                        row.style.display =
+                            'none';
+
+                        removeHighlights(row);
+
+                    }
+
+                });
+
+
+                if (
+                    hasVisibleItems ||
+                    categoryText.includes(searchTerm)
+                ) {
+
+                    card.style.display =
+                        'block';
+
+
+                    if (hasVisibleItems) {
+
+                        totalVisibleCategories++;
+
+                    }
+
+
+                    if (
+                        categoryText.includes(searchTerm)
+                    ) {
+
+                        removeHighlights(
+                            categoryTitle
+                        );
+
+                        highlightText(
+                            categoryTitle,
+                            searchTerm
+                        );
+
+                    }
+
+                } else {
+
+                    card.style.display =
+                        'none';
+
+                }
+
+            });
+
+
+            if (totalVisibleItems === 0) {
+
+                resultsInfo.innerHTML = `
+
+                    <div class="no-results">
+
+                        <i class="fas fa-search"></i>
+
+                        <div>
+                            No items found matching
+                            "${searchTerm}"
+                        </div>
+
+                    </div>
+
+                `;
+
+            } else {
+
+                const itemText =
+                    totalVisibleItems === 1
+                        ? 'item'
+                        : 'items';
+
+
+                const categoryText =
+                    totalVisibleCategories === 1
+                        ? 'category'
+                        : 'categories';
+
+
+                resultsInfo.innerHTML =
+                    `Found ${totalVisibleItems} ${itemText} in ${totalVisibleCategories} ${categoryText}`;
+
+            }
+
+        }
+
+
+        /* HIGHLIGHT SEARCH */
+
+        function highlightText(
+            element,
+            searchTerm
+        ) {
+
+            if (
+                !element ||
+                !searchTerm
+            ) {
+                return;
+            }
+
+
+            const originalText =
+                element.textContent;
+
+
+            const regex =
+                new RegExp(
+                    `(${escapeRegExp(searchTerm)})`,
+                    'gi'
+                );
+
+
+            const highlightedText =
+                originalText.replace(
+                    regex,
+                    '<span class="highlight">$1</span>'
+                );
+
+
+            if (
+                highlightedText !== originalText
+            ) {
+
+                element.innerHTML =
+                    highlightedText;
+
+            }
+
+        }
+
+
+        /* REMOVE HIGHLIGHT */
+
+        function removeHighlights(element) {
+
+            if (!element) {
+                return;
+            }
+
+
+            const highlightedElements =
+                element.querySelectorAll(
+                    '.highlight'
+                );
+
+
+            highlightedElements.forEach(
+                highlighted => {
+
+                    const parent =
+                        highlighted.parentNode;
+
+
+                    parent.replaceChild(
+                        document.createTextNode(
+                            highlighted.textContent
+                        ),
+                        highlighted
+                    );
+
+
+                    parent.normalize();
+
+                }
+            );
+
+        }
+
+
+        function escapeRegExp(string) {
+
+            return string.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                '\\$&'
+            );
+
+        }
+
+
+        /* ALERTS */
+
+        function showSuccess(message) {
+
+            const alert =
+                document.getElementById(
+                    'successAlert'
+                );
+
+
+            document.getElementById(
+                'successMessage'
+            ).textContent = message;
+
+
+            alert.style.display =
+                'flex';
+
+
+            setTimeout(() => {
+
+                alert.style.opacity = '0';
+
+                alert.style.transform =
+                    'translateY(-20px)';
+
+                setTimeout(() => {
+
+                    alert.style.display =
+                        'none';
+
+                    alert.style.opacity =
+                        '1';
+
+                    alert.style.transform =
+                        'translateY(0)';
+
+                }, 300);
+
+            }, 5000);
+
+        }
+
+
+        function showError(message) {
+
+            const alert =
+                document.getElementById(
+                    'errorAlert'
+                );
+
+
+            document.getElementById(
+                'errorMessage'
+            ).textContent = message;
+
+
+            alert.style.display =
+                'flex';
+
+        }
+
+
+        /* INITIALIZE */
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function() {
+
+                toggleSizeInputs();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
+

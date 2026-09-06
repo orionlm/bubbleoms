@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../media/BUBBLE.jpg">
+<link rel="stylesheet" href="user_accounts.css">
+<link rel="stylesheet" href="../fonts/fonts.css">
+
+<title>Employee Accounts</title>
+
+
+</head>
+
+<style>
+.navbar {
+    background-color: #7e5832;
+    width: 100%;
+    height: 80px;
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    z-index: 10;
+    box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.28);
+    display: flex;
+    justify-content: left;
+}
+
+.navbar-right {
+    width: 50%;
+    height: 80px;
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    z-index: 11;
+    display: flex;
+    justify-content: right;
+}
+
+.buttons {
+    position: relative; 
+    width: 370px;
+    left: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    font-family: Poppins;
+    font-weight: bold;
+    color: #f0f0f0;
+    box-shadow: 3px 4px 11px 1px rgba(0,0,0,0.28);
+
+    height: 40px;
+    width: 150px;
+    background-color: #337609;
+    border: none;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    background-color: #326810;
+    transition: 0.5s;
+}
+
+.space {
+    position: relative; 
+    width: 320px;
+    left: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: transparent;
+    color: #f0f0f0;
+    padding: 16px;
+    min-width: 110px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+    font-family: Poppins;
+    font-weight: bolder;
+}
+
+.dropbtn:hover {
+    background-color: #5a4026;
+}
+
+.dropdown {
+    position: relative; 
+    width: 490px;
+    display: flex;
+    justify-content: right;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 110px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 80px;
+
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.show {
+    display: block;
+}
+
+.list {
+    position: relative;
+    top: 100px;
+}
+
+th, td {
+    padding: 10px;
+}
+
+table {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+tr {
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    margin: 5px;
+}
+
+th {
+    text-align: left;    
+}
+
+.btn-edit {
+    text-decoration: none;
+    
+    position: relative;
+    background-color: rgb(91, 149, 91);
+    padding: 3px;
+    border-radius: 5px;
+    color: #f0f0f0;
+    border-color: transparent;
+    margin: 5px;
+    font-family: Poppins;
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+    background-color: rgb(79, 128, 79);
+}
+
+.btn-dgr {
+    text-decoration: none;
+    background-color: firebrick;
+    padding: 3px;
+    border-radius: 5px;
+    color: #f0f0f0;
+    border-color: transparent;
+    margin: 5px;
+    font-family: Poppins;
+    cursor: pointer;
+}
+
+.btn-dgr:hover {
+    background-color: rgb(143, 27, 27);
+}
+
+.a {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    z-index: 15;
+    left: 25%;
+    top: 25%;
+}
+
+.dropdown-ver {
+    display: none;
+    position: relative;
+    background-color: #f1f1f1;
+    width: 80%;
+    padding: 30px;
+    margin: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 80px;
+
+    border-radius: 15px;
+}
+
+.b {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.a1 {
+    background-color: rgb(91, 149, 91);
+    display: inline;
+    color: #f0f0f0;
+    width: 100px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+
+    justify-content: center;
+}
+
+.b1 {
+    background-color: firebrick;
+    display: inline;
+    color: #f0f0f0;
+    width: 100px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+
+    justify-content: center;
+}
+
+.show1 {
+    display: block;
+}
+
+.rem1 {
+    display: none;
+}
+
+.pass-col {
+    width: 200px;
+    word-break: break-all; 
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.red {
+    background-color: #c22626ff;
+}
+
+.green {
+    background-color: #548d31ff;
+}
+</style>
+
+<body>
+
+<!-- Delete Confirmation Modal -->
+
+<div class="a">
+    <div class="dropdown-ver" id="del-drop">
+
+
+    <div class="body">
+        <label>Are you sure you want to REMOVE this user?</label>
+        <p></p>
+    </div>
+
+    <div class="b">
+        <button 
+            type="button" 
+            style="display:inline-block; width:100px; align-items:center"
+            class="btn-edit"
+            onclick="closeDelete()">
+            Close
+        </button>
+
+        <button 
+            type="button"
+            style="display:inline-block; width:100px; align-items:center"
+            class="btn-dgr"
+            onclick="deleteUser()">
+            Delete
+        </button>
+    </div>
+
+</div>
+
+
+</div>
+
+<!-- Navigation Bar -->
+
+<div class="navbar">
+
+
+<div style="position: relative; width: 20px; left: 30px; display: flex; align-items: center;"></div>
+
+<div class="logo">
+    <img src="../media/BUBBLE.jpg" width="80px">
+</div>
+
+<div class="buttons">
+
+    <button type="button" class="btn" onclick="goHome()">
+        Back to Homepage
+    </button>
+
+    <button type="button" class="btn" onclick="seeArchive()">
+        See Archive
+    </button>
+
+</div>
+
+
+</div>
+
+<!-- Admin Dropdown -->
+
+<div class="navbar-right">
+
+
+<div class="dropdown">
+
+    <button onclick="myFunction()" class="dropbtn">
+        Admin
+    </button>
+
+    <div id="myDropdown" class="dropdown-content">
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+</div>
+
+<div style="position: relative; width: 20px; right: 30px; display: flex; align-items: center;"></div>
+
+
+</div>
+
+<!-- Main Content -->
+
+<div class="list">
+
+
+<center>
+    <h1 style="font-size: 30px;">User Accounts</h1>
+</center>
+
+
+<!-- Add Account Button -->
+<div class="remove-history" style="display: flex; justify-content: right;">
+
+    <button 
+        type="button"
+        class="btn-edit"
+        onclick="addAccount()"
+        style="
+            position: relative;
+            font-family: Poppins;
+            font-weight: bold;
+            color: #f0f0f0;
+            box-shadow: 3px 4px 11px 1px rgba(0,0,0,0.28);
+            right: 60px;
+            height: 40px;
+            width: 150px;
+            background-color: rgb(91, 149, 91);
+            border: none;
+            border-radius: 25px;
+            transition: 0.5s;
+        ">
+        Add Account &nbsp; ╋
+    </button>
+
+</div>
+
+
+<!-- Accounts Table -->
+<table class="table">
+
+    <thead>
+
+        <tr>
+            <th>Acc ID</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Contact Number</th>
+            <th>Birthday</th>
+            <th>Options</th>
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        <!-- Account 1 -->
+        <tr>
+
+            <td>1001</td>
+
+            <td>Juan Dela Cruz</td>
+
+            <td style="text-align: center;">
+                <div class="status green">
+                    Online
+                </div>
+            </td>
+
+            <td>Admin</td>
+
+            <td>juan@example.com</td>
+
+            <td class="pass-col">
+                password123
+            </td>
+
+            <td>
+                0912 345 6789
+            </td>
+
+            <td>
+                2000-01-15
+            </td>
+
+            <td>
+
+                <center>
+
+                    <a 
+                        class="btn-edit"
+                        style="
+                            display:inline-block;
+                            width:30px;
+                            height:30px;
+                            font-size:20px;
+                            transform:scale(-1,1);
+                            text-align:center;
+                        "
+                        href="#"
+                        onclick="editUser(1001)">
+                        ✎
+                    </a>
+
+                    <a 
+                        class="btn-dgr"
+                        style="
+                            display:inline-block;
+                            width:30px;
+                            height:30px;
+                            font-size:20px;
+                            text-align:center;
+                        "
+                        data-id="1001"
+                        onclick="confirmDel(this)">
+                        ✖
+                    </a>
+
+                </center>
+
+            </td>
+
+        </tr>
+
+
+        <!-- Account 2 -->
+        <tr>
+
+            <td>1002</td>
+
+            <td>Maria Santos</td>
+
+            <td style="text-align: center;">
+                <div class="status green">
+                    Online
+                </div>
+            </td>
+
+            <td>Manager</td>
+
+            <td>maria@example.com</td>
+
+            <td class="pass-col">
+                maria123
+            </td>
+
+            <td>
+                0917 456 7890
+            </td>
+
+            <td>
+                1999-06-20
+            </td>
+
+            <td>
+
+                <center>
+
+                    <a 
+                        class="btn-edit"
+                        style="
+                            display:inline-block;
+                            width:30px;
+                            height:30px;
+                            font-size:20px;
+                            transform:scale(-1,1);
+                            text-align:center;
+                        "
+                        href="#"
+                        onclick="editUser(1002)">
+                        ✎
+                    </a>
+
+                    <a 
+                        class="btn-dgr"
+                        style="
+                            display:inline-block;
+                            width:30px;
+                            height:30px;
+                            font-size:20px;
+                            text-align:center;
+                        "
+                        data-id="1002"
+                        onclick="confirmDel(this)">
+                        ✖
+                    </a>
+
+                </center>
+
+            </td>
+
+        </tr>
+
+
+        <!-- Account 3 -->
+        <tr>
+
+            <td>1003</td>
+
+            <td>Pedro Reyes</td>
+
+            <td style="text-align: center;">
+                <div class="status red">
+                    Offline
+                </div>
+            </td>
+
+            <td>Staff</td>
+
+            <td>pedro@example.com</td>
+
+            <td class="pass-col">
+                pedro123
+            </td>
+
+            <td>
+                0922 567 8901
+            </td>
+
+            <td>
+                2001-11-08
+            </td>
+
+            <td>
+
+                <center>
+
+                    <a 
+                        class="btn-edit"
+                        style="
+                            display:inline-block;
+                            width:30px;
+                            height:30px;
+                            font-size:20px;
+                            transform:scale(-1,1);
+                            text-align:center;
+                        "
+                        href="#"
+                        onclick="editUser(1003)">
+                        ✎
+                    </a>
+
+                    <a 
+                        class="btn-dgr"
+                        style="
+                            display:inline-block;
+                            width:30px;
+                            height:30px;
+                            font-size:20px;
+                            text-align:center;
+                        "
+                        data-id="1003"
+                        onclick="confirmDel(this)">
+                        ✖
+                    </a>
+
+                </center>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+
+</div>
+
+<script>
+
+/* =========================
+   ADMIN DROPDOWN
+========================= */
+
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+
+/* Close Admin Dropdown
+   when clicking elsewhere
+*/
+window.onclick = function(event) {
+
+    if (!event.target.matches('.dropbtn')) {
+
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+
+        for (var i = 0; i < dropdowns.length; i++) {
+
+            var openDropdown = dropdowns[i];
+
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+
+        }
+    }
+}
+
+
+/* =========================
+   DELETE CONFIRMATION
+========================= */
+
+let selectedUserID = null;
+
+
+function confirmDel(self) {
+
+    selectedUserID = self.getAttribute("data-id");
+
+    document.getElementById("del-drop").classList.add("show1");
+
+}
+
+
+function closeDelete() {
+
+    document.getElementById("del-drop").classList.remove("show1");
+
+    selectedUserID = null;
+
+}
+
+
+function deleteUser() {
+
+    if (selectedUserID !== null) {
+
+        alert(
+            "Demo only: User account #" + 
+            selectedUserID + 
+            " would be removed."
+        );
+
+    }
+
+    closeDelete();
+
+}
+
+
+/* =========================
+   BUTTON FUNCTIONS
+========================= */
+
+function goHome() {
+
+   window.location.href = "../interface/admin_homepage.html";
+
+}
+
+
+function seeArchive() {
+
+    alert("Demo only: See Archive");
+
+}
+
+
+function addAccount() {
+
+    window.location.href = "../interface/add_account.html";
+
+}
+
+
+function editUser(id) {
+
+    window.location.href = "../interface/account_edit.html";
+
+
+}
+
+
+function logout() {
+
+    alert("Demo only: Logout");
+
+}
+
+</script>
+
+</body>
+</html>
